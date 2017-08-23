@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cleanup": "rm -rf ./dist;",
-    "build": "npm run cleanup;tsc -p tsconfig.json; webpack",
-    "postinstall": "npm build"
+    "builder": "npm run cleanup;tsc -p tsconfig.json; webpack",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -41,6 +41,7 @@
     "elasticsearch": "^13.3.1",
     "handlebars": "^4.0.10",
     "handlebars-helpers": "^0.9.7",
-    "route-recognizer": "^0.3.3"
+    "route-recognizer": "^0.3.3",
+    "typescript": "^2.4.2"
   }
 }
