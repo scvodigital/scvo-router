@@ -1,9 +1,9 @@
-import {
+/*import {
     ISiteConfig,
     IMetaTag,
     ILinkTag,
     IMenus
-} from './site';
+} from './site';*/
 import {
     IRoutes,
     IRouteMatch,
@@ -243,4 +243,41 @@ class NewTag implements INewTag {
 interface IScvoSite {
     siteConfig: ISiteConfig,
     routeMatch: IRouteMatch
+}
+
+export interface ISiteConfig {
+    hbs: string;
+    scss: string;
+    title: string;
+    metaTags: IMetaTag[];
+    linkTags: ILinkTag[];
+    routing: IRoutes;
+    menus: IMenus;
+    metaData: any;
+    css: string;
+    html: string;
+    scripts: string[];
+}
+
+export interface IMenus {
+    [menu: string]: IMenuItem[];
+}
+
+export interface IMenuItem {
+    label: string;
+    path: string;
+    subMenu: IMenuItem[];
+}
+
+export interface IMetaTag {
+    name: string;
+    content: string;
+    [attribute: string]: string;
+}
+
+export interface ILinkTag {
+    rel: string;
+    type: string;
+    href: string;
+    [attribute: string]: string;
 }
