@@ -6,7 +6,7 @@ import * as es from 'elasticsearch';
 import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
 
-import * as test from 'scvo-router';
+import { RouterManager } from 'scvo-router';
 
 helpers({ handlebars: handlebars });
 
