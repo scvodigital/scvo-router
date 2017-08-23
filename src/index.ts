@@ -1,3 +1,2 @@
-import * as routeManager from './route';
+export  * from './route';
 
-export = routeManager;
