@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "cleanup": "rm -rf ./dist;",
     "builder": "npm run cleanup;tsc -p tsconfig.json; webpack",
-    "postinstall": "npm run build"
+    "postinstall": "npm run builder"
   },
   "repository": {
     "type": "git",
