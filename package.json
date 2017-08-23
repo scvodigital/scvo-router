@@ -1,0 +1,43 @@
+{
+  "name": "scvo-router",
+  "version": "1.0.0",
+  "description": "Pipes to open Elasticsearch to everything we do",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scvodigital/scvo-router.git"
+  },
+  "keywords": [
+    "Elasticsearch",
+    "Routing"
+  ],
+  "author": "Matthew Wilkes (SCVO)",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/scvodigital/scvo-router/issues"
+  },
+  "homepage": "https://github.com/scvodigital/scvo-router#readme",
+  "devDependencies": {
+    "@types/elasticsearch": "^5.0.16",
+    "@types/handlebars": "^4.0.36",
+    "@types/node": "^8.0.24",
+    "@types/route-recognizer": "^0.3.0",
+    "compression-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "source-map-loader": "^0.2.1",
+    "ts-loader": "^2.3.3",
+    "unlazy-loader": "^0.1.2",
+    "webpack": "^3.5.5",
+    "write-file-webpack-plugin": "^4.1.0"
+  },
+  "dependencies": {
+    "elasticsearch": "^13.3.1",
+    "handlebars": "^4.0.10",
+    "handlebars-helpers": "^0.9.7",
+    "route-recognizer": "^0.3.3"
+  }
+}
