@@ -4,7 +4,9 @@
   "description": "Pipes to open Elasticsearch to everything we do",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cleanup": "rm -rf ./dist;",
+    "build": "npm run cleanup;tsc -p tsconfig.json; webpack"
   },
   "repository": {
     "type": "git",
