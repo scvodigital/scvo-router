@@ -26,7 +26,7 @@ module.exports = {
             {
                 enforce: 'pre',
                 test: /\.tsx?$/,
-                use: "ts-loader",
+                loader: "ts-loader",
                 options: {
                     configFileName: "./tsconfig-loader.json"
                 }
