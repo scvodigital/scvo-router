@@ -100,25 +100,6 @@ export class RouteManager {
 
     getLoaderJs(siteConfig: SiteConfig){
         return new Promise((resolve, reject) => {
-            fs.readFile(__dirname + '/scvo-loader.js', (err, data) => {
-                if(err){
-                    return reject(err);
-                }
-                var loaderJs = data.toString();
-
-                var config = {
-                    siteConfig: siteConfig.toJsonSafe(),
-                    routeMatch: routeMatch,
-                };
-
-                var configJson = JSON.stringify(config, null, 4);
-                var payload = `
-                    ${loaderJs}
-                    window.scvoLoader = new ScvoLoader.ScvoLoader(${configJson});
-                `;
-                
-                resolve(payload);
-            });
         });
     }
 }
