@@ -27,15 +27,7 @@
     "@types/elasticsearch": "^5.0.16",
     "@types/handlebars": "^4.0.36",
     "@types/node": "^8.0.24",
-    "@types/route-recognizer": "^0.3.0",
-    "compression-webpack-plugin": "^1.0.0",
-    "copy-webpack-plugin": "^4.0.1",
-    "extract-text-webpack-plugin": "^3.0.0",
-    "source-map-loader": "^0.2.1",
-    "ts-loader": "^2.3.3",
-    "unlazy-loader": "^0.1.2",
-    "webpack": "^3.5.5",
-    "write-file-webpack-plugin": "^4.1.0"
+    "@types/route-recognizer": "^0.3.0"
   },
   "dependencies": {
     "elasticsearch": "^13.3.1",
