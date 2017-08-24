@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cleanup": "rm -rf ./dist;",
-    "builder": "tsc",
-    "postinstall": "npm run builder"
+    "build": "npm run cleanup;tsc"
   },
   "repository": {
     "type": "git",
