@@ -1,12 +1,11 @@
 import * as util from 'util';
+import * as fs from 'fs';
 import * as url from 'url';
 import * as querystring from 'querystring';
 import * as RouteRecognizer from 'route-recognizer';
 import * as es from 'elasticsearch';
 import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
-
-import { RouterManager } from 'scvo-router';
 
 helpers({ handlebars: handlebars });
 
@@ -95,6 +94,30 @@ export class RouteManager {
             }).catch((err) => {
                 console.error('Elasticsearch Primary Failed', err, primaryQuery);
                 reject(err);      
+            });
+        });
+    }
+
+    getLoaderJs(siteConfig: SiteConfig){
+        return new Promise((resolve, reject) => {
+            fs.readFile(__dirname + '/scvo-loader.js', (err, data) => {
+                if(err){
+                    return reject(err);
+                }
+                var loaderJs = data.toString();
+
+                var config = {
+                    siteConfig: siteConfig.toJsonSafe(),
+                    routeMatch: routeMatch,
+                };
+
+                var configJson = JSON.stringify(config, null, 4);
+                var payload = `
+                    ${loaderJs}
+                    window.scvoLoader = new ScvoLoader.ScvoLoader(${configJson});
+                `;
+                
+                resolve(payload);
             });
         });
     }
@@ -443,9 +466,4 @@ export interface IElasticSearchConfig {
     logging: string;
 }
 
-export const domainMap = {
-    ['localhost']: 'test-site',
-    ['127.0.0.1']: 'test-site',
-    ['beta.scvo.org.uk']: 'test-site'
-}
 
