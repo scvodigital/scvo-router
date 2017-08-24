@@ -97,11 +97,6 @@ export class RouteManager {
             });
         });
     }
-
-    getLoaderJs(siteConfig: SiteConfig){
-        return new Promise((resolve, reject) => {
-        });
-    }
 }
 
 export class SearchTemplate implements ISearchTemplate {
