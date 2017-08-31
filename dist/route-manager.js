@@ -7,6 +7,8 @@ var helpers = require("handlebars-helpers");
 var route_1 = require("./route");
 var route_match_1 = require("./route-match");
 helpers({ handlebars: handlebars });
+handlebars.registerHelper('log', helpers);
+handlebars.registerHelper(helpers.toObject);
 var RouteManager = (function () {
     function RouteManager(siteKey, routes, esConfig) {
         var _this = this;

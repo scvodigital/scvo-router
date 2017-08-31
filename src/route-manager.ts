@@ -5,6 +5,7 @@ import * as querystring from 'querystring';
 import * as RouteRecognizer from 'route-recognizer';
 import * as es from 'elasticsearch';
 import * as handlebars from 'handlebars';
+import * as loggingHelpers from 'logging-helpers';
 import * as helpers from 'handlebars-helpers';
 
 import { SearchTemplate } from './search-template';
@@ -13,6 +14,8 @@ import { RouteMatch } from './route-match';
 import { IDocumentTemplate } from './document-result';
 
 helpers({ handlebars: handlebars });
+handlebars.registerHelper('log', helpers);
+handlebars.registerHelper(helpers.toObject);
 
 export class RouteManager {
     router: any = null;
