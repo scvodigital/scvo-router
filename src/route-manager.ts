@@ -7,6 +7,11 @@ import * as es from 'elasticsearch';
 import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
 
+import 'handlebars-helpers/array';
+import 'handlebars-helpers/code';
+import 'handlebars-helpers/logging';
+import 'handlebars-helpers/utils/utils';
+
 import { SearchTemplate } from './search-template';
 import { Route, IRoute, IRoutes } from './route';
 import { RouteMatch } from './route-match';
