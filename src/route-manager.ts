@@ -57,6 +57,9 @@ export class RouteManager {
             Object.assign(params, query);
 
             var primaryQuery = handler.getPrimaryQuery(params);
+
+            console.log('PRIMARY QUERY:', JSON.stringify(primaryQuery, null, 4));
+
             this.esClient.search(primaryQuery).then((resultSet: es.SearchResponse<IDocumentTemplate>) => {
                 params.primaryResultSet = resultSet;
                 var supplimentaryQueries = handler.getSupplimentaryQueries(params);
@@ -65,6 +68,9 @@ export class RouteManager {
                     resolve(routeMatch);
                 }else{
                     var supplimentaryPayload = { body: supplimentaryQueries };
+
+                    console.log('SUPPLIMENTARY PAYLOAD:', JSON.stringify(supplimentaryPayload, null, 4));
+
                     this.esClient.msearch(supplimentaryPayload).then((resultsSets: es.MSearchResponse<IDocumentTemplate>) => {
                         var routeMatch: RouteMatch = new RouteMatch(handler.route, params, resultSet, resultsSets);
                         resolve(routeMatch);

@@ -7,9 +7,7 @@ var helpers = require("handlebars-helpers");
 var route_1 = require("./route");
 var route_match_1 = require("./route-match");
 helpers({ handlebars: handlebars });
-handlebars.registerHelper('log', helpers);
-handlebars.registerHelper(helpers.toObject);
-var RouteManager = (function () {
+var RouteManager = /** @class */ (function () {
     function RouteManager(siteKey, routes, esConfig) {
         var _this = this;
         this.siteKey = siteKey;
@@ -55,6 +53,7 @@ var RouteManager = (function () {
             params.path = path;
             Object.assign(params, query);
             var primaryQuery = handler.getPrimaryQuery(params);
+            console.log('PRIMARY QUERY:', JSON.stringify(primaryQuery, null, 4));
             _this.esClient.search(primaryQuery).then(function (resultSet) {
                 params.primaryResultSet = resultSet;
                 var supplimentaryQueries = handler.getSupplimentaryQueries(params);
@@ -64,6 +63,7 @@ var RouteManager = (function () {
                 }
                 else {
                     var supplimentaryPayload = { body: supplimentaryQueries };
+                    console.log('SUPPLIMENTARY PAYLOAD:', JSON.stringify(supplimentaryPayload, null, 4));
                     _this.esClient.msearch(supplimentaryPayload).then(function (resultsSets) {
                         var routeMatch = new route_match_1.RouteMatch(handler.route, params, resultSet, resultsSets);
                         resolve(routeMatch);

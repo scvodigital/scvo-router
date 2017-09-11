@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DocumentResultSet = (function () {
+var DocumentResultSet = /** @class */ (function () {
     function DocumentResultSet(resultSet, searchTemplate, params) {
         this.params = params;
         this.total = 0;
@@ -33,7 +33,7 @@ var DocumentResultSet = (function () {
     return DocumentResultSet;
 }());
 exports.DocumentResultSet = DocumentResultSet;
-var DocumentResult = (function () {
+var DocumentResult = /** @class */ (function () {
     function DocumentResult(documentResultBase, hit, preferredView) {
         this._index = null;
         this._type = null;
@@ -83,7 +83,7 @@ var DocumentResult = (function () {
     return DocumentResult;
 }());
 exports.DocumentResult = DocumentResult;
-var Paging = (function () {
+var Paging = /** @class */ (function () {
     function Paging(paging) {
         this.from = 0;
         this.size = 10;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
 helpers({ handlebars: handlebars });
-var SearchTemplate = (function () {
+var SearchTemplate = /** @class */ (function () {
     function SearchTemplate(searchTemplate) {
         this.template = '';
         this.type = '';
