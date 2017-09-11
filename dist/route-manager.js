@@ -23,6 +23,7 @@ var RouteManager = /** @class */ (function () {
                 path: routes[routeKey].pattern,
                 handler: new route_1.Route(siteKey, routes[routeKey])
             };
+            console.log('ROUTE MANAGER: Adding Route:', route);
             _this.router.add([route]);
         });
         this.defaultHandler = new route_1.Route(siteKey);
