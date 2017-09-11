@@ -23,7 +23,6 @@ var RouteManager = /** @class */ (function () {
                 path: routes[routeKey].pattern,
                 handler: new route_1.Route(siteKey, routes[routeKey])
             };
-            console.log('ROUTE MANAGER: Adding Route:', route);
             _this.router.add([route]);
         });
         this.defaultHandler = new route_1.Route(siteKey);
@@ -44,12 +43,8 @@ var RouteManager = /** @class */ (function () {
     RouteManager.prototype.go = function (uri) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            console.log('ROUTE MANAGER: Matching path:', uri.path);
-            console.log('ROUTE MANAGER: Against:', _this.router);
             var routes = _this.router.recognize(uri.path);
-            console.log('ROUTE MANAGER: Matches?:', routes);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
-            console.log('ROUTE MANAGER: Match?:', routeMatch);
             var handler = routeMatch ? routeMatch.handler : _this.defaultHandler;
             var query = uri.query || {};
             var params = routeMatch ? routeMatch.params || {} : {};
