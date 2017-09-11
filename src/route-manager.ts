@@ -38,6 +38,7 @@ export class RouteManager {
                 path: routes[routeKey].pattern,
                 handler: new Route(siteKey, routes[routeKey])
             };
+            console.log('ROUTE MANAGER: Adding Route:', route);
             this.router.add([route]);
         });
         this.defaultHandler = new Route(siteKey);
