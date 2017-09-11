@@ -38,7 +38,6 @@ export class RouteManager {
                 path: routes[routeKey].pattern,
                 handler: new Route(siteKey, routes[routeKey])
             };
-            console.log('ROUTE MANAGER: Adding Route:', route);
             this.router.add([route]);
         });
         this.defaultHandler = new Route(siteKey);
@@ -46,12 +45,8 @@ export class RouteManager {
 
     go(uri: url.Url): Promise<RouteMatch>{
         return new Promise((resolve, reject) => {
-            console.log('ROUTE MANAGER: Matching path:', uri.path);
-            console.log('ROUTE MANAGER: Against:', this.router);
             var routes: RouteRecognizer.Results = this.router.recognize(uri.path);
-            console.log('ROUTE MANAGER: Matches?:', routes);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
-            console.log('ROUTE MANAGER: Match?:', routeMatch);
             var handler: Route = routeMatch ? <Route>routeMatch.handler : this.defaultHandler;
             
             var query = uri.query || {};
