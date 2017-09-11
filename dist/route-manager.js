@@ -43,6 +43,8 @@ var RouteManager = /** @class */ (function () {
     RouteManager.prototype.go = function (uri) {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            console.log('ROUTE MANAGER: Matching path:', uri.path);
+            console.log('ROUTE MANAGER: Against:', _this.router);
             var routes = _this.router.recognize(uri.path);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
             var handler = routeMatch ? routeMatch.handler : _this.defaultHandler;

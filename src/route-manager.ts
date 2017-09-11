@@ -45,6 +45,8 @@ export class RouteManager {
 
     go(uri: url.Url): Promise<RouteMatch>{
         return new Promise((resolve, reject) => {
+            console.log('ROUTE MANAGER: Matching path:', uri.path);
+            console.log('ROUTE MANAGER: Against:', this.router);
             var routes: RouteRecognizer.Results = this.router.recognize(uri.path);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
             var handler: Route = routeMatch ? <Route>routeMatch.handler : this.defaultHandler;
