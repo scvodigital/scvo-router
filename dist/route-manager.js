@@ -47,7 +47,9 @@ var RouteManager = /** @class */ (function () {
             console.log('ROUTE MANAGER: Matching path:', uri.path);
             console.log('ROUTE MANAGER: Against:', _this.router);
             var routes = _this.router.recognize(uri.path);
+            console.log('ROUTE MANAGER: Matches?:', routes);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
+            console.log('ROUTE MANAGER: Match?:', routeMatch);
             var handler = routeMatch ? routeMatch.handler : _this.defaultHandler;
             var query = uri.query || {};
             var params = routeMatch ? routeMatch.params || {} : {};

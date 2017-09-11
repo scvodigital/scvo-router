@@ -49,7 +49,9 @@ export class RouteManager {
             console.log('ROUTE MANAGER: Matching path:', uri.path);
             console.log('ROUTE MANAGER: Against:', this.router);
             var routes: RouteRecognizer.Results = this.router.recognize(uri.path);
+            console.log('ROUTE MANAGER: Matches?:', routes);
             var routeMatch = routes && routes.length > 0 ? routes[0] : null;
+            console.log('ROUTE MANAGER: Match?:', routeMatch);
             var handler: Route = routeMatch ? <Route>routeMatch.handler : this.defaultHandler;
             
             var query = uri.query || {};
