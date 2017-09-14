@@ -51,22 +51,21 @@ export class RouteManager {
             
             var query = uri.query || {};
             var params = routeMatch ? routeMatch.params || {} : {};
-            var path = uri.path.replace(/\//g, '_');
-
-            console.log('VARS1 - query:', query, '| params:', params, '| path:', path);
+            var path = uri.pathname.replace(/\//g, '_');
 
             path = path === '_' ? '_index' : path;
 
-            console.log('VARS2 - query:', query, '| params:', params, '| path:', path);
-            
-            params.path = path;
-            
-            console.log('VARS31 - query:', query, '| params:', params, '| path:', path);
-            
-            Object.assign(params, query);
+            console.log('VARS1: query:', query, '| params:', params, '| path:', path);
 
-            console.log('PARAMS:', params);
-
+            try{
+                params.path = path;
+                params = Object.assign({}, params, query);
+            }catch(err){
+                params = query;
+            }
+            
+            console.log('VARS2: query:', query, '| params:', params, '| path:', path);
+            
             var primaryQuery = handler.getPrimaryQuery(params);
 
             console.log('PRIMARY QUERY:', JSON.stringify(primaryQuery, null, 4));
