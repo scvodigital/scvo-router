@@ -43,6 +43,11 @@ export class RouteManager {
         this.defaultHandler = new Route(siteKey);
     }
 
+    semicolonParams(path: string): any{
+        var params = querystring.parse(path, ';', '=');
+        return params;
+    }
+
     go(uri: url.Url): Promise<RouteMatch>{
         return new Promise((resolve, reject) => {
             var routes: RouteRecognizer.Results = this.router.recognize(uri.path);
@@ -55,6 +60,11 @@ export class RouteManager {
 
             path = path === '_' ? '_index' : path;
 
+            if(path.indexOf(';') > -1){
+                query = this.semicolonParams(path);
+            }
+
+            console.log('URL:', JSON.stringify(uri, null, 4));
             console.log('VARS1: query:', query, '| params:', params, '| path:', path);
 
             try{

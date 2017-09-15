@@ -12,6 +12,7 @@ export declare class RouteManager {
     private _esClient;
     private readonly esClient;
     constructor(siteKey: string, routes: IRoutes, esConfig: IElasticSearchConfig);
+    semicolonParams(path: string): any;
     go(uri: url.Url): Promise<RouteMatch>;
 }
 export interface IElasticSearchConfig {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var querystring = require("querystring");
 var RouteRecognizer = require("route-recognizer");
 var es = require("elasticsearch");
 var handlebars = require("handlebars");
@@ -40,6 +41,10 @@ var RouteManager = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    RouteManager.prototype.semicolonParams = function (path) {
+        var params = querystring.parse(path, ';', '=');
+        return params;
+    };
     RouteManager.prototype.go = function (uri) {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -50,6 +55,10 @@ var RouteManager = /** @class */ (function () {
             var params = routeMatch ? routeMatch.params || {} : {};
             var path = uri.pathname.replace(/\//g, '_');
             path = path === '_' ? '_index' : path;
+            if (path.indexOf(';') > -1) {
+                query = _this.semicolonParams(path);
+            }
+            console.log('URL:', JSON.stringify(uri, null, 4));
             console.log('VARS1: query:', query, '| params:', params, '| path:', path);
             try {
                 params.path = path;
