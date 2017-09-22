@@ -64,17 +64,12 @@ export class RouteManager {
                 query = this.semicolonParams(path);
             }
 
-            console.log('URL:', JSON.stringify(uri, null, 4));
-            console.log('VARS1: query:', query, '| params:', params, '| path:', path);
-
             try{
                 params.path = path;
                 params = Object.assign({}, params, query);
             }catch(err){
                 params = query;
             }
-            
-            console.log('VARS2: query:', query, '| params:', params, '| path:', path);
             
             var primaryQuery = handler.getPrimaryQuery(params);
 
