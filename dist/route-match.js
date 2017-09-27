@@ -4,7 +4,7 @@ var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
 var document_result_1 = require("./document-result");
 helpers({ handlebars: handlebars });
-var RouteMatch = (function () {
+var RouteMatch = /** @class */ (function () {
     function RouteMatch(routeMatch, params, primaryResultSet, supplimentaryResultsSets) {
         var _this = this;
         this.params = params;

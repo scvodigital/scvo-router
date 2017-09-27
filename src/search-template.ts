@@ -15,7 +15,7 @@ export class SearchTemplate implements ISearchTemplate {
     }
 
     getHead(): any {
-        return { index: 'web-content', type: this.type };
+        return { index: 'web-content-production', type: this.type };
     }
 
     getBody(params: any): any {
@@ -28,7 +28,7 @@ export class SearchTemplate implements ISearchTemplate {
         var query = this.compiled(params);
         var parsed = JSON.parse(query);
         var payload = {
-            index: 'web-content',
+            index: 'web-content-production',
             type: this.type,
             body: parsed
         };

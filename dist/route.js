@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var search_template_1 = require("./search-template");
-var Route = (function () {
+var Route = /** @class */ (function () {
     function Route(siteKey, route) {
         this.siteKey = siteKey;
         this.linkTags = null;

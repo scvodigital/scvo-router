@@ -43,6 +43,11 @@ export class RouteManager {
         this.defaultHandler = new Route(siteKey);
     }
 
+    semicolonParams(path: string): any{
+        var params = querystring.parse(path, ';', '=');
+        return params;
+    }
+
     go(uri: url.Url): Promise<RouteMatch>{
         return new Promise((resolve, reject) => {
             var routes: RouteRecognizer.Results = this.router.recognize(uri.path);
@@ -51,12 +56,25 @@ export class RouteManager {
             
             var query = uri.query || {};
             var params = routeMatch ? routeMatch.params || {} : {};
-            var path = uri.path.replace(/\//g, '_');
-            path = path === '_' ? '_index' : path;
-            params.path = path;
-            Object.assign(params, query);
+            var path = uri.pathname.replace(/\//g, '_');
 
+            path = path === '_' ? '_index' : path;
+
+            if(path.indexOf(';') > -1){
+                query = this.semicolonParams(path);
+            }
+
+            try{
+                params.path = path;
+                params = Object.assign({}, params, query);
+            }catch(err){
+                params = query;
+            }
+            
             var primaryQuery = handler.getPrimaryQuery(params);
+
+            console.log('PRIMARY QUERY:', JSON.stringify(primaryQuery, null, 4));
+
             this.esClient.search(primaryQuery).then((resultSet: es.SearchResponse<IDocumentTemplate>) => {
                 params.primaryResultSet = resultSet;
                 var supplimentaryQueries = handler.getSupplimentaryQueries(params);
@@ -65,6 +83,9 @@ export class RouteManager {
                     resolve(routeMatch);
                 }else{
                     var supplimentaryPayload = { body: supplimentaryQueries };
+
+                    console.log('SUPPLIMENTARY PAYLOAD:', JSON.stringify(supplimentaryPayload, null, 4));
+
                     this.esClient.msearch(supplimentaryPayload).then((resultsSets: es.MSearchResponse<IDocumentTemplate>) => {
                         var routeMatch: RouteMatch = new RouteMatch(handler.route, params, resultSet, resultsSets);
                         resolve(routeMatch);

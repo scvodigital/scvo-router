@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var querystring = require("querystring");
 var RouteRecognizer = require("route-recognizer");
 var es = require("elasticsearch");
 var handlebars = require("handlebars");
@@ -7,7 +8,7 @@ var helpers = require("handlebars-helpers");
 var route_1 = require("./route");
 var route_match_1 = require("./route-match");
 helpers({ handlebars: handlebars });
-var RouteManager = (function () {
+var RouteManager = /** @class */ (function () {
     function RouteManager(siteKey, routes, esConfig) {
         var _this = this;
         this.siteKey = siteKey;
@@ -40,6 +41,10 @@ var RouteManager = (function () {
         enumerable: true,
         configurable: true
     });
+    RouteManager.prototype.semicolonParams = function (path) {
+        var params = querystring.parse(path, ';', '=');
+        return params;
+    };
     RouteManager.prototype.go = function (uri) {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -48,11 +53,23 @@ var RouteManager = (function () {
             var handler = routeMatch ? routeMatch.handler : _this.defaultHandler;
             var query = uri.query || {};
             var params = routeMatch ? routeMatch.params || {} : {};
-            var path = uri.path.replace(/\//g, '_');
+            var path = uri.pathname.replace(/\//g, '_');
             path = path === '_' ? '_index' : path;
-            params.path = path;
-            Object.assign(params, query);
+            if (path.indexOf(';') > -1) {
+                query = _this.semicolonParams(path);
+            }
+            console.log('URL:', JSON.stringify(uri, null, 4));
+            console.log('VARS1: query:', query, '| params:', params, '| path:', path);
+            try {
+                params.path = path;
+                params = Object.assign({}, params, query);
+            }
+            catch (err) {
+                params = query;
+            }
+            console.log('VARS2: query:', query, '| params:', params, '| path:', path);
             var primaryQuery = handler.getPrimaryQuery(params);
+            console.log('PRIMARY QUERY:', JSON.stringify(primaryQuery, null, 4));
             _this.esClient.search(primaryQuery).then(function (resultSet) {
                 params.primaryResultSet = resultSet;
                 var supplimentaryQueries = handler.getSupplimentaryQueries(params);
@@ -62,6 +79,7 @@ var RouteManager = (function () {
                 }
                 else {
                     var supplimentaryPayload = { body: supplimentaryQueries };
+                    console.log('SUPPLIMENTARY PAYLOAD:', JSON.stringify(supplimentaryPayload, null, 4));
                     _this.esClient.msearch(supplimentaryPayload).then(function (resultsSets) {
                         var routeMatch = new route_match_1.RouteMatch(handler.route, params, resultSet, resultsSets);
                         resolve(routeMatch);
