@@ -14,13 +14,6 @@ Class for managing incoming requests, routing them to Elasticsearch queries, and
 * [constructor](_router_.router.md#constructor)
 
 
-### Properties
-
-* [defaultResult](_router_.router.md#defaultresult)
-* [routeRecognizer](_router_.router.md#routerecognizer)
-* [routes](_router_.router.md#routes)
-
-
 ### Methods
 
 * [execute](_router_.router.md#execute)
@@ -35,7 +28,7 @@ Class for managing incoming requests, routing them to Elasticsearch queries, and
 ### ⊕ **new Router**(routes: *[IRoutes](../interfaces/_interfaces_.iroutes.md)*): [Router](_router_.router.md)
 
 
-*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L24)*
+*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/aecc349/src/router.ts#L24)*
 
 
 
@@ -57,52 +50,6 @@ Create a Router for matching routes and rendering responses
 ---
 
 
-## Properties
-<a id="defaultresult"></a>
-
-###  defaultResult
-
-**●  defaultResult**:  *`Result`* 
-
-*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L24)*
-
-
-
-
-
-___
-
-<a id="routerecognizer"></a>
-
-###  routeRecognizer
-
-**●  routeRecognizer**:  *`any`* 
-
-*Defined in [router.ts:23](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L23)*
-
-
-
-
-
-___
-
-<a id="routes"></a>
-
-### «Private» routes
-
-**●  routes**:  *[IRoutes](../interfaces/_interfaces_.iroutes.md)* 
-
-*Defined in [router.ts:30](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L30)*
-
-
-
-The routes and their configurations we are matching against
-
-
-
-
-___
-
 
 ## Methods
 <a id="execute"></a>
@@ -113,7 +60,7 @@ ___
 
 
 
-*Defined in [router.ts:57](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L57)*
+*Defined in [router.ts:57](https://github.com/scvodigital/scvo-router/blob/aecc349/src/router.ts#L57)*
 
 
 

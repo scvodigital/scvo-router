@@ -20,8 +20,8 @@ helpers({ handlebars: handlebars });
 
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export class Router {
-    routeRecognizer: any;
-    defaultResult: Result;
+    private routeRecognizer: any;
+    private defaultResult: Result;
 
     /**
      * Create a Router for matching routes and rendering responses
@@ -54,7 +54,7 @@ export class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    execute(uriString: string): Promise<RouteMatch>{
+    public execute(uriString: string): Promise<RouteMatch>{
         return new Promise<RouteMatch>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];

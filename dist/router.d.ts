@@ -1,11 +1,10 @@
-import { Result } from 'route-recognizer';
 import { IRoutes } from './interfaces';
 import { RouteMatch } from './route-match';
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export declare class Router {
     private routes;
-    routeRecognizer: any;
-    defaultResult: Result;
+    private routeRecognizer;
+    private defaultResult;
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against

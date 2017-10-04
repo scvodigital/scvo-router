@@ -25,7 +25,7 @@
 
 **●  RouteRecognizer**:  *`any`*  =  require('route-recognizer').default
 
-*Defined in [router.ts:12](https://github.com/scvodigital/scvo-router/blob/138c96a/src/router.ts#L12)*
+*Defined in [router.ts:12](https://github.com/scvodigital/scvo-router/blob/aecc349/src/router.ts#L12)*
 
 
 

@@ -29,7 +29,7 @@
 
 **●  elasticsearchConfig**:  *`ConfigOptions`* 
 
-*Defined in [interfaces.ts:38](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L38)*
+*Defined in [interfaces.ts:38](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L38)*
 
 
 
@@ -43,7 +43,7 @@ ___
 
 **●  linkTags**:  *[ILinkTag](_interfaces_.ilinktag.md)[]* 
 
-*Defined in [interfaces.ts:30](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L30)*
+*Defined in [interfaces.ts:30](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L30)*
 
 
 
@@ -57,7 +57,7 @@ ___
 
 **●  metaTags**:  *[IMetaTag](_interfaces_.imetatag.md)[]* 
 
-*Defined in [interfaces.ts:31](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L31)*
+*Defined in [interfaces.ts:31](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L31)*
 
 
 
@@ -71,7 +71,7 @@ ___
 
 **●  pattern**:  *`string`* 
 
-*Defined in [interfaces.ts:32](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L32)*
+*Defined in [interfaces.ts:32](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L32)*
 
 
 
@@ -85,7 +85,7 @@ ___
 
 **●  primarySearchTemplate**:  *[ISearchTemplate](_interfaces_.isearchtemplate.md)* 
 
-*Defined in [interfaces.ts:36](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L36)*
+*Defined in [interfaces.ts:36](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L36)*
 
 
 
@@ -99,7 +99,7 @@ ___
 
 **●  queryDelimiter**:  *`string`* 
 
-*Defined in [interfaces.ts:34](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L34)*
+*Defined in [interfaces.ts:34](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L34)*
 
 
 
@@ -113,7 +113,7 @@ ___
 
 **●  queryEquals**:  *`string`* 
 
-*Defined in [interfaces.ts:35](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L35)*
+*Defined in [interfaces.ts:35](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L35)*
 
 
 
@@ -127,7 +127,7 @@ ___
 
 **●  supplimentarySearchTemplates**:  *[ISearchTemplateSet](_interfaces_.isearchtemplateset.md)* 
 
-*Defined in [interfaces.ts:37](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L37)*
+*Defined in [interfaces.ts:37](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L37)*
 
 
 
@@ -141,7 +141,7 @@ ___
 
 **●  template**:  *`string`* 
 
-*Defined in [interfaces.ts:33](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L33)*
+*Defined in [interfaces.ts:33](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L33)*
 
 
 

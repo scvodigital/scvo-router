@@ -12,7 +12,7 @@
 
 **●  Id**:  *`string`* 
 
-*Defined in [interfaces.ts:101](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L101)*
+*Defined in [interfaces.ts:101](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L101)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  author**:  *`string`* 
 
-*Defined in [interfaces.ts:102](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L102)*
+*Defined in [interfaces.ts:102](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L102)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  date_expires**:  *`Date`* 
 
-*Defined in [interfaces.ts:111](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L111)*
+*Defined in [interfaces.ts:111](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L111)*
 
 
 
@@ -54,7 +54,7 @@ ___
 
 **●  date_index_updated**:  *`Date`* 
 
-*Defined in [interfaces.ts:113](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L113)*
+*Defined in [interfaces.ts:113](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L113)*
 
 
 
@@ -68,7 +68,7 @@ ___
 
 **●  date_modified**:  *`Date`* 
 
-*Defined in [interfaces.ts:112](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L112)*
+*Defined in [interfaces.ts:112](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L112)*
 
 
 
@@ -82,7 +82,7 @@ ___
 
 **●  date_publishes**:  *`Date`* 
 
-*Defined in [interfaces.ts:110](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L110)*
+*Defined in [interfaces.ts:110](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L110)*
 
 
 
@@ -96,7 +96,7 @@ ___
 
 **●  description**:  *`string`* 
 
-*Defined in [interfaces.ts:103](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L103)*
+*Defined in [interfaces.ts:103](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L103)*
 
 
 
@@ -110,7 +110,7 @@ ___
 
 **●  geo_info**:  *[IGeoInfo](_interfaces_.igeoinfo.md)[]* 
 
-*Defined in [interfaces.ts:116](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L116)*
+*Defined in [interfaces.ts:116](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L116)*
 
 
 
@@ -124,7 +124,7 @@ ___
 
 **●  json_ld**:  *`any`* 
 
-*Defined in [interfaces.ts:115](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L115)*
+*Defined in [interfaces.ts:115](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L115)*
 
 
 
@@ -138,7 +138,7 @@ ___
 
 **●  og_description**:  *`string`* 
 
-*Defined in [interfaces.ts:107](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L107)*
+*Defined in [interfaces.ts:107](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L107)*
 
 
 
@@ -152,7 +152,7 @@ ___
 
 **●  og_image**:  *`string`* 
 
-*Defined in [interfaces.ts:108](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L108)*
+*Defined in [interfaces.ts:108](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L108)*
 
 
 
@@ -166,7 +166,7 @@ ___
 
 **●  og_title**:  *`string`* 
 
-*Defined in [interfaces.ts:106](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L106)*
+*Defined in [interfaces.ts:106](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L106)*
 
 
 
@@ -180,7 +180,7 @@ ___
 
 **●  tags**:  *`string`[]* 
 
-*Defined in [interfaces.ts:104](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L104)*
+*Defined in [interfaces.ts:104](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L104)*
 
 
 
@@ -194,7 +194,7 @@ ___
 
 **●  text_bag**:  *`string`* 
 
-*Defined in [interfaces.ts:114](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L114)*
+*Defined in [interfaces.ts:114](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L114)*
 
 
 
@@ -208,7 +208,7 @@ ___
 
 **●  title**:  *`string`* 
 
-*Defined in [interfaces.ts:105](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L105)*
+*Defined in [interfaces.ts:105](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L105)*
 
 
 
@@ -222,7 +222,7 @@ ___
 
 **●  views**:  *[IViews](_interfaces_.iviews.md)* 
 
-*Defined in [interfaces.ts:109](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L109)*
+*Defined in [interfaces.ts:109](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L109)*
 
 
 
