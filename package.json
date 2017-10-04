@@ -26,7 +26,9 @@
     "@types/elasticsearch": "^5.0.16",
     "@types/handlebars": "^4.0.36",
     "@types/node": "^8.0.24",
-    "@types/route-recognizer": "^0.3.0"
+    "@types/route-recognizer": "^0.3.0",
+    "typedoc": "^0.8.0",
+    "typedoc-plugin-markdown": "^1.0.10"
   },
   "dependencies": {
     "elasticsearch": "^13.3.1",
