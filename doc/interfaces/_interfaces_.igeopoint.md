@@ -12,7 +12,7 @@
 
 **●  lat**:  *`number`* 
 
-*Defined in [interfaces.ts:138](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L138)*
+*Defined in [interfaces.ts:138](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L138)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  lon**:  *`number`* 
 
-*Defined in [interfaces.ts:139](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L139)*
+*Defined in [interfaces.ts:139](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L139)*
 
 
 

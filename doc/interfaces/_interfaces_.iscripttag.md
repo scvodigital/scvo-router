@@ -15,7 +15,7 @@
 
 **●  src**:  *`string`* 
 
-*Defined in [interfaces.ts:76](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L76)*
+*Defined in [interfaces.ts:76](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L76)*
 
 
 

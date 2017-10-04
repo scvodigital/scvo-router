@@ -35,7 +35,7 @@ Class for managing incoming requests, routing them to Elasticsearch queries, and
 ### ⊕ **new Router**(routes: *[IRoutes](../interfaces/_interfaces_.iroutes.md)*): [Router](_router_.router.md)
 
 
-*Defined in router.ts:24*
+*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/2753b73/src/router.ts#L24)*
 
 
 
@@ -64,7 +64,7 @@ Create a Router for matching routes and rendering responses
 
 **●  defaultResult**:  *`Result`* 
 
-*Defined in router.ts:24*
+*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/2753b73/src/router.ts#L24)*
 
 
 
@@ -78,7 +78,7 @@ ___
 
 **●  routeRecognizer**:  *`any`* 
 
-*Defined in router.ts:23*
+*Defined in [router.ts:23](https://github.com/scvodigital/scvo-router/blob/2753b73/src/router.ts#L23)*
 
 
 
@@ -92,7 +92,7 @@ ___
 
 **●  routes**:  *[IRoutes](../interfaces/_interfaces_.iroutes.md)* 
 
-*Defined in router.ts:30*
+*Defined in [router.ts:30](https://github.com/scvodigital/scvo-router/blob/2753b73/src/router.ts#L30)*
 
 
 
@@ -113,7 +113,7 @@ ___
 
 
 
-*Defined in router.ts:57*
+*Defined in [router.ts:57](https://github.com/scvodigital/scvo-router/blob/2753b73/src/router.ts#L57)*
 
 
 

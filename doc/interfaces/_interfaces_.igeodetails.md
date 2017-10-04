@@ -12,7 +12,7 @@
 
 **●  admin_county**:  *`string`* 
 
-*Defined in [interfaces.ts:161](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L161)*
+*Defined in [interfaces.ts:161](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L161)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  admin_district**:  *`string`* 
 
-*Defined in [interfaces.ts:159](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L159)*
+*Defined in [interfaces.ts:159](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L159)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  admin_ward**:  *`string`* 
 
-*Defined in [interfaces.ts:162](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L162)*
+*Defined in [interfaces.ts:162](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L162)*
 
 
 
@@ -54,7 +54,7 @@ ___
 
 **●  ccg**:  *`string`* 
 
-*Defined in [interfaces.ts:163](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L163)*
+*Defined in [interfaces.ts:163](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L163)*
 
 
 
@@ -68,7 +68,7 @@ ___
 
 **●  codes**:  *`object`* 
 
-*Defined in [interfaces.ts:165](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L165)*
+*Defined in [interfaces.ts:165](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L165)*
 
 
 #### Type declaration
@@ -134,7 +134,7 @@ ___
 
 **●  country**:  *`string`* 
 
-*Defined in [interfaces.ts:147](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L147)*
+*Defined in [interfaces.ts:147](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L147)*
 
 
 
@@ -148,7 +148,7 @@ ___
 
 **●  eastings**:  *`number`* 
 
-*Defined in [interfaces.ts:145](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L145)*
+*Defined in [interfaces.ts:145](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L145)*
 
 
 
@@ -162,7 +162,7 @@ ___
 
 **●  european_electoral_region**:  *`string`* 
 
-*Defined in [interfaces.ts:151](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L151)*
+*Defined in [interfaces.ts:151](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L151)*
 
 
 
@@ -176,7 +176,7 @@ ___
 
 **●  incode**:  *`string`* 
 
-*Defined in [interfaces.ts:156](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L156)*
+*Defined in [interfaces.ts:156](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L156)*
 
 
 
@@ -190,7 +190,7 @@ ___
 
 **●  latitude**:  *`number`* 
 
-*Defined in [interfaces.ts:150](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L150)*
+*Defined in [interfaces.ts:150](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L150)*
 
 
 
@@ -204,7 +204,7 @@ ___
 
 **●  longitude**:  *`number`* 
 
-*Defined in [interfaces.ts:149](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L149)*
+*Defined in [interfaces.ts:149](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L149)*
 
 
 
@@ -218,7 +218,7 @@ ___
 
 **●  lsoa**:  *`string`* 
 
-*Defined in [interfaces.ts:154](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L154)*
+*Defined in [interfaces.ts:154](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L154)*
 
 
 
@@ -232,7 +232,7 @@ ___
 
 **●  msoa**:  *`string`* 
 
-*Defined in [interfaces.ts:155](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L155)*
+*Defined in [interfaces.ts:155](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L155)*
 
 
 
@@ -246,7 +246,7 @@ ___
 
 **●  nhs_ha**:  *`string`* 
 
-*Defined in [interfaces.ts:148](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L148)*
+*Defined in [interfaces.ts:148](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L148)*
 
 
 
@@ -260,7 +260,7 @@ ___
 
 **●  northings**:  *`number`* 
 
-*Defined in [interfaces.ts:146](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L146)*
+*Defined in [interfaces.ts:146](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L146)*
 
 
 
@@ -274,7 +274,7 @@ ___
 
 **●  nuts**:  *`string`* 
 
-*Defined in [interfaces.ts:164](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L164)*
+*Defined in [interfaces.ts:164](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L164)*
 
 
 
@@ -288,7 +288,7 @@ ___
 
 **●  outcode**:  *`string`* 
 
-*Defined in [interfaces.ts:157](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L157)*
+*Defined in [interfaces.ts:157](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L157)*
 
 
 
@@ -302,7 +302,7 @@ ___
 
 **●  parish**:  *`string`* 
 
-*Defined in [interfaces.ts:160](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L160)*
+*Defined in [interfaces.ts:160](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L160)*
 
 
 
@@ -316,7 +316,7 @@ ___
 
 **●  parliamentary_constituency**:  *`string`* 
 
-*Defined in [interfaces.ts:158](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L158)*
+*Defined in [interfaces.ts:158](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L158)*
 
 
 
@@ -330,7 +330,7 @@ ___
 
 **●  postcode**:  *`string`* 
 
-*Defined in [interfaces.ts:143](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L143)*
+*Defined in [interfaces.ts:143](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L143)*
 
 
 
@@ -344,7 +344,7 @@ ___
 
 **●  primary_care_trust**:  *`string`* 
 
-*Defined in [interfaces.ts:152](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L152)*
+*Defined in [interfaces.ts:152](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L152)*
 
 
 
@@ -358,7 +358,7 @@ ___
 
 **●  quality**:  *`number`* 
 
-*Defined in [interfaces.ts:144](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L144)*
+*Defined in [interfaces.ts:144](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L144)*
 
 
 
@@ -372,7 +372,7 @@ ___
 
 **●  region**:  *`string`* 
 
-*Defined in [interfaces.ts:153](https://github.com/scvodigital/scvo-router/blob/cf1da63/src/interfaces.ts#L153)*
+*Defined in [interfaces.ts:153](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L153)*
 
 
 
