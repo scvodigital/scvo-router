@@ -11,7 +11,7 @@ var route_1 = require("./route");
 var route_match_1 = require("./route-match");
 helpers({ handlebars: handlebars });
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
-var Router = (function () {
+var Router = /** @class */ (function () {
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against

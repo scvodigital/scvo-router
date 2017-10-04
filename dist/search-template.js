@@ -5,7 +5,7 @@ var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
 helpers({ handlebars: handlebars });
 /** Class to construct an Elasticsearch query */
-var SearchTemplate = (function () {
+var SearchTemplate = /** @class */ (function () {
     /**
      * Create a search template
      * @param {ISearchTemplate} - The JSON required to consturct an Elasticsearch query
@@ -80,7 +80,7 @@ var SearchTemplate = (function () {
     return SearchTemplate;
 }());
 exports.SearchTemplate = SearchTemplate;
-var SearchTemplateSet = (function () {
+var SearchTemplateSet = /** @class */ (function () {
     function SearchTemplateSet() {
     }
     return SearchTemplateSet;

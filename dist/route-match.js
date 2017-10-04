@@ -6,7 +6,7 @@ var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
 helpers({ handlebars: handlebars });
 /** Class that handles matched routes and gets results */
-var RouteMatch = (function () {
+var RouteMatch = /** @class */ (function () {
     /**
      * Create a matched route to get results using parameters
      * @param {Route} route - The route that has been matched

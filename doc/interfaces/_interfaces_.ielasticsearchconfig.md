@@ -12,7 +12,7 @@
 
 **●  host**:  *`string`* 
 
-*Defined in [interfaces.ts:51](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L51)*
+*Defined in [interfaces.ts:51](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L51)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  password**:  *`string`* 
 
-*Defined in [interfaces.ts:50](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L50)*
+*Defined in [interfaces.ts:50](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L50)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  username**:  *`string`* 
 
-*Defined in [interfaces.ts:49](https://github.com/scvodigital/scvo-router/blob/2753b73/src/interfaces.ts#L49)*
+*Defined in [interfaces.ts:49](https://github.com/scvodigital/scvo-router/blob/138c96a/src/interfaces.ts#L49)*
 
 
 

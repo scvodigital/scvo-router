@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var search_template_1 = require("./search-template");
 /** Class that handles a route match, implements search templates and gets results */
-var Route = (function () {
+var Route = /** @class */ (function () {
     /**
      * Create a Route
      * @param {IRoute} [route] - Optional JSON that contains information about the route
