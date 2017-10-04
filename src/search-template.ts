@@ -77,7 +77,7 @@ export class SearchTemplate implements ISearchTemplate {
      * @param {any} params - The data to pass into the handlebars template
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
-    getPrimary(params: any): ISearchQuery {
+    getPrimary(params: any): any {
         var parsed: any = this.getBody(params);
         var payload: ISearchQuery = {
             index: this.index,

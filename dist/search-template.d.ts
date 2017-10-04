@@ -1,4 +1,4 @@
-import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery } from './interfaces';
+import { ISearchTemplate, ISearchTemplateSet, ISearchHead } from './interfaces';
 /** Class to construct an Elasticsearch query */
 export declare class SearchTemplate implements ISearchTemplate {
     index: string;
@@ -33,7 +33,7 @@ export declare class SearchTemplate implements ISearchTemplate {
      * @param {any} params - The data to pass into the handlebars template
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
-    getPrimary(params: any): ISearchQuery;
+    getPrimary(params: any): any;
 }
 export declare class SearchTemplateSet implements ISearchTemplateSet {
     [name: string]: SearchTemplate;

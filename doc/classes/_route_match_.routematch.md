@@ -59,7 +59,7 @@ Class that handles matched routes and gets results
 ### ⊕ **new RouteMatch**(route: *[Route](_route_.route.md)*, params: *`any`*): [RouteMatch](_route_match_.routematch.md)
 
 
-*Defined in [route-match.ts:88](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L88)*
+*Defined in [route-match.ts:88](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L88)*
 
 
 
@@ -89,7 +89,7 @@ Create a matched route to get results using parameters
 
 **●  _primaryQuery**:  *[ISearchQuery](../interfaces/_interfaces_.isearchquery.md)*  =  null
 
-*Defined in [route-match.ts:46](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L46)*
+*Defined in [route-match.ts:46](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L46)*
 
 
 
@@ -103,7 +103,7 @@ ___
 
 **●  _supplimentaryQueries**:  *`any`*  =  null
 
-*Defined in [route-match.ts:56](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L56)*
+*Defined in [route-match.ts:56](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L56)*
 
 
 
@@ -117,7 +117,7 @@ ___
 
 **●  compiledTemplate**:  *`function`*  =  null
 
-*Defined in [route-match.ts:41](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L41)*
+*Defined in [route-match.ts:41](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L41)*
 
 
 #### Type declaration
@@ -153,7 +153,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[elasticsearchConfig](../interfaces/_interfaces_.iroutematch.md#elasticsearchconfig)*
 
-*Defined in [route-match.ts:25](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L25)*
+*Defined in [route-match.ts:25](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L25)*
 
 
 
@@ -169,7 +169,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[linkTags](../interfaces/_interfaces_.iroutematch.md#linktags)*
 
-*Defined in [route-match.ts:15](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L15)*
+*Defined in [route-match.ts:15](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L15)*
 
 
 
@@ -185,7 +185,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[metaTags](../interfaces/_interfaces_.iroutematch.md#metatags)*
 
-*Defined in [route-match.ts:16](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L16)*
+*Defined in [route-match.ts:16](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L16)*
 
 
 
@@ -199,7 +199,7 @@ ___
 
 **●  orderMap**:  *`string`[]*  =  []
 
-*Defined in [route-match.ts:44](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L44)*
+*Defined in [route-match.ts:44](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L44)*
 
 
 
@@ -215,7 +215,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[params](../interfaces/_interfaces_.iroutematch.md#params)*
 
-*Defined in [route-match.ts:95](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L95)*
+*Defined in [route-match.ts:95](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L95)*
 
 
 
@@ -234,7 +234,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[pattern](../interfaces/_interfaces_.iroutematch.md#pattern)*
 
-*Defined in [route-match.ts:17](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L17)*
+*Defined in [route-match.ts:17](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L17)*
 
 
 
@@ -250,7 +250,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[primaryResponse](../interfaces/_interfaces_.iroutematch.md#primaryresponse)*
 
-*Defined in [route-match.ts:23](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L23)*
+*Defined in [route-match.ts:23](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L23)*
 
 
 
@@ -266,7 +266,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[primarySearchTemplate](../interfaces/_interfaces_.iroutematch.md#primarysearchtemplate)*
 
-*Defined in [route-match.ts:21](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L21)*
+*Defined in [route-match.ts:21](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L21)*
 
 
 
@@ -282,7 +282,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[queryDelimiter](../interfaces/_interfaces_.iroutematch.md#querydelimiter)*
 
-*Defined in [route-match.ts:19](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L19)*
+*Defined in [route-match.ts:19](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L19)*
 
 
 
@@ -298,7 +298,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[queryEquals](../interfaces/_interfaces_.iroutematch.md#queryequals)*
 
-*Defined in [route-match.ts:20](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L20)*
+*Defined in [route-match.ts:20](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L20)*
 
 
 
@@ -314,7 +314,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[supplimentaryResponses](../interfaces/_interfaces_.iroutematch.md#supplimentaryresponses)*
 
-*Defined in [route-match.ts:24](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L24)*
+*Defined in [route-match.ts:24](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L24)*
 
 
 
@@ -330,7 +330,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[supplimentarySearchTemplates](../interfaces/_interfaces_.iroutematch.md#supplimentarysearchtemplates)*
 
-*Defined in [route-match.ts:22](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L22)*
+*Defined in [route-match.ts:22](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L22)*
 
 
 
@@ -346,7 +346,7 @@ ___
 
 *Implementation of [IRouteMatch](../interfaces/_interfaces_.iroutematch.md).[template](../interfaces/_interfaces_.iroutematch.md#template)*
 
-*Defined in [route-match.ts:18](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L18)*
+*Defined in [route-match.ts:18](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L18)*
 
 
 
@@ -363,7 +363,7 @@ ___
 
 getprimaryQuery(): [ISearchQuery](../interfaces/_interfaces_.isearchquery.md)
 
-*Defined in [route-match.ts:48](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L48)*
+*Defined in [route-match.ts:48](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L48)*
 
 
 
@@ -382,7 +382,7 @@ ___
 
 getrendered(): `string`
 
-*Defined in [route-match.ts:30](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L30)*
+*Defined in [route-match.ts:30](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L30)*
 
 
 
@@ -404,7 +404,7 @@ ___
 
 getsupplimentaryQueries(): `any`
 
-*Defined in [route-match.ts:58](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L58)*
+*Defined in [route-match.ts:58](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L58)*
 
 
 
@@ -426,7 +426,7 @@ ___
 
 
 
-*Defined in [route-match.ts:107](https://github.com/scvodigital/scvo-router/blob/aecc349/src/route-match.ts#L107)*
+*Defined in [route-match.ts:107](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route-match.ts#L107)*
 
 
 

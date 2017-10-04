@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// System imports
+var util = require("util");
 var url = require("url");
 var querystring = require("querystring");
 // Module imports
 var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
-var RouteRecognizer = require('route-recognizer').default;
+var RouteRecognizer = require('route-recognizer');
 var route_1 = require("./route");
 var route_match_1 = require("./route-match");
 helpers({ handlebars: handlebars });
@@ -19,6 +21,7 @@ var Router = /** @class */ (function () {
     function Router(routes) {
         var _this = this;
         this.routes = routes;
+        console.log('RouteRecognizer', util.inspect(RouteRecognizer, false, null));
         // Setup our route recognizer
         this.routeRecognizer = new RouteRecognizer();
         // Loop through each route in the current context
@@ -48,14 +51,26 @@ var Router = /** @class */ (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             var uri = url.parse(uriString);
+            console.log('Router.execute() uri:', uri);
             var recognizedRoutes = _this.routeRecognizer.recognize(uri.path) || [_this.defaultResult];
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
             var params = Object.assign({}, firstResult.params);
+            console.log('Router.execute() handler:', handler);
+            console.log('Router.execute() params:', params);
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
+            console.log('Router.execute() query:', query);
+            console.log('Router.execute() idFriendlyPath', idFriendlyPath);
             Object.assign(params, { query: query, path: idFriendlyPath });
+            console.log('Router.execute() params:', params);
             var routeMatch = new route_match_1.RouteMatch(handler, params);
+            console.log('Router.execute() RouteMatch created');
+            routeMatch.getResults().then(function () {
+                resolve(routeMatch);
+            }).catch(function (err) {
+                reject(err);
+            });
         });
     };
     return Router;

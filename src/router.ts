@@ -9,7 +9,7 @@ import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
 import { Results, Result } from 'route-recognizer';
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
-const RouteRecognizer = require('route-recognizer').default;
+const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
 import { IRoutes } from './interfaces';
@@ -28,6 +28,8 @@ export class Router {
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
     constructor(private routes: IRoutes){
+        console.log('RouteRecognizer', util.inspect(RouteRecognizer, false, null));
+
         // Setup our route recognizer
         this.routeRecognizer = new RouteRecognizer();
         // Loop through each route in the current context
@@ -57,17 +59,36 @@ export class Router {
     public execute(uriString: string): Promise<RouteMatch>{
         return new Promise<RouteMatch>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
+
+            console.log('Router.execute() uri:', uri);
+
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
             var params = Object.assign({}, firstResult.params);
 
+            console.log('Router.execute() handler:', handler);
+            console.log('Router.execute() params:', params);
+
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
 
+            console.log('Router.execute() query:', query);
+            console.log('Router.execute() idFriendlyPath', idFriendlyPath);
+
             Object.assign(params, { query: query, path: idFriendlyPath });
 
+            console.log('Router.execute() params:', params);
+
             var routeMatch = new RouteMatch(handler, params);
+
+            console.log('Router.execute() RouteMatch created');
+
+            routeMatch.getResults().then(() => {
+                resolve(routeMatch);
+            }).catch((err) => {
+                reject(err);  
+            });
         });
     }
 }
