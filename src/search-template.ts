@@ -1,34 +1,86 @@
+// Module imports
 import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
+import { SearchParams } from 'elasticsearch';
+
+// Internal imports
+import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery } from './interfaces';
 
 helpers({ handlebars: handlebars });
 
+/** Class to construct an Elasticsearch query */
 export class SearchTemplate implements ISearchTemplate {
-    template: string = '';
-    type: string = '';
-    preferredView: string[] = ['details'];
-    compiled: (obj: any, hbs?: any) => string = null;
+    index: string = null;
+    type: string = null;
+    template: string = null;
+    preferredView: string[] = null;
 
-    constructor(searchTemplate: ISearchTemplate){
+    // Instance specific properties
+    private compiledTemplate: (obj: any, hbs?: any) => string = null;
+
+    /**
+     * Create a search template
+     * @param {ISearchTemplate} - The JSON required to consturct an Elasticsearch query
+     */
+    constructor(searchTemplate: ISearchTemplate) {
+        // Implement our JSON 
         Object.assign(this, searchTemplate);
-        this.compiled = handlebars.compile(this.template);
+
+        // Compile our template
+        this.compiledTemplate = handlebars.compile(this.template);       
+    }
+    
+    /**
+     * Render the query template to a string of JSON
+     * @param {any} params - The data to pass into the handlebars template
+     * @return {string} A search query rendered as a string of JSON
+     */
+    renderQuery(params: any): string {
+        try{
+            var query: string = this.compiledTemplate(params);
+            return query;
+        }catch(err){
+            console.error('Failed to render query', err, 'Template:', this.template, 'Parameters:', params, 'Returning match_all instead');
+            return '{ "query": { "match_all": { } } }';
+        }
     }
 
-    getHead(): any {
-        return { index: 'web-content', type: this.type };
+    /**
+     * Get the head part of a msearch query
+     * @return {ISearchHead} A usable head line for an Elasticsearch msearch
+     */
+    getHead(): ISearchHead {
+        return {
+            index: this.index,
+            type: this.type
+        };
     }
 
+    /**
+     * Get the body part of an msearch query
+     * @param {any} params - The data to pass into the handlebars template
+     * @return {any} A usable query line for an Elasticsearch msearch
+     */
     getBody(params: any): any {
-        var query = this.compiled(params);
-        var parsed = JSON.parse(query);
-        return parsed;
+        try{
+            var query: string = this.renderQuery(params);
+            var parsed: any = JSON.parse(query);
+            return parsed;
+        }catch(err){
+            console.error('Failed to parse query:', query, 'Returning match_all instead');
+            return { query: { match_all: {} } };
+        }
     }
 
-    getPrimary(params: any): any {
-        var query = this.compiled(params);
-        var parsed = JSON.parse(query);
-        var payload = {
-            index: 'web-content',
+    /**
+     * Get a standalone query
+     * @param {any} params - The data to pass into the handlebars template
+     * @return {ISearchQuery} A usable Elasticsearch query payload
+     */
+    getPrimary(params: any): ISearchQuery {
+        var parsed: any = this.getBody(params);
+        var payload: ISearchQuery = {
+            index: this.index,
             type: this.type,
             body: parsed
         };
@@ -36,8 +88,6 @@ export class SearchTemplate implements ISearchTemplate {
     }
 }
 
-export interface ISearchTemplate {
-    type: string;
-    template: string;
-    preferredView: string[];
+export class SearchTemplateSet implements ISearchTemplateSet {
+    [name: string]: SearchTemplate;
 }

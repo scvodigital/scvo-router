@@ -1,69 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var search_template_1 = require("./search-template");
-var Route = (function () {
-    function Route(siteKey, route) {
-        this.siteKey = siteKey;
+/** Class that handles a route match, implements search templates and gets results */
+var Route = /** @class */ (function () {
+    /**
+     * Create a Route
+     * @param {IRoute} [route] - Optional JSON that contains information about the route
+     */
+    function Route(route) {
+        if (route === void 0) { route = null; }
+        var _this = this;
         this.linkTags = null;
         this.metaTags = null;
         this.pattern = '';
+        this.queryDelimiter = '&';
+        this.queryEquals = '=';
+        this.template = "\n        {{#and primaryResultSet primaryResultSet.documents}}\n            {{#forEach primaryResultSet.documents}}\n                {{{_view}}}\n            {{/forEach}}\n        {{/and}}";
         this.primarySearchTemplate = null;
-        this.supplimentarySearchTemplates = null;
-        this.template = "\n        {{#and primaryResultSet primaryResultSet.documents}}\n            {{#forEach primaryResultSet.documents}}\n                {{{_view}}}\n            {{/forEach}}\n        {{/and}}\n    ";
+        this.supplimentarySearchTemplates = {};
+        this.elasticsearchConfig = null;
         if (route) {
+            // If given an IRoute, implement it
             Object.assign(this, route);
         }
-        if (this.primarySearchTemplate) {
-            this.primarySearchTemplate = new search_template_1.SearchTemplate(this.primarySearchTemplate);
-        }
-        else {
-            this.primarySearchTemplate = new search_template_1.SearchTemplate({
-                type: this.siteKey + '_static-content',
-                template: '{ "query": { "term": { "_id": "{{path}}" } } }',
-                preferredView: ['details']
-            });
-        }
-        if (this.supplimentarySearchTemplates && this.supplimentarySearchTemplates.length > 0) {
-            this.supplimentarySearchTemplates = this.supplimentarySearchTemplates.map(function (searchTemplate) {
-                return new search_template_1.SearchTemplate(searchTemplate);
-            });
-        }
+        // Upgrade our JSON to real classes
+        this.primarySearchTemplate = new search_template_1.SearchTemplate(this.primarySearchTemplate);
+        Object.keys(this.supplimentarySearchTemplates).forEach(function (key) {
+            _this.supplimentarySearchTemplates[key] = new search_template_1.SearchTemplate(_this.supplimentarySearchTemplates[key]);
+        });
     }
-    Route.prototype.getPrimaryQuery = function (params) {
-        var query = this.primarySearchTemplate.getPrimary(params);
-        return query;
-    };
-    Route.prototype.getSupplimentaryQueries = function (params) {
-        if (this.supplimentarySearchTemplates) {
-            var queries = [];
-            this.supplimentarySearchTemplates.forEach(function (searchTemplate) {
-                var head = searchTemplate.getHead();
-                var body = searchTemplate.getBody(params);
-                queries.push(head);
-                queries.push(body);
-            });
-            return queries;
-        }
-        else {
-            return null;
-        }
-    };
-    Object.defineProperty(Route.prototype, "route", {
-        get: function () {
-            var route = {
-                linkTags: this.linkTags,
-                metaTags: this.metaTags,
-                pattern: this.pattern,
-                primarySearchTemplate: this.primarySearchTemplate,
-                supplimentarySearchTemplates: this.supplimentarySearchTemplates,
-                title: this.title,
-                template: this.template
-            };
-            return route;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return Route;
 }());
 exports.Route = Route;

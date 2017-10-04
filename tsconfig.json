@@ -12,6 +12,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "target": "es5",
+    "alwaysStrict": true,
     "types": [
       "node"
     ],
@@ -23,6 +24,6 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "src/**/scvo-loader.ts"
+    "src/**/old.*.ts"
   ]
 }
