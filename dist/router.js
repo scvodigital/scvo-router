@@ -52,21 +52,14 @@ var Router = /** @class */ (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             var uri = url.parse(uriString);
-            console.log('Router.execute() uri:', uri);
             var recognizedRoutes = _this.routeRecognizer.recognize(uri.path) || [_this.defaultResult];
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
             var params = Object.assign({}, firstResult.params);
-            console.log('Router.execute() handler:', handler);
-            console.log('Router.execute() params:', params);
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
-            console.log('Router.execute() query:', query);
-            console.log('Router.execute() idFriendlyPath', idFriendlyPath);
             Object.assign(params, { query: query, path: idFriendlyPath });
-            console.log('Router.execute() params:', params);
             var routeMatch = new route_match_1.RouteMatch(handler, params);
-            console.log('Router.execute() RouteMatch created');
             routeMatch.getResults().then(function () {
                 resolve(routeMatch);
             }).catch(function (err) {
