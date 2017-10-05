@@ -5,6 +5,7 @@ import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
 export declare class RouteMatch implements IRouteMatch {
     params: any;
+    name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     pattern: string;

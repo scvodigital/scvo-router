@@ -27,6 +27,7 @@ export interface IRoutes {
 }
 
 export interface IRoute {
+    name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     pattern: string;

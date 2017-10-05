@@ -36,7 +36,7 @@ export class Router {
         Object.keys(routes).forEach((routeName: string) => {
             // Create a new Route object
             var route: Route = new Route(routes[routeName]);
-            
+            route.name = routeName;        
             if(routeName === '_default'){
                 // Treat routes called `_default` as the default handler
                 this.defaultResult = { handler: route, isDynamic: true, params: {} };
@@ -60,29 +60,17 @@ export class Router {
         return new Promise<RouteMatch>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
 
-            console.log('Router.execute() uri:', uri);
-
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
             var params = Object.assign({}, firstResult.params);
 
-            console.log('Router.execute() handler:', handler);
-            console.log('Router.execute() params:', params);
-
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
 
-            console.log('Router.execute() query:', query);
-            console.log('Router.execute() idFriendlyPath', idFriendlyPath);
-
             Object.assign(params, { query: query, path: idFriendlyPath });
 
-            console.log('Router.execute() params:', params);
-
             var routeMatch = new RouteMatch(handler, params);
-
-            console.log('Router.execute() RouteMatch created');
 
             routeMatch.getResults().then(() => {
                 resolve(routeMatch);

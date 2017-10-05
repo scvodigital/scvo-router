@@ -23,6 +23,7 @@ Class that handles a route match, implements search templates and gets results
 * [elasticsearchConfig](_route_.route.md#elasticsearchconfig)
 * [linkTags](_route_.route.md#linktags)
 * [metaTags](_route_.route.md#metatags)
+* [name](_route_.route.md#name)
 * [pattern](_route_.route.md#pattern)
 * [primarySearchTemplate](_route_.route.md#primarysearchtemplate)
 * [queryDelimiter](_route_.route.md#querydelimiter)
@@ -40,7 +41,7 @@ Class that handles a route match, implements search templates and gets results
 ### ⊕ **new Route**(route?: *[IRoute](../interfaces/_interfaces_.iroute.md)*): [Route](_route_.route.md)
 
 
-*Defined in [route.ts:23](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L23)*
+*Defined in [route.ts:24](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L24)*
 
 
 
@@ -71,7 +72,7 @@ Create a Route
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[elasticsearchConfig](../interfaces/_interfaces_.iroute.md#elasticsearchconfig)*
 
-*Defined in [route.ts:23](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L23)*
+*Defined in [route.ts:24](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L24)*
 
 
 
@@ -87,7 +88,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[linkTags](../interfaces/_interfaces_.iroute.md#linktags)*
 
-*Defined in [route.ts:10](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L10)*
+*Defined in [route.ts:11](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L11)*
 
 
 
@@ -103,7 +104,23 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[metaTags](../interfaces/_interfaces_.iroute.md#metatags)*
 
-*Defined in [route.ts:11](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L11)*
+*Defined in [route.ts:12](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L12)*
+
+
+
+
+
+___
+
+<a id="name"></a>
+
+###  name
+
+**●  name**:  *`string`*  = "_default"
+
+*Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[name](../interfaces/_interfaces_.iroute.md#name)*
+
+*Defined in [route.ts:10](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L10)*
 
 
 
@@ -119,7 +136,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[pattern](../interfaces/_interfaces_.iroute.md#pattern)*
 
-*Defined in [route.ts:12](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L12)*
+*Defined in [route.ts:13](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L13)*
 
 
 
@@ -135,7 +152,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[primarySearchTemplate](../interfaces/_interfaces_.iroute.md#primarysearchtemplate)*
 
-*Defined in [route.ts:21](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L21)*
+*Defined in [route.ts:22](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L22)*
 
 
 
@@ -151,7 +168,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[queryDelimiter](../interfaces/_interfaces_.iroute.md#querydelimiter)*
 
-*Defined in [route.ts:13](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L13)*
+*Defined in [route.ts:14](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L14)*
 
 
 
@@ -167,7 +184,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[queryEquals](../interfaces/_interfaces_.iroute.md#queryequals)*
 
-*Defined in [route.ts:14](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L14)*
+*Defined in [route.ts:15](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L15)*
 
 
 
@@ -183,7 +200,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[supplimentarySearchTemplates](../interfaces/_interfaces_.iroute.md#supplimentarysearchtemplates)*
 
-*Defined in [route.ts:22](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L22)*
+*Defined in [route.ts:23](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L23)*
 
 
 
@@ -204,7 +221,7 @@ ___
 
 *Implementation of [IRoute](../interfaces/_interfaces_.iroute.md).[template](../interfaces/_interfaces_.iroute.md#template)*
 
-*Defined in [route.ts:15](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/route.ts#L15)*
+*Defined in [route.ts:16](https://github.com/scvodigital/scvo-router/blob/2a23180/src/route.ts#L16)*
 
 
 

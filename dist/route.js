@@ -10,6 +10,7 @@ var Route = /** @class */ (function () {
     function Route(route) {
         if (route === void 0) { route = null; }
         var _this = this;
+        this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
         this.pattern = '';

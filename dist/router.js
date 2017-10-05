@@ -28,6 +28,7 @@ var Router = /** @class */ (function () {
         Object.keys(routes).forEach(function (routeName) {
             // Create a new Route object
             var route = new route_1.Route(routes[routeName]);
+            route.name = routeName;
             if (routeName === '_default') {
                 // Treat routes called `_default` as the default handler
                 _this.defaultResult = { handler: route, isDynamic: true, params: {} };

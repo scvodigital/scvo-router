@@ -12,6 +12,7 @@ helpers({ handlebars: handlebars });
 
 /** Class that handles matched routes and gets results */
 export class RouteMatch implements IRouteMatch {
+    name: string = '_default';
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
     pattern: string = null;
@@ -110,13 +111,15 @@ export class RouteMatch implements IRouteMatch {
             var client = new Client(this.elasticsearchConfig);
 
             // Perform our primary search
-            client.search(this.primarySearchTemplate.getPrimary).then((primaryResponse: SearchResponse<IDocumentResult>) => {
+            client.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
+                if(err) return reject(err);
                 // Save the results for use in our rendered template
                 this.primaryResponse = primaryResponse;
                 
                 if(Object.keys(this.supplimentarySearchTemplates).length > 0){
                     // If we have any supplimentary searches to do, do them
-                    client.msearch(this.supplimentaryQueries).then((supplimentaryResponses: MSearchResponse<IDocumentResult>) => {
+                    client.msearch(this.supplimentaryQueries, (err: any, supplimentaryResponses: MSearchResponse<IDocumentResult>) => {
+                        if(err) return reject(err);
                         // Loop through each of our supplimentary responses
                         supplimentaryResponses.responses.map((supplimentaryResponse: SearchResponse<IDocumentResult>, i: number) => {
                             // Find out the name/key of the associated supplimentary search
@@ -126,15 +129,11 @@ export class RouteMatch implements IRouteMatch {
                         });
                         // We're done so let the promise owner know
                         resolve();
-                    }).catch((err) => {
-                        reject(err);
                     });
                 }else{
                     // We don't need to get anything else so let the promise owner know
                     resolve();               
                 }                
-            }).catch((err) => {
-                reject(err);
             });
         });
     }

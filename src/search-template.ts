@@ -1,3 +1,6 @@
+// Node imports
+import * as util from 'util';
+
 // Module imports
 import * as handlebars from 'handlebars';
 import * as helpers from 'handlebars-helpers';
@@ -78,6 +81,7 @@ export class SearchTemplate implements ISearchTemplate {
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
     getPrimary(params: any): any {
+        console.log('SearchTemplate.getPrimary() this', util.inspect(this, false, null));
         var parsed: any = this.getBody(params);
         var payload: ISearchQuery = {
             index: this.index,

@@ -2,6 +2,7 @@ import { ConfigOptions } from 'elasticsearch';
 import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet } from './interfaces';
 /** Class that handles a route match, implements search templates and gets results */
 export declare class Route implements IRoute {
+    name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     pattern: string;

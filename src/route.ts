@@ -7,6 +7,7 @@ import { SearchTemplate } from './search-template';
 
 /** Class that handles a route match, implements search templates and gets results */
 export class Route implements IRoute {
+    name: string = '_default';
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
     pattern: string = '';

@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// Node imports
+var util = require("util");
 // Module imports
 var handlebars = require("handlebars");
 var helpers = require("handlebars-helpers");
@@ -69,6 +71,7 @@ var SearchTemplate = /** @class */ (function () {
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
     SearchTemplate.prototype.getPrimary = function (params) {
+        console.log('SearchTemplate.getPrimary() this', util.inspect(this, false, null));
         var parsed = this.getBody(params);
         var payload = {
             index: this.index,

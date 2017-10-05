@@ -28,7 +28,7 @@ Class for managing incoming requests, routing them to Elasticsearch queries, and
 ### ⊕ **new Router**(routes: *[IRoutes](../interfaces/_interfaces_.iroutes.md)*): [Router](_router_.router.md)
 
 
-*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/router.ts#L24)*
+*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/2a23180/src/router.ts#L24)*
 
 
 
@@ -60,7 +60,7 @@ Create a Router for matching routes and rendering responses
 
 
 
-*Defined in [router.ts:59](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/router.ts#L59)*
+*Defined in [router.ts:59](https://github.com/scvodigital/scvo-router/blob/2a23180/src/router.ts#L59)*
 
 
 

@@ -14,6 +14,7 @@ var RouteMatch = /** @class */ (function () {
      */
     function RouteMatch(route, params) {
         this.params = params;
+        this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
         this.pattern = null;
@@ -104,12 +105,16 @@ var RouteMatch = /** @class */ (function () {
             // Setup an elasticsearch client to use, these details should move to
             var client = new elasticsearch_1.Client(_this.elasticsearchConfig);
             // Perform our primary search
-            client.search(_this.primarySearchTemplate.getPrimary).then(function (primaryResponse) {
+            client.search(_this.primaryQuery, function (err, primaryResponse) {
+                if (err)
+                    return reject(err);
                 // Save the results for use in our rendered template
                 _this.primaryResponse = primaryResponse;
                 if (Object.keys(_this.supplimentarySearchTemplates).length > 0) {
                     // If we have any supplimentary searches to do, do them
-                    client.msearch(_this.supplimentaryQueries).then(function (supplimentaryResponses) {
+                    client.msearch(_this.supplimentaryQueries, function (err, supplimentaryResponses) {
+                        if (err)
+                            return reject(err);
                         // Loop through each of our supplimentary responses
                         supplimentaryResponses.responses.map(function (supplimentaryResponse, i) {
                             // Find out the name/key of the associated supplimentary search
@@ -119,16 +124,12 @@ var RouteMatch = /** @class */ (function () {
                         });
                         // We're done so let the promise owner know
                         resolve();
-                    }).catch(function (err) {
-                        reject(err);
                     });
                 }
                 else {
                     // We don't need to get anything else so let the promise owner know
                     resolve();
                 }
-            }).catch(function (err) {
-                reject(err);
             });
         });
     };

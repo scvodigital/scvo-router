@@ -12,7 +12,7 @@
 
 **●  from**:  *`number`* 
 
-*Defined in [interfaces.ts:95](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/interfaces.ts#L95)*
+*Defined in [interfaces.ts:96](https://github.com/scvodigital/scvo-router/blob/2a23180/src/interfaces.ts#L96)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  size**:  *`number`* 
 
-*Defined in [interfaces.ts:96](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/interfaces.ts#L96)*
+*Defined in [interfaces.ts:97](https://github.com/scvodigital/scvo-router/blob/2a23180/src/interfaces.ts#L97)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  sort**:  *`any`* 
 
-*Defined in [interfaces.ts:97](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/interfaces.ts#L97)*
+*Defined in [interfaces.ts:98](https://github.com/scvodigital/scvo-router/blob/2a23180/src/interfaces.ts#L98)*
 
 
 

@@ -44,7 +44,7 @@ Class to construct an Elasticsearch query
 ### ⊕ **new SearchTemplate**(searchTemplate: *[ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)*): [SearchTemplate](_search_template_.searchtemplate.md)
 
 
-*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L19)*
+*Defined in [search-template.ts:22](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L22)*
 
 
 
@@ -73,7 +73,7 @@ Create a search template
 
 **●  compiledTemplate**:  *`function`*  =  null
 
-*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L19)*
+*Defined in [search-template.ts:22](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L22)*
 
 
 #### Type declaration
@@ -109,7 +109,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[index](../interfaces/_interfaces_.isearchtemplate.md#index)*
 
-*Defined in [search-template.ts:13](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L13)*
+*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L16)*
 
 
 
@@ -123,7 +123,7 @@ ___
 
 **●  preferredView**:  *`string`[]*  =  null
 
-*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L16)*
+*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L19)*
 
 
 
@@ -139,7 +139,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[template](../interfaces/_interfaces_.isearchtemplate.md#template)*
 
-*Defined in [search-template.ts:15](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L15)*
+*Defined in [search-template.ts:18](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L18)*
 
 
 
@@ -155,7 +155,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[type](../interfaces/_interfaces_.isearchtemplate.md#type)*
 
-*Defined in [search-template.ts:14](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L14)*
+*Defined in [search-template.ts:17](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L17)*
 
 
 
@@ -173,7 +173,7 @@ ___
 
 
 
-*Defined in [search-template.ts:64](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L64)*
+*Defined in [search-template.ts:67](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L67)*
 
 
 
@@ -208,7 +208,7 @@ ___
 
 
 
-*Defined in [search-template.ts:52](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L52)*
+*Defined in [search-template.ts:55](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L55)*
 
 
 
@@ -235,7 +235,7 @@ ___
 
 
 
-*Defined in [search-template.ts:80](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L80)*
+*Defined in [search-template.ts:83](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L83)*
 
 
 
@@ -270,7 +270,7 @@ ___
 
 
 
-*Defined in [search-template.ts:38](https://github.com/scvodigital/scvo-router/blob/cdc78cf/src/search-template.ts#L38)*
+*Defined in [search-template.ts:41](https://github.com/scvodigital/scvo-router/blob/2a23180/src/search-template.ts#L41)*
 
 
 
