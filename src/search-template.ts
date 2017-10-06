@@ -2,14 +2,11 @@
 import * as util from 'util';
 
 // Module imports
-import * as handlebars from 'handlebars';
-import * as helpers from 'handlebars-helpers';
+import * as handlebars from 'nymag-handlebars';
 import { SearchParams } from 'elasticsearch';
 
 // Internal imports
 import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery } from './interfaces';
-
-helpers({ handlebars: handlebars });
 
 /** Class to construct an Elasticsearch query */
 export class SearchTemplate implements ISearchTemplate {
@@ -19,6 +16,7 @@ export class SearchTemplate implements ISearchTemplate {
     preferredView: string[] = null;
 
     // Instance specific properties
+    private hbs = handlebars();
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
 
     /**
@@ -30,7 +28,7 @@ export class SearchTemplate implements ISearchTemplate {
         Object.assign(this, searchTemplate);
 
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledTemplate = this.hbs.compile(this.template);       
     }
     
     /**

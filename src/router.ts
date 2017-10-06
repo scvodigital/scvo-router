@@ -5,8 +5,6 @@ import * as url from 'url';
 import * as querystring from 'querystring';
 
 // Module imports
-import * as handlebars from 'handlebars';
-import * as helpers from 'handlebars-helpers';
 import { Results, Result } from 'route-recognizer';
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 const RouteRecognizer = require('route-recognizer');
@@ -16,20 +14,15 @@ import { IRoutes } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
-helpers({ handlebars: handlebars });
-
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export class Router {
     private routeRecognizer: any;
     private defaultResult: Result;
-
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
     constructor(private routes: IRoutes){
-        console.log('RouteRecognizer', util.inspect(RouteRecognizer, false, null));
-
         // Setup our route recognizer
         this.routeRecognizer = new RouteRecognizer();
         // Loop through each route in the current context

@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Node imports
 var util = require("util");
 // Module imports
-var handlebars = require("handlebars");
-var helpers = require("handlebars-helpers");
-helpers({ handlebars: handlebars });
+var handlebars = require("nymag-handlebars");
 /** Class to construct an Elasticsearch query */
 var SearchTemplate = /** @class */ (function () {
     /**
@@ -18,11 +16,12 @@ var SearchTemplate = /** @class */ (function () {
         this.template = null;
         this.preferredView = null;
         // Instance specific properties
+        this.hbs = handlebars();
         this.compiledTemplate = null;
         // Implement our JSON 
         Object.assign(this, searchTemplate);
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);
+        this.compiledTemplate = this.hbs.compile(this.template);
     }
     /**
      * Render the query template to a string of JSON

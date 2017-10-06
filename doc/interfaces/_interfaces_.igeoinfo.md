@@ -12,7 +12,7 @@
 
 **●  address**:  *`string`* 
 
-*Defined in [interfaces.ts:133](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L133)*
+*Defined in [interfaces.ts:133](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L133)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  description**:  *`string`* 
 
-*Defined in [interfaces.ts:130](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L130)*
+*Defined in [interfaces.ts:130](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L130)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  details**:  *[IGeoDetails](_interfaces_.igeodetails.md)* 
 
-*Defined in [interfaces.ts:135](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L135)*
+*Defined in [interfaces.ts:135](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L135)*
 
 
 
@@ -54,7 +54,7 @@ ___
 
 **●  geo_point**:  *[IGeoPoint](_interfaces_.igeopoint.md)* 
 
-*Defined in [interfaces.ts:131](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L131)*
+*Defined in [interfaces.ts:131](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L131)*
 
 
 
@@ -68,7 +68,7 @@ ___
 
 **●  postcode**:  *`string`* 
 
-*Defined in [interfaces.ts:134](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L134)*
+*Defined in [interfaces.ts:134](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L134)*
 
 
 
@@ -82,7 +82,7 @@ ___
 
 **●  primary**:  *`boolean`* 
 
-*Defined in [interfaces.ts:132](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L132)*
+*Defined in [interfaces.ts:132](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L132)*
 
 
 
@@ -96,7 +96,7 @@ ___
 
 **●  title**:  *`string`* 
 
-*Defined in [interfaces.ts:129](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L129)*
+*Defined in [interfaces.ts:129](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L129)*
 
 
 

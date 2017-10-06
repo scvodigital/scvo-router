@@ -18,7 +18,12 @@
     ],
     "typeRoots": [
       "../node_modules/@types"
-    ]
+    ],
+    "paths": {
+        "handlebars-helpers": [
+            "./assets/handlebars-helpers.js"
+        ]
+    }
   },
   "include": [
     "src/**/*.ts"

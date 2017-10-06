@@ -21,6 +21,7 @@ Class to construct an Elasticsearch query
 ### Properties
 
 * [compiledTemplate](_search_template_.searchtemplate.md#compiledtemplate)
+* [hbs](_search_template_.searchtemplate.md#hbs)
 * [index](_search_template_.searchtemplate.md#index)
 * [preferredView](_search_template_.searchtemplate.md#preferredview)
 * [template](_search_template_.searchtemplate.md#template)
@@ -44,7 +45,7 @@ Class to construct an Elasticsearch query
 ### ⊕ **new SearchTemplate**(searchTemplate: *[ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)*): [SearchTemplate](_search_template_.searchtemplate.md)
 
 
-*Defined in [search-template.ts:22](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L22)*
+*Defined in [search-template.ts:20](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L20)*
 
 
 
@@ -73,7 +74,7 @@ Create a search template
 
 **●  compiledTemplate**:  *`function`*  =  null
 
-*Defined in [search-template.ts:22](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L22)*
+*Defined in [search-template.ts:20](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L20)*
 
 
 #### Type declaration
@@ -101,6 +102,20 @@ Create a search template
 
 ___
 
+<a id="hbs"></a>
+
+### «Private» hbs
+
+**●  hbs**:  *`any`*  =  handlebars()
+
+*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L19)*
+
+
+
+
+
+___
+
 <a id="index"></a>
 
 ###  index
@@ -109,7 +124,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[index](../interfaces/_interfaces_.isearchtemplate.md#index)*
 
-*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L16)*
+*Defined in [search-template.ts:13](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L13)*
 
 
 
@@ -123,7 +138,7 @@ ___
 
 **●  preferredView**:  *`string`[]*  =  null
 
-*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L19)*
+*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L16)*
 
 
 
@@ -139,7 +154,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[template](../interfaces/_interfaces_.isearchtemplate.md#template)*
 
-*Defined in [search-template.ts:18](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L18)*
+*Defined in [search-template.ts:15](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L15)*
 
 
 
@@ -155,7 +170,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[type](../interfaces/_interfaces_.isearchtemplate.md#type)*
 
-*Defined in [search-template.ts:17](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L17)*
+*Defined in [search-template.ts:14](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L14)*
 
 
 
@@ -173,7 +188,7 @@ ___
 
 
 
-*Defined in [search-template.ts:67](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L67)*
+*Defined in [search-template.ts:65](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L65)*
 
 
 
@@ -208,7 +223,7 @@ ___
 
 
 
-*Defined in [search-template.ts:55](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L55)*
+*Defined in [search-template.ts:53](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L53)*
 
 
 
@@ -235,7 +250,7 @@ ___
 
 
 
-*Defined in [search-template.ts:83](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L83)*
+*Defined in [search-template.ts:81](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L81)*
 
 
 
@@ -270,7 +285,7 @@ ___
 
 
 
-*Defined in [search-template.ts:41](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/search-template.ts#L41)*
+*Defined in [search-template.ts:39](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/search-template.ts#L39)*
 
 
 

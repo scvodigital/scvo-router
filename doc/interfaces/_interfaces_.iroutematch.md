@@ -31,7 +31,7 @@
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[elasticsearchConfig](_interfaces_.iroute.md#elasticsearchconfig)*
 
-*Defined in [interfaces.ts:39](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L39)*
+*Defined in [interfaces.ts:39](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L39)*
 
 
 
@@ -47,7 +47,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[linkTags](_interfaces_.iroute.md#linktags)*
 
-*Defined in [interfaces.ts:31](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L31)*
+*Defined in [interfaces.ts:31](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L31)*
 
 
 
@@ -63,7 +63,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[metaTags](_interfaces_.iroute.md#metatags)*
 
-*Defined in [interfaces.ts:32](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L32)*
+*Defined in [interfaces.ts:32](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L32)*
 
 
 
@@ -79,7 +79,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[name](_interfaces_.iroute.md#name)*
 
-*Defined in [interfaces.ts:30](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L30)*
+*Defined in [interfaces.ts:30](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L30)*
 
 
 
@@ -93,7 +93,7 @@ ___
 
 **●  params**:  *`any`* 
 
-*Defined in [interfaces.ts:43](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L43)*
+*Defined in [interfaces.ts:43](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L43)*
 
 
 
@@ -109,7 +109,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[pattern](_interfaces_.iroute.md#pattern)*
 
-*Defined in [interfaces.ts:33](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L33)*
+*Defined in [interfaces.ts:33](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L33)*
 
 
 
@@ -123,7 +123,7 @@ ___
 
 **●  primaryResponse**:  *`SearchResponse`.<[IDocumentResult](_interfaces_.idocumentresult.md)>* 
 
-*Defined in [interfaces.ts:44](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L44)*
+*Defined in [interfaces.ts:44](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L44)*
 
 
 
@@ -139,7 +139,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[primarySearchTemplate](_interfaces_.iroute.md#primarysearchtemplate)*
 
-*Defined in [interfaces.ts:37](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L37)*
+*Defined in [interfaces.ts:37](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L37)*
 
 
 
@@ -155,7 +155,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[queryDelimiter](_interfaces_.iroute.md#querydelimiter)*
 
-*Defined in [interfaces.ts:35](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L35)*
+*Defined in [interfaces.ts:35](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L35)*
 
 
 
@@ -171,7 +171,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[queryEquals](_interfaces_.iroute.md#queryequals)*
 
-*Defined in [interfaces.ts:36](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L36)*
+*Defined in [interfaces.ts:36](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L36)*
 
 
 
@@ -185,7 +185,7 @@ ___
 
 **●  rendered**:  *`string`* 
 
-*Defined in [interfaces.ts:46](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L46)*
+*Defined in [interfaces.ts:46](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L46)*
 
 
 
@@ -199,7 +199,7 @@ ___
 
 **●  supplimentaryResponses**:  *[ISearchResponseSet](_interfaces_.isearchresponseset.md)* 
 
-*Defined in [interfaces.ts:45](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L45)*
+*Defined in [interfaces.ts:45](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L45)*
 
 
 
@@ -215,7 +215,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[supplimentarySearchTemplates](_interfaces_.iroute.md#supplimentarysearchtemplates)*
 
-*Defined in [interfaces.ts:38](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L38)*
+*Defined in [interfaces.ts:38](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L38)*
 
 
 
@@ -231,7 +231,7 @@ ___
 
 *Inherited from [IRoute](_interfaces_.iroute.md).[template](_interfaces_.iroute.md#template)*
 
-*Defined in [interfaces.ts:34](https://github.com/scvodigital/scvo-router/blob/35f78e1/src/interfaces.ts#L34)*
+*Defined in [interfaces.ts:34](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L34)*
 
 
 

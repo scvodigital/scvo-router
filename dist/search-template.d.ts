@@ -5,6 +5,7 @@ export declare class SearchTemplate implements ISearchTemplate {
     type: string;
     template: string;
     preferredView: string[];
+    private hbs;
     private compiledTemplate;
     /**
      * Create a search template

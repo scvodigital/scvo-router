@@ -1,14 +1,11 @@
 // Module imports
 import { Client, SearchResponse, MSearchResponse, ConfigOptions } from 'elasticsearch'; 
-import * as handlebars from 'handlebars';
-import * as helpers from 'handlebars-helpers';
+import * as handlebars from 'nymag-handlebars';
 
 // Internal imports
 import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
-
-helpers({ handlebars: handlebars });
 
 /** Class that handles matched routes and gets results */
 export class RouteMatch implements IRouteMatch {
@@ -39,6 +36,7 @@ export class RouteMatch implements IRouteMatch {
     }
 
     // Instance specific properties
+    private hbs = handlebars();
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
@@ -98,7 +96,7 @@ export class RouteMatch implements IRouteMatch {
         Object.assign(this, route);   
         
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledTemplate = this.hbs.compile(this.template);       
     }
 
     /**

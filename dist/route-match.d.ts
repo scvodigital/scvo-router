@@ -21,6 +21,7 @@ export declare class RouteMatch implements IRouteMatch {
      * Get the rendered view of the results
      */
     readonly rendered: string;
+    private hbs;
     private compiledTemplate;
     private orderMap;
     private _primaryQuery;

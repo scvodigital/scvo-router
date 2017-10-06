@@ -1,17 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// System imports
-var util = require("util");
 var url = require("url");
 var querystring = require("querystring");
-// Module imports
-var handlebars = require("handlebars");
-var helpers = require("handlebars-helpers");
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 var RouteRecognizer = require('route-recognizer');
 var route_1 = require("./route");
 var route_match_1 = require("./route-match");
-helpers({ handlebars: handlebars });
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 var Router = /** @class */ (function () {
     /**
@@ -21,7 +15,6 @@ var Router = /** @class */ (function () {
     function Router(routes) {
         var _this = this;
         this.routes = routes;
-        console.log('RouteRecognizer', util.inspect(RouteRecognizer, false, null));
         // Setup our route recognizer
         this.routeRecognizer = new RouteRecognizer();
         // Loop through each route in the current context

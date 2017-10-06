@@ -34,7 +34,7 @@
   "dependencies": {
     "elasticsearch": "^13.3.1",
     "handlebars": "^4.0.10",
-    "handlebars-helpers": "^0.9.7",
+    "nymag-handlebars": "^3.2.0",
     "route-recognizer": "^0.3.3",
     "typescript": "^2.4.2"
   }

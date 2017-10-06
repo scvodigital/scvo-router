@@ -2,9 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Module imports
 var elasticsearch_1 = require("elasticsearch");
-var handlebars = require("handlebars");
-var helpers = require("handlebars-helpers");
-helpers({ handlebars: handlebars });
+var handlebars = require("nymag-handlebars");
 /** Class that handles matched routes and gets results */
 var RouteMatch = /** @class */ (function () {
     /**
@@ -26,6 +24,7 @@ var RouteMatch = /** @class */ (function () {
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
         // Instance specific properties
+        this.hbs = handlebars();
         this.compiledTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
@@ -34,7 +33,7 @@ var RouteMatch = /** @class */ (function () {
         // Implement route
         Object.assign(this, route);
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);
+        this.compiledTemplate = this.hbs.compile(this.template);
     }
     Object.defineProperty(RouteMatch.prototype, "rendered", {
         /**
