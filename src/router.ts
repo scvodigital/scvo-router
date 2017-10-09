@@ -10,7 +10,7 @@ import { Results, Result } from 'route-recognizer';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IRoutes } from './interfaces';
+import { IRoutes, IRouteMatch } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
@@ -24,7 +24,7 @@ export class Router {
      */
     constructor(private routes: IRoutes){
         // Setup our route recognizer
-        this.routeRecognizer = new RouteRecognizer();
+        this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context
         Object.keys(routes).forEach((routeName: string) => {
             // Create a new Route object
@@ -49,8 +49,8 @@ export class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    public execute(uriString: string): Promise<RouteMatch>{
-        return new Promise<RouteMatch>((resolve, reject) => {
+    public execute(uriString: string): Promise<IRouteMatch>{
+        return new Promise<IRouteMatch>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
 
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
@@ -60,13 +60,16 @@ export class Router {
 
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
+            if(idFriendlyPath.startsWith('_')){
+                idFriendlyPath = idFriendlyPath.substr(1);
+            }
 
             Object.assign(params, { query: query, path: idFriendlyPath });
 
             var routeMatch = new RouteMatch(handler, params);
 
             routeMatch.getResults().then(() => {
-                resolve(routeMatch);
+                resolve(routeMatch.toJSON());
             }).catch((err) => {
                 reject(err);  
             });

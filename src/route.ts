@@ -2,11 +2,12 @@
 import { ConfigOptions } from 'elasticsearch';
 
 // Internal imports
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable } from './interfaces';
 import { SearchTemplate } from './search-template';
+import { MapJsonify } from './map-jsonify';
 
 /** Class that handles a route match, implements search templates and gets results */
-export class Route implements IRoute {
+export class Route implements IRoute, IJsonable {
     name: string = '_default';
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
@@ -19,10 +20,26 @@ export class Route implements IRoute {
                 {{{_view}}}
             {{/forEach}}
         {{/and}}`;
-    primarySearchTemplate: ISearchTemplate = null;
+    primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
     elasticsearchConfig: ConfigOptions = null;
-    
+   
+    public toJSON(): IRoute{
+        var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
+        return {
+            name: this.name,
+            linkTags: this.linkTags,
+            metaTags: this.metaTags,
+            pattern: this.pattern,
+            queryDelimiter: this.queryDelimiter,
+            queryEquals: this.queryEquals,
+            template: this.template,
+            primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            supplimentarySearchTemplates: templates,
+            elasticsearchConfig: this.elasticsearchConfig
+        };
+    }
+
     /**
      * Create a Route 
      * @param {IRoute} [route] - Optional JSON that contains information about the route

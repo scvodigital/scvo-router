@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var search_template_1 = require("./search-template");
+var map_jsonify_1 = require("./map-jsonify");
 /** Class that handles a route match, implements search templates and gets results */
 var Route = /** @class */ (function () {
     /**
@@ -30,6 +31,21 @@ var Route = /** @class */ (function () {
             _this.supplimentarySearchTemplates[key] = new search_template_1.SearchTemplate(_this.supplimentarySearchTemplates[key]);
         });
     }
+    Route.prototype.toJSON = function () {
+        var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
+        return {
+            name: this.name,
+            linkTags: this.linkTags,
+            metaTags: this.metaTags,
+            pattern: this.pattern,
+            queryDelimiter: this.queryDelimiter,
+            queryEquals: this.queryEquals,
+            template: this.template,
+            primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            supplimentarySearchTemplates: templates,
+            elasticsearchConfig: this.elasticsearchConfig
+        };
+    };
     return Route;
 }());
 exports.Route = Route;

@@ -2,22 +2,29 @@
 import * as util from 'util';
 
 // Module imports
-import * as handlebars from 'nymag-handlebars';
+import * as handlebars from 'handlebars';
+const hbs = require('nymag-handlebars')(handlebars);
 import { SearchParams } from 'elasticsearch';
 
 // Internal imports
-import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery } from './interfaces';
+import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery, IJsonable } from './interfaces';
 
 /** Class to construct an Elasticsearch query */
-export class SearchTemplate implements ISearchTemplate {
+export class SearchTemplate implements ISearchTemplate, IJsonable {
     index: string = null;
     type: string = null;
     template: string = null;
-    preferredView: string[] = null;
 
     // Instance specific properties
-    private hbs = handlebars();
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
+
+    public toJSON(): ISearchTemplate {
+        return {
+            index: this.index,
+            type: this.type,
+            template: this.template
+        };
+    }
 
     /**
      * Create a search template
@@ -28,7 +35,7 @@ export class SearchTemplate implements ISearchTemplate {
         Object.assign(this, searchTemplate);
 
         // Compile our template
-        this.compiledTemplate = this.hbs.compile(this.template);       
+        this.compiledTemplate = handlebars.compile(this.template);       
     }
     
     /**
@@ -79,7 +86,6 @@ export class SearchTemplate implements ISearchTemplate {
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
     getPrimary(params: any): any {
-        console.log('SearchTemplate.getPrimary() this', util.inspect(this, false, null));
         var parsed: any = this.getBody(params);
         var payload: ISearchQuery = {
             index: this.index,

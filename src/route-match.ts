@@ -1,11 +1,13 @@
 // Module imports
 import { Client, SearchResponse, MSearchResponse, ConfigOptions } from 'elasticsearch'; 
-import * as handlebars from 'nymag-handlebars';
+import * as handlebars from 'handlebars';
+const hbs = require('nymag-handlebars')();
 
 // Internal imports
 import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
+import { MapJsonify } from './map-jsonify';
 
 /** Class that handles matched routes and gets results */
 export class RouteMatch implements IRouteMatch {
@@ -36,7 +38,6 @@ export class RouteMatch implements IRouteMatch {
     }
 
     // Instance specific properties
-    private hbs = handlebars();
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
@@ -86,6 +87,36 @@ export class RouteMatch implements IRouteMatch {
         return this._supplimentaryQueries;
     }
 
+    private _esClient: Client = null;
+    private get esClient(): Client {
+        if(!this._esClient){
+            var config = Object.assign({}, this.elasticsearchConfig);
+            this._esClient = new Client(config);
+        }
+        return this._esClient;
+    }
+
+    public toJSON(): IRouteMatch {
+        var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
+        var responses = MapJsonify<SearchResponse<IDocumentResult>>(this.supplimentaryResponses);
+        return {
+            name: this.name,
+            linkTags: this.linkTags,
+            metaTags: this.metaTags,
+            pattern: this.pattern,
+            template: this.template,
+            queryDelimiter: this.queryDelimiter,
+            queryEquals: this.queryEquals,
+            primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            supplimentarySearchTemplates: templates,
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: responses,
+            elasticsearchConfig: this.elasticsearchConfig,
+            rendered: this.rendered,
+            params: this.params
+        };
+    }
+
     /**
      * Create a matched route to get results using parameters
      * @param {Route} route - The route that has been matched
@@ -96,7 +127,7 @@ export class RouteMatch implements IRouteMatch {
         Object.assign(this, route);   
         
         // Compile our template
-        this.compiledTemplate = this.hbs.compile(this.template);       
+        this.compiledTemplate = handlebars.compile(this.template);       
     }
 
     /**
@@ -105,18 +136,15 @@ export class RouteMatch implements IRouteMatch {
      */
     getResults(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            // Setup an elasticsearch client to use, these details should move to
-            var client = new Client(this.elasticsearchConfig);
-
             // Perform our primary search
-            client.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
+            this.esClient.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
                 if(err) return reject(err);
                 // Save the results for use in our rendered template
                 this.primaryResponse = primaryResponse;
                 
                 if(Object.keys(this.supplimentarySearchTemplates).length > 0){
                     // If we have any supplimentary searches to do, do them
-                    client.msearch(this.supplimentaryQueries, (err: any, supplimentaryResponses: MSearchResponse<IDocumentResult>) => {
+                    this.esClient.msearch(this.supplimentaryQueries, (err: any, supplimentaryResponses: MSearchResponse<IDocumentResult>) => {
                         if(err) return reject(err);
                         // Loop through each of our supplimentary responses
                         supplimentaryResponses.responses.map((supplimentaryResponse: SearchResponse<IDocumentResult>, i: number) => {

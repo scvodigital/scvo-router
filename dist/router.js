@@ -16,7 +16,7 @@ var Router = /** @class */ (function () {
         var _this = this;
         this.routes = routes;
         // Setup our route recognizer
-        this.routeRecognizer = new RouteRecognizer();
+        this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context
         Object.keys(routes).forEach(function (routeName) {
             // Create a new Route object
@@ -51,10 +51,13 @@ var Router = /** @class */ (function () {
             var params = Object.assign({}, firstResult.params);
             var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
+            if (idFriendlyPath.startsWith('_')) {
+                idFriendlyPath = idFriendlyPath.substr(1);
+            }
             Object.assign(params, { query: query, path: idFriendlyPath });
             var routeMatch = new route_match_1.RouteMatch(handler, params);
             routeMatch.getResults().then(function () {
-                resolve(routeMatch);
+                resolve(routeMatch.toJSON());
             }).catch(function (err) {
                 reject(err);
             });

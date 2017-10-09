@@ -1,4 +1,7 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
+export interface IJsonable {
+    toJSON(): any;
+}
 export interface IContext {
     name: string;
     linkTags: ILinkTag[];

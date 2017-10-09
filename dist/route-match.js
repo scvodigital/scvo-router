@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Module imports
 var elasticsearch_1 = require("elasticsearch");
-var handlebars = require("nymag-handlebars");
+var handlebars = require("handlebars");
+var hbs = require('nymag-handlebars')();
+var map_jsonify_1 = require("./map-jsonify");
 /** Class that handles matched routes and gets results */
 var RouteMatch = /** @class */ (function () {
     /**
@@ -24,16 +26,16 @@ var RouteMatch = /** @class */ (function () {
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
         // Instance specific properties
-        this.hbs = handlebars();
         this.compiledTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
         this._supplimentaryQueries = null;
+        this._esClient = null;
         // Implement route
         Object.assign(this, route);
         // Compile our template
-        this.compiledTemplate = this.hbs.compile(this.template);
+        this.compiledTemplate = handlebars.compile(this.template);
     }
     Object.defineProperty(RouteMatch.prototype, "rendered", {
         /**
@@ -94,6 +96,37 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RouteMatch.prototype, "esClient", {
+        get: function () {
+            if (!this._esClient) {
+                var config = Object.assign({}, this.elasticsearchConfig);
+                this._esClient = new elasticsearch_1.Client(config);
+            }
+            return this._esClient;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RouteMatch.prototype.toJSON = function () {
+        var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
+        var responses = map_jsonify_1.MapJsonify(this.supplimentaryResponses);
+        return {
+            name: this.name,
+            linkTags: this.linkTags,
+            metaTags: this.metaTags,
+            pattern: this.pattern,
+            template: this.template,
+            queryDelimiter: this.queryDelimiter,
+            queryEquals: this.queryEquals,
+            primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            supplimentarySearchTemplates: templates,
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: responses,
+            elasticsearchConfig: this.elasticsearchConfig,
+            rendered: this.rendered,
+            params: this.params
+        };
+    };
     /**
      * Get primary and supplimentary results for this route match
      * @return {Promise<void>} A promise to tell when results have been fetched
@@ -101,17 +134,15 @@ var RouteMatch = /** @class */ (function () {
     RouteMatch.prototype.getResults = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            // Setup an elasticsearch client to use, these details should move to
-            var client = new elasticsearch_1.Client(_this.elasticsearchConfig);
             // Perform our primary search
-            client.search(_this.primaryQuery, function (err, primaryResponse) {
+            _this.esClient.search(_this.primaryQuery, function (err, primaryResponse) {
                 if (err)
                     return reject(err);
                 // Save the results for use in our rendered template
                 _this.primaryResponse = primaryResponse;
                 if (Object.keys(_this.supplimentarySearchTemplates).length > 0) {
                     // If we have any supplimentary searches to do, do them
-                    client.msearch(_this.supplimentaryQueries, function (err, supplimentaryResponses) {
+                    _this.esClient.msearch(_this.supplimentaryQueries, function (err, supplimentaryResponses) {
                         if (err)
                             return reject(err);
                         // Loop through each of our supplimentary responses

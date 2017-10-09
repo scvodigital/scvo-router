@@ -21,13 +21,15 @@ export declare class RouteMatch implements IRouteMatch {
      * Get the rendered view of the results
      */
     readonly rendered: string;
-    private hbs;
     private compiledTemplate;
     private orderMap;
     private _primaryQuery;
     readonly primaryQuery: ISearchQuery;
     private _supplimentaryQueries;
     readonly supplimentaryQueries: any;
+    private _esClient;
+    private readonly esClient;
+    toJSON(): IRouteMatch;
     /**
      * Create a matched route to get results using parameters
      * @param {Route} route - The route that has been matched

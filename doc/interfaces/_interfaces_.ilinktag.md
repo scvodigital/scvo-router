@@ -15,7 +15,7 @@
 
 **●  href**:  *`string`* 
 
-*Defined in [interfaces.ts:88](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L88)*
+*Defined in [interfaces.ts:92](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L92)*
 
 
 
@@ -29,7 +29,7 @@ ___
 
 **●  name**:  *`string`* 
 
-*Defined in [interfaces.ts:90](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L90)*
+*Defined in [interfaces.ts:94](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L94)*
 
 
 
@@ -43,7 +43,7 @@ ___
 
 **●  rel**:  *`string`* 
 
-*Defined in [interfaces.ts:89](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L89)*
+*Defined in [interfaces.ts:93](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L93)*
 
 
 
@@ -57,7 +57,7 @@ ___
 
 **●  type**:  *`string`* 
 
-*Defined in [interfaces.ts:91](https://github.com/scvodigital/scvo-router/blob/5b0746b/src/interfaces.ts#L91)*
+*Defined in [interfaces.ts:95](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L95)*
 
 
 

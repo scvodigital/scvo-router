@@ -1,12 +1,11 @@
-import { ISearchTemplate, ISearchTemplateSet, ISearchHead } from './interfaces';
+import { ISearchTemplate, ISearchTemplateSet, ISearchHead, IJsonable } from './interfaces';
 /** Class to construct an Elasticsearch query */
-export declare class SearchTemplate implements ISearchTemplate {
+export declare class SearchTemplate implements ISearchTemplate, IJsonable {
     index: string;
     type: string;
     template: string;
-    preferredView: string[];
-    private hbs;
     private compiledTemplate;
+    toJSON(): ISearchTemplate;
     /**
      * Create a search template
      * @param {ISearchTemplate} - The JSON required to consturct an Elasticsearch query

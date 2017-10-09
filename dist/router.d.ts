@@ -1,5 +1,4 @@
-import { IRoutes } from './interfaces';
-import { RouteMatch } from './route-match';
+import { IRoutes, IRouteMatch } from './interfaces';
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export declare class Router {
     private routes;
@@ -15,5 +14,5 @@ export declare class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    execute(uriString: string): Promise<RouteMatch>;
+    execute(uriString: string): Promise<IRouteMatch>;
 }

@@ -1,7 +1,8 @@
 import { ConfigOptions } from 'elasticsearch';
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplateSet, IJsonable } from './interfaces';
+import { SearchTemplate } from './search-template';
 /** Class that handles a route match, implements search templates and gets results */
-export declare class Route implements IRoute {
+export declare class Route implements IRoute, IJsonable {
     name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
@@ -9,9 +10,10 @@ export declare class Route implements IRoute {
     queryDelimiter: string;
     queryEquals: string;
     template: string;
-    primarySearchTemplate: ISearchTemplate;
+    primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
+    toJSON(): IRoute;
     /**
      * Create a Route
      * @param {IRoute} [route] - Optional JSON that contains information about the route
