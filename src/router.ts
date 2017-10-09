@@ -57,14 +57,15 @@ export class Router {
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
             var params = Object.assign({}, firstResult.params);
-
-            var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
+            var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
             if(idFriendlyPath.startsWith('_')){
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
 
             Object.assign(params, { query: query, path: idFriendlyPath });
+
+            console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
 
             var routeMatch = new RouteMatch(handler, params);
 

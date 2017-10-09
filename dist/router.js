@@ -49,12 +49,13 @@ var Router = /** @class */ (function () {
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
             var params = Object.assign({}, firstResult.params);
-            var query = querystring.parse(uri.path, handler.queryDelimiter, handler.queryEquals);
+            var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.path.replace(/\//g, '_');
             if (idFriendlyPath.startsWith('_')) {
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
             Object.assign(params, { query: query, path: idFriendlyPath });
+            console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params);
             var routeMatch = new route_match_1.RouteMatch(handler, params);
             routeMatch.getResults().then(function () {
                 resolve(routeMatch.toJSON());
