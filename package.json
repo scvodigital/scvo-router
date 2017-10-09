@@ -5,9 +5,9 @@
     "main": "./dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "cleanup": "rm -rf ./dist;rm -rf ./doc",
-        "build": "npm run cleanup;tsc",
-        "docs": "node_modules/.bin/typedoc --out ./doc/ --theme markdown",
+        "cleanup": "rm -rf ./dist",
+        "build": "npm run cleanup;./node_modules/.bin/tsc",
+        "docs": "rm -rf ./doc;node_modules/.bin/typedoc --out ./doc/ --theme markdown",
         "install": "npm run build",
         "prepublishOnly": "npm run build"
     },
