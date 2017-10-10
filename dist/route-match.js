@@ -17,10 +17,12 @@ var RouteMatch = /** @class */ (function () {
         this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
+        this.metaData = {};
         this.pattern = null;
         this.template = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
+        this.singleDocument = false;
         this.supplimentarySearchTemplates = {};
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
@@ -114,10 +116,12 @@ var RouteMatch = /** @class */ (function () {
             name: this.name,
             linkTags: this.linkTags,
             metaTags: this.metaTags,
+            metaData: this.metaData,
             pattern: this.pattern,
             template: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
+            singleDocument: this.singleDocument,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,

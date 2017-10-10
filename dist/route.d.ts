@@ -6,10 +6,12 @@ export declare class Route implements IRoute, IJsonable {
     name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
+    metaData: any;
     pattern: string;
     queryDelimiter: string;
     queryEquals: string;
     template: string;
+    singleDocument: boolean;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;

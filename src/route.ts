@@ -11,6 +11,7 @@ export class Route implements IRoute, IJsonable {
     name: string = '_default';
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
+    metaData: any = {};
     pattern: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
@@ -20,6 +21,7 @@ export class Route implements IRoute, IJsonable {
                 {{{_view}}}
             {{/forEach}}
         {{/and}}`;
+    singleDocument: boolean = false;
     primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
     elasticsearchConfig: ConfigOptions = null;
@@ -30,10 +32,12 @@ export class Route implements IRoute, IJsonable {
             name: this.name,
             linkTags: this.linkTags,
             metaTags: this.metaTags,
+            metaData: this.metaData,
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             template: this.template,
+            singleDocument: this.singleDocument,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig

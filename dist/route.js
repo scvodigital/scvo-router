@@ -14,10 +14,12 @@ var Route = /** @class */ (function () {
         this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
+        this.metaData = {};
         this.pattern = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
         this.template = "\n        {{#and primaryResultSet primaryResultSet.documents}}\n            {{#forEach primaryResultSet.documents}}\n                {{{_view}}}\n            {{/forEach}}\n        {{/and}}";
+        this.singleDocument = false;
         this.primarySearchTemplate = null;
         this.supplimentarySearchTemplates = {};
         this.elasticsearchConfig = null;
@@ -37,10 +39,12 @@ var Route = /** @class */ (function () {
             name: this.name,
             linkTags: this.linkTags,
             metaTags: this.metaTags,
+            metaData: this.metaData,
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             template: this.template,
+            singleDocument: this.singleDocument,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig

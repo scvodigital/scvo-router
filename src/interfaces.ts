@@ -10,6 +10,7 @@ export interface IContext {
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     scriptTags: IScriptTag[];
+    metaData: any;
     menus: IMenus;
     routes: IRoutes;
     sass: string;
@@ -34,10 +35,12 @@ export interface IRoute {
     name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
+    metaData: any;
     pattern: string;
     template: string;
     queryDelimiter: string;
     queryEquals: string;
+    singleDocument: boolean;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;

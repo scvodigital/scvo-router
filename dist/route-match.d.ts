@@ -8,10 +8,12 @@ export declare class RouteMatch implements IRouteMatch {
     name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
+    metaData: any;
     pattern: string;
     template: string;
     queryDelimiter: string;
     queryEquals: string;
+    singleDocument: boolean;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet;
     primaryResponse: SearchResponse<IDocumentResult>;

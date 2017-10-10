@@ -14,10 +14,12 @@ export class RouteMatch implements IRouteMatch {
     name: string = '_default';
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
+    metaData: any = {};
     pattern: string = null;
     template: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
+    singleDocument: boolean = false;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet = {};
     primaryResponse: SearchResponse<IDocumentResult> = null;
@@ -103,10 +105,12 @@ export class RouteMatch implements IRouteMatch {
             name: this.name,
             linkTags: this.linkTags,
             metaTags: this.metaTags,
+            metaData: this.metaData,
             pattern: this.pattern,
             template: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
+            singleDocument: this.singleDocument,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
