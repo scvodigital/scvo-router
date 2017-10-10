@@ -11,7 +11,7 @@ export declare class Route implements IRoute, IJsonable {
     queryDelimiter: string;
     queryEquals: string;
     template: string;
-    singleDocument: boolean;
+    jsonLdTemplate: string;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;

@@ -40,7 +40,7 @@ export interface IRoute {
     template: string;
     queryDelimiter: string;
     queryEquals: string;
-    singleDocument: boolean;
+    jsonLdTemplate: string;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
@@ -48,6 +48,7 @@ export interface IRoute {
 
 export interface IRouteMatch extends IRoute {
     params: any;
+    jsonLd: string;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;

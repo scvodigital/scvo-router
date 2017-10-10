@@ -19,7 +19,7 @@ export class RouteMatch implements IRouteMatch {
     template: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    singleDocument: boolean = false;
+    jsonLdTemplate: string = '';
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet = {};
     primaryResponse: SearchResponse<IDocumentResult> = null;
@@ -33,14 +33,28 @@ export class RouteMatch implements IRouteMatch {
         var routeTemplateData: any = {
             primaryResponse: this.primaryResponse,
             supplimentaryResponse: this.supplimentaryResponses,
-            params: this.params
+            params: this.params,
+            metaData: this.metaData
         };
         var output = this.compiledTemplate(routeTemplateData);
         return output;
     }
 
+    get jsonLd(): string {
+        var jsonLdTemplateData: any = {
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: this.supplimentaryResponses,
+            params: this.params,
+            metaData: this.metaData
+        };
+        var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
+        console.log('JSON LD:', output);
+        return output;
+    }
+
     // Instance specific properties
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
+    private compiledJsonLdTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
     private orderMap: string[] = [];
@@ -110,7 +124,8 @@ export class RouteMatch implements IRouteMatch {
             template: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            singleDocument: this.singleDocument,
+            jsonLdTemplate: this.jsonLdTemplate,
+            jsonLd: this.jsonLd,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
@@ -132,6 +147,7 @@ export class RouteMatch implements IRouteMatch {
         
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
 
     /**

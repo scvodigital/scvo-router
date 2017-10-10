@@ -22,13 +22,14 @@ var RouteMatch = /** @class */ (function () {
         this.template = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
-        this.singleDocument = false;
+        this.jsonLdTemplate = '';
         this.supplimentarySearchTemplates = {};
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
         // Instance specific properties
         this.compiledTemplate = null;
+        this.compiledJsonLdTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
@@ -38,6 +39,7 @@ var RouteMatch = /** @class */ (function () {
         Object.assign(this, route);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
+        this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
     Object.defineProperty(RouteMatch.prototype, "rendered", {
         /**
@@ -47,9 +49,25 @@ var RouteMatch = /** @class */ (function () {
             var routeTemplateData = {
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponse: this.supplimentaryResponses,
-                params: this.params
+                params: this.params,
+                metaData: this.metaData
             };
             var output = this.compiledTemplate(routeTemplateData);
+            return output;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RouteMatch.prototype, "jsonLd", {
+        get: function () {
+            var jsonLdTemplateData = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData
+            };
+            var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
+            console.log('JSON LD:', output);
             return output;
         },
         enumerable: true,
@@ -121,7 +139,8 @@ var RouteMatch = /** @class */ (function () {
             template: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            singleDocument: this.singleDocument,
+            jsonLdTemplate: this.jsonLdTemplate,
+            jsonLd: this.jsonLd,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,

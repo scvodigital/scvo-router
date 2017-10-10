@@ -19,7 +19,7 @@ var Route = /** @class */ (function () {
         this.queryDelimiter = '&';
         this.queryEquals = '=';
         this.template = "\n        {{#and primaryResultSet primaryResultSet.documents}}\n            {{#forEach primaryResultSet.documents}}\n                {{{_view}}}\n            {{/forEach}}\n        {{/and}}";
-        this.singleDocument = false;
+        this.jsonLdTemplate = '';
         this.primarySearchTemplate = null;
         this.supplimentarySearchTemplates = {};
         this.elasticsearchConfig = null;
@@ -44,7 +44,7 @@ var Route = /** @class */ (function () {
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             template: this.template,
-            singleDocument: this.singleDocument,
+            jsonLdTemplate: this.jsonLdTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig

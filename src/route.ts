@@ -21,7 +21,7 @@ export class Route implements IRoute, IJsonable {
                 {{{_view}}}
             {{/forEach}}
         {{/and}}`;
-    singleDocument: boolean = false;
+    jsonLdTemplate: string = '';
     primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
     elasticsearchConfig: ConfigOptions = null;
@@ -37,7 +37,7 @@ export class Route implements IRoute, IJsonable {
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             template: this.template,
-            singleDocument: this.singleDocument,
+            jsonLdTemplate: this.jsonLdTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig

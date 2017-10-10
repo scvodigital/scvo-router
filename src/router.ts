@@ -10,7 +10,7 @@ import { Results, Result } from 'route-recognizer';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IRoutes, IRouteMatch } from './interfaces';
+import { IRoutes, IRouteMatch, IContext, ILinkTag, IMetaTag } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
@@ -75,5 +75,5 @@ export class Router {
                 reject(err);  
             });
         });
-    }
+    }  
 }

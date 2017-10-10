@@ -13,7 +13,7 @@ export declare class RouteMatch implements IRouteMatch {
     template: string;
     queryDelimiter: string;
     queryEquals: string;
-    singleDocument: boolean;
+    jsonLdTemplate: string;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet;
     primaryResponse: SearchResponse<IDocumentResult>;
@@ -23,7 +23,9 @@ export declare class RouteMatch implements IRouteMatch {
      * Get the rendered view of the results
      */
     readonly rendered: string;
+    readonly jsonLd: string;
     private compiledTemplate;
+    private compiledJsonLdTemplate;
     private orderMap;
     private _primaryQuery;
     readonly primaryQuery: ISearchQuery;
