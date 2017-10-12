@@ -39,9 +39,14 @@ export class Router {
                     path: route.pattern,
                     handler: route
                 };
-                this.routeRecognizer.add([routeDef]);
+                this.routeRecognizer.add([routeDef], { as: routeName });
             }
         });
+    }
+
+    public generateUrl(routeName: string, params: any) {
+        var url = this.routeRecognizer.generate(routeName, params);
+        return url;
     }
 
     /**

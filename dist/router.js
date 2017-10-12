@@ -32,10 +32,14 @@ var Router = /** @class */ (function () {
                     path: route.pattern,
                     handler: route
                 };
-                _this.routeRecognizer.add([routeDef]);
+                _this.routeRecognizer.add([routeDef], { as: routeName });
             }
         });
     }
+    Router.prototype.generateUrl = function (routeName, params) {
+        var url = this.routeRecognizer.generate(routeName, params);
+        return url;
+    };
     /**
      * Execute the route against a URI to get a matched route and rendered responses
      * @param {string} uriString - The URI to be matched

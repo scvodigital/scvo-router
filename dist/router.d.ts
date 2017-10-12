@@ -9,6 +9,7 @@ export declare class Router {
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
     constructor(routes: IRoutes);
+    generateUrl(routeName: string, params: any): any;
     /**
      * Execute the route against a URI to get a matched route and rendered responses
      * @param {string} uriString - The URI to be matched
