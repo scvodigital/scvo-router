@@ -19,7 +19,9 @@ export interface IMenus {
 export interface IMenuItem {
     label: string;
     path: string;
-    subMenu: IMenuItem[];
+    route: string;
+    children: IMenuItem[];
+    metaData: any;
 }
 export interface IRoutes {
     [name: string]: IRoute;
