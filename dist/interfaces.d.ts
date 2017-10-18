@@ -4,6 +4,7 @@ export interface IJsonable {
 }
 export interface IContext {
     name: string;
+    domains: string[];
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     scriptTags: IScriptTag[];
