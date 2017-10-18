@@ -8,16 +8,24 @@ var MenuProcessor = /** @class */ (function () {
     /**
      * Create a MenuProcess for getting a menus that are flagged if they match a route
      * @param {IMenus} menus - The menus that you need to get and match routes against
+     * @param {string[]} domains - A list of domains you want to strip from paths
      */
-    function MenuProcessor(menus) {
+    function MenuProcessor(menus, domains) {
+        if (domains === void 0) { domains = null; }
         var _this = this;
         this.menus = {};
+        this.domainRegex = null;
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
+        if (domains && domains.length > 0) {
+            domains = domains.map(function (domain) { return domain.replace(/\./g, '\\.'); });
+            var domainRegexString = '((https?)?://)((' + domains.join(')|(') + '))';
+            this.domainRegex = new RegExp(domainRegexString, 'ig');
+        }
         var routes = [];
         Object.keys(menus).forEach(function (name) {
             var items = menus[name];
             _this.menus[name] = items.map(function (item, i) {
-                return new MenuItem(item, name, i, 0);
+                return new MenuItem(item, name, i, 0, _this.domainRegex);
             });
             var menuItemsFlat = _this.flatten(_this.menus[name]);
             menuItemsFlat.forEach(function (menuItem) {
@@ -82,7 +90,8 @@ var MenuItem = /** @class */ (function () {
      * @param {number} order - the position of the menu item
      * @param {number} level - how deep into the menu structure is this item
      */
-    function MenuItem(menuItem, dotPath, order, level) {
+    function MenuItem(menuItem, dotPath, order, level, domainRegex) {
+        if (domainRegex === void 0) { domainRegex = null; }
         var _this = this;
         this.label = '';
         this.path = '';
@@ -97,9 +106,12 @@ var MenuItem = /** @class */ (function () {
             order: order,
             level: level
         });
+        if (domainRegex) {
+            this.path = this.path.replace(domainRegex, '');
+        }
         if (this.children) {
             this.children = this.children.map(function (child, i) {
-                return new MenuItem(child, _this.dotPath, i, level + 1);
+                return new MenuItem(child, _this.dotPath, i, level + 1, domainRegex);
             });
         }
     }

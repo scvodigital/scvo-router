@@ -16,19 +16,27 @@ import { IMenus, IMenuItem } from './interfaces';
 export class MenuProcessor {
     private routeRecognizer: any;
     private menus: { [name: string]: MenuItem[] } = {};
+    private domainRegex: RegExp = null;
 
     /**
      * Create a MenuProcess for getting a menus that are flagged if they match a route
      * @param {IMenus} menus - The menus that you need to get and match routes against
+     * @param {string[]} domains - A list of domains you want to strip from paths
      */
-    constructor(menus: IMenus) { 
+    constructor(menus: IMenus, domains: string[] = null) { 
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         
+        if(domains && domains.length > 0){
+            domains = domains.map((domain: string) => { return domain.replace(/\./g, '\\.'); });
+            var domainRegexString = '((https?)?://)((' + domains.join(')|(') + '))';
+            this.domainRegex = new RegExp(domainRegexString, 'ig');
+        }
+
         var routes = [];
         Object.keys(menus).forEach((name: string) => {
             var items: IMenuItem[] = menus[name];
             this.menus[name] = items.map((item: IMenuItem, i: number) => {
-                return new MenuItem(item, name, i, 0);
+                return new MenuItem(item, name, i, 0, this.domainRegex);
             });
 
             var menuItemsFlat: MenuItem[] = this.flatten(this.menus[name]);
@@ -108,16 +116,20 @@ export class MenuItem implements IMenuItem {
      * @param {number} order - the position of the menu item
      * @param {number} level - how deep into the menu structure is this item
      */ 
-    constructor(menuItem: IMenuItem, dotPath: string, order: number, level: number){
+    constructor(menuItem: IMenuItem, dotPath: string, order: number, level: number, domainRegex: RegExp = null){
         Object.assign(this, menuItem, {
             dotPath: dotPath + '.' + order,
             order: order,
             level: level
         });
 
+        if(domainRegex){
+            this.path = this.path.replace(domainRegex, '');
+        }
+
         if(this.children){
             this.children = this.children.map((child: IMenuItem, i: number) => { 
-                return new MenuItem(child, this.dotPath, i, level + 1);
+                return new MenuItem(child, this.dotPath, i, level + 1, domainRegex);
             });
         }
     }
