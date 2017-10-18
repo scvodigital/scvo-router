@@ -1,47 +1,48 @@
 {
-    "name": "scvo-router",
-    "version": "1.0.9",
-    "description": "Pipes to open Elasticsearch to everything we do",
-    "main": "./dist/index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "cleanup": "rm -rf ./dist",
-        "build": "npm run cleanup;tsc",
-        "docs": "rm -rf ./doc;node_modules/.bin/typedoc --out ./doc/ --theme markdown",
-        "prepublishOnly": "npm run build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/scvodigital/scvo-router.git"
-    },
-    "keywords": [
-        "Elasticsearch",
-        "Routing",
-        "Query templating"
-    ],
-    "author": "Matthew Wilkes (https://digital.scvo.org.uk)",
-    "contributors": [
-        "Calum MacUisdean (https://digital.scvo.org.uk)"
-    ],
-    "license": "GPL-3.0",
-    "bugs": {
-        "url": "https://github.com/scvodigital/scvo-router/issues"
-    },
-    "homepage": "https://github.com/scvodigital/scvo-router#readme",
-    "devDependencies": {
-        "@types/elasticsearch": "^5.0.16",
-        "@types/handlebars": "^4.0.36",
-        "@types/node": "^8.0.24",
-        "@types/route-recognizer": "^0.3.0",
-        "mocha": "^4.0.0",
-        "typedoc": "^0.8.0",
-        "typedoc-plugin-markdown": "^1.0.10",
-        "typescript": "^2.4.2"
-    },
-    "dependencies": {
-        "elasticsearch": "^13.3.1",
-        "handlebars": "^4.0.10",
-        "nymag-handlebars": "^3.2.0",
-        "route-recognizer": "^0.3.3"
-    }
+  "name": "scvo-router",
+  "version": "1.0.10",
+  "description": "Pipes to open Elasticsearch to everything we do",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cleanup": "rm -rf ./dist",
+    "build": "npm run cleanup;tsc",
+    "docs": "rm -rf ./doc;node_modules/.bin/typedoc --out ./doc/ --theme markdown",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scvodigital/scvo-router.git"
+  },
+  "keywords": [
+    "Elasticsearch",
+    "Routing",
+    "Query templating"
+  ],
+  "author": "Matthew Wilkes (https://digital.scvo.org.uk)",
+  "contributors": [
+    "Calum MacUisdean (https://digital.scvo.org.uk)"
+  ],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/scvodigital/scvo-router/issues"
+  },
+  "homepage": "https://github.com/scvodigital/scvo-router#readme",
+  "devDependencies": {
+    "@types/elasticsearch": "^5.0.16",
+    "@types/handlebars": "^4.0.36",
+    "@types/node": "^8.0.24",
+    "@types/route-recognizer": "^0.3.0",
+    "mocha": "^4.0.0",
+    "typedoc": "^0.8.0",
+    "typedoc-plugin-markdown": "^1.0.10",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "dot-object": "^1.7.0",
+    "elasticsearch": "^13.3.1",
+    "handlebars": "^4.0.10",
+    "nymag-handlebars": "^3.2.0",
+    "route-recognizer": "^0.3.3"
+  }
 }
