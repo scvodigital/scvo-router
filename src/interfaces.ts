@@ -30,6 +30,14 @@ export interface IMenuItem {
     metaData: any;
 }
 
+export interface IMenuItemMatch extends IMenuItem {
+    children: IMenuItemMatch[];
+    dotPath: string;
+    order: number;
+    level: number;
+    match: boolean;
+}
+
 export interface IRoutes {
     [name: string]: IRoute;
 }

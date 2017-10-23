@@ -1,4 +1,4 @@
-import { IMenus, IMenuItem } from './interfaces';
+import { IMenus, IMenuItem, IMenuItemMatch } from './interfaces';
 /** Class for getting menus with matched routes */
 export declare class MenuProcessor {
     private routeRecognizer;
@@ -13,9 +13,10 @@ export declare class MenuProcessor {
      * Get all registered menus and add a "match" flag next to each one that matches a given route
      * @param {uriString} uriString - The Route you want to match
      */
-    getMenus(uriString?: string): {
+    getMenus(uriString?: string, start?: number, depth?: number): {
         [name: string]: MenuItem[];
     };
+    prune(items: IMenuItemMatch[], min: number, max: number): any[];
     /**
      * Create a flat array of nested child menus
      * @param {MenuItem[]} items - The menu items you need to flatten
@@ -44,15 +45,5 @@ export declare class MenuItem implements IMenuItem {
      * Return a JSON friendly representation of this instance recursively calling each child menu item's toJSON method
      * @param {string[]} matchDotPaths - an array of dot paths that have been matched by the route recognizer
      */
-    toJSON(matchDotPaths?: string[]): {
-        label: string;
-        path: string;
-        route: string;
-        children: any[];
-        metaData: any;
-        dotPath: string;
-        order: number;
-        level: number;
-        match: boolean;
-    };
+    toJSON(matchDotPaths?: string[]): IMenuItemMatch;
 }

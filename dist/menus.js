@@ -36,9 +36,11 @@ var MenuProcessor = /** @class */ (function () {
      * Get all registered menus and add a "match" flag next to each one that matches a given route
      * @param {uriString} uriString - The Route you want to match
      */
-    MenuProcessor.prototype.getMenus = function (uriString) {
+    MenuProcessor.prototype.getMenus = function (uriString, start, depth) {
         var _this = this;
         if (uriString === void 0) { uriString = null; }
+        if (start === void 0) { start = 0; }
+        if (depth === void 0) { depth = 1; }
         if (!uriString) {
             return this.menus;
         }
@@ -48,10 +50,27 @@ var MenuProcessor = /** @class */ (function () {
             return route.handler;
         });
         var menus = {};
+        var max = start + depth;
         Object.keys(this.menus).forEach(function (name) {
             menus[name] = _this.menus[name].map(function (item) { return item.toJSON(matchDotPaths); });
+            // menus[name] = this.prune(menus[name], start, max); // Might not be needed or needs to be implemented elsewhere
         });
         return menus;
+    };
+    MenuProcessor.prototype.prune = function (items, min, max) {
+        var _this = this;
+        var plucked = [];
+        items.forEach(function (item) {
+            if (item.level > max)
+                return;
+            if (item.level < min || item.match) {
+                if (item.level + 1 < max) {
+                    item.children = _this.prune(item.children, min, max);
+                }
+                plucked.push(item);
+            }
+        });
+        return plucked;
     };
     /**
      * Create a flat array of nested child menus

@@ -10,7 +10,7 @@ import { Results, Result } from 'route-recognizer';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IMenus, IMenuItem } from './interfaces';
+import { IMenus, IMenuItem, IMenuItemMatch } from './interfaces';
 
 /** Class for getting menus with matched routes */
 export class MenuProcessor {
@@ -50,7 +50,7 @@ export class MenuProcessor {
      * Get all registered menus and add a "match" flag next to each one that matches a given route
      * @param {uriString} uriString - The Route you want to match
      */
-    getMenus(uriString: string = null){
+    getMenus(uriString: string = null, start: number = 0, depth: number = 1){
         if(!uriString){
             return this.menus;
         }
@@ -63,12 +63,30 @@ export class MenuProcessor {
         });
 
         var menus = {};
-
+        var max = start + depth;
+        
         Object.keys(this.menus).forEach((name: string) => {
             menus[name] = this.menus[name].map((item: MenuItem) => { return item.toJSON(matchDotPaths); });
+            // menus[name] = this.prune(menus[name], start, max); // Might not be needed or needs to be implemented elsewhere
         });
 
         return menus;
+    }
+
+    prune(items: IMenuItemMatch[], min: number, max: number){
+        let plucked = [];
+
+        items.forEach((item: IMenuItemMatch) => {
+            if(item.level > max) return;
+            if(item.level < min || item.match){
+                if(item.level + 1 < max){
+                    item.children = this.prune(item.children, min, max);
+                }
+                plucked.push(item); 
+            }
+        });
+
+        return plucked;
     }
 
     /**
@@ -127,7 +145,7 @@ export class MenuItem implements IMenuItem {
      * Return a JSON friendly representation of this instance recursively calling each child menu item's toJSON method
      * @param {string[]} matchDotPaths - an array of dot paths that have been matched by the route recognizer
      */
-    public toJSON(matchDotPaths: string[] = []){
+    public toJSON(matchDotPaths: string[] = []): IMenuItemMatch{
         var match: boolean = matchDotPaths.indexOf(this.dotPath) > -1;
         var children = [];
         if(this.children) {
@@ -148,5 +166,4 @@ export class MenuItem implements IMenuItem {
             match: match
         }
     }
-
 }
