@@ -1,5 +1,5 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchResponseSet, ISearchQuery, IDocumentResult } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
@@ -33,6 +33,7 @@ export declare class RouteMatch implements IRouteMatch {
     readonly supplimentaryQueries: any;
     private _esClient;
     private readonly esClient;
+    readonly paging: IPaging;
     toJSON(): IRouteMatch;
     /**
      * Create a matched route to get results using parameters

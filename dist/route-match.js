@@ -50,7 +50,8 @@ var RouteMatch = /** @class */ (function () {
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponse: this.supplimentaryResponses,
                 params: this.params,
-                metaData: this.metaData
+                metaData: this.metaData,
+                paging: this.paging,
             };
             var output = this.compiledTemplate(routeTemplateData);
             return output;
@@ -127,6 +128,44 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RouteMatch.prototype, "paging", {
+        get: function () {
+            var from = this.primaryQuery.body.from || 0;
+            var size = this.primaryQuery.body.size || 10;
+            var sort = this.primaryQuery.body.sort || null;
+            var totalResults = this.primaryResponse.hits.total || 0;
+            var totalPages = Math.floor(totalResults / size) + 1;
+            var currentPage = (from / size) + 1;
+            var nextPage = currentPage < totalPages ? currentPage + 1 : null;
+            var prevPage = currentPage > 1 ? currentPage - 1 : null;
+            // Setup an array (range) of 10 numbers surrounding our current page
+            var pageRange = Array.from(new Array(9).keys(), function (p, i) { return i + (currentPage - 4); });
+            // Move range forward until none of the numbers are less than 1
+            var rangeMin = pageRange[0];
+            var positiveShift = rangeMin < 1 ? 1 - rangeMin : 0;
+            pageRange = pageRange.map(function (p) { return p + positiveShift; });
+            // Move range backwards until none of the numbers are greater than totalPages
+            var rangeMax = pageRange[pageRange.length - 1];
+            var negativeShift = rangeMax > totalPages ? rangeMax - totalPages : 0;
+            pageRange = pageRange.map(function (p) { return p - negativeShift; });
+            // Prune everything that appears outside of our 1 to totalPages range
+            pageRange = pageRange.filter(function (p) { return p >= 1 && p <= totalPages; });
+            var paging = {
+                from: from,
+                size: size,
+                sort: sort,
+                totalResults: totalResults,
+                totalPages: totalPages,
+                currentPage: currentPage,
+                nextPage: nextPage,
+                prevPage: prevPage,
+                pageRange: pageRange
+            };
+            return paging;
+        },
+        enumerable: true,
+        configurable: true
+    });
     RouteMatch.prototype.toJSON = function () {
         var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
         var responses = map_jsonify_1.MapJsonify(this.supplimentaryResponses);
@@ -147,7 +186,8 @@ var RouteMatch = /** @class */ (function () {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
-            params: this.params
+            params: this.params,
+            paging: this.paging
         };
     };
     /**

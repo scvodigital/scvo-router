@@ -4,7 +4,7 @@ import * as handlebars from 'handlebars';
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
@@ -34,7 +34,8 @@ export class RouteMatch implements IRouteMatch {
             primaryResponse: this.primaryResponse,
             supplimentaryResponse: this.supplimentaryResponses,
             params: this.params,
-            metaData: this.metaData
+            metaData: this.metaData,
+            paging: this.paging,
         };
         var output = this.compiledTemplate(routeTemplateData);
         return output;
@@ -112,6 +113,50 @@ export class RouteMatch implements IRouteMatch {
         return this._esClient;
     }
 
+    public get paging(): IPaging {
+        var from = this.primaryQuery.body.from || 0;
+        var size = this.primaryQuery.body.size || 10;
+        var sort = this.primaryQuery.body.sort || null;
+        var totalResults = this.primaryResponse.hits.total || 0;
+        var totalPages = Math.floor(totalResults / size) + 1;
+        var currentPage = (from / size) + 1;
+
+        var nextPage = currentPage < totalPages ? currentPage + 1 : null;
+        var prevPage = currentPage > 1 ? currentPage - 1 : null;
+
+        // Setup an array (range) of 10 numbers surrounding our current page
+        var pageRange = Array.from(new Array(9).keys(), (p, i) => i + (currentPage - 4));
+
+        // Move range forward until none of the numbers are less than 1
+        var rangeMin = pageRange[0];
+        var positiveShift = rangeMin < 1 ? 1 - rangeMin : 0;
+        pageRange = pageRange.map(p => p + positiveShift);
+
+        // Move range backwards until none of the numbers are greater than totalPages
+        var rangeMax = pageRange[pageRange.length - 1];
+        var negativeShift = rangeMax > totalPages ? rangeMax - totalPages : 0;
+        pageRange = pageRange.map(p => p - negativeShift);
+
+        // Prune everything that appears outside of our 1 to totalPages range
+        pageRange = pageRange.filter(p => p >= 1 && p <= totalPages);
+
+        var paging = {
+            from: from,
+            size: size,
+            sort: sort,
+            totalResults: totalResults,
+            
+            totalPages: totalPages,
+            currentPage: currentPage,
+            
+            nextPage: nextPage,
+            prevPage: prevPage,
+            
+            pageRange: pageRange
+        };
+        return paging;
+    }
+
     public toJSON(): IRouteMatch {
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
         var responses = MapJsonify<SearchResponse<IDocumentResult>>(this.supplimentaryResponses);
@@ -132,7 +177,8 @@ export class RouteMatch implements IRouteMatch {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
-            params: this.params
+            params: this.params,
+            paging: this.paging
         };
     }
 

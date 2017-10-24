@@ -63,6 +63,7 @@ export interface IRouteMatch extends IRoute {
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;
+    paging: IPaging;
 }
 
 export interface IElasticsearchConfig {
@@ -115,6 +116,12 @@ export interface IPaging {
     from ? : number;
     size ? : number;
     sort ? : any;
+    totalResults ? : number;
+    totalPages ? : number;
+    currentPage ? : number;
+    nextPage ? : number;
+    prevPage ? : number;
+    pageRange ? : number[];
 }
 
 export interface IDocumentResult {

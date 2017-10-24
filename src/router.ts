@@ -70,7 +70,7 @@ export class Router {
 
             Object.assign(params, { query: query, path: idFriendlyPath });
 
-            console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
+            //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
 
             var routeMatch = new RouteMatch(handler, params);
 

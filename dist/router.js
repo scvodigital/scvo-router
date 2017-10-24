@@ -59,7 +59,7 @@ var Router = /** @class */ (function () {
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
             Object.assign(params, { query: query, path: idFriendlyPath });
-            console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params);
+            //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
             var routeMatch = new route_match_1.RouteMatch(handler, params);
             routeMatch.getResults().then(function () {
                 resolve(routeMatch.toJSON());
