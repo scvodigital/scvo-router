@@ -150,6 +150,14 @@ var RouteMatch = /** @class */ (function () {
             pageRange = pageRange.map(function (p) { return p - negativeShift; });
             // Prune everything that appears outside of our 1 to totalPages range
             pageRange = pageRange.filter(function (p) { return p >= 1 && p <= totalPages; });
+            var pages = [];
+            pageRange.forEach(function (page) {
+                var distance = Math.abs(currentPage - page);
+                pages.push({
+                    pageNumber: page,
+                    distance: distance,
+                });
+            });
             var paging = {
                 from: from,
                 size: size,
@@ -159,7 +167,7 @@ var RouteMatch = /** @class */ (function () {
                 currentPage: currentPage,
                 nextPage: nextPage,
                 prevPage: prevPage,
-                pageRange: pageRange
+                pageRange: pages
             };
             return paging;
         },

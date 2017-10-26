@@ -140,6 +140,16 @@ export class RouteMatch implements IRouteMatch {
         // Prune everything that appears outside of our 1 to totalPages range
         pageRange = pageRange.filter(p => p >= 1 && p <= totalPages);
 
+        var pages = [];
+
+        pageRange.forEach((page: number) => {
+            var distance: number = Math.abs(currentPage - page);
+            pages.push({
+                pageNumber: page,
+                distance: distance,
+            });
+        });
+
         var paging = {
             from: from,
             size: size,
@@ -152,7 +162,7 @@ export class RouteMatch implements IRouteMatch {
             nextPage: nextPage,
             prevPage: prevPage,
             
-            pageRange: pageRange
+            pageRange: pages
         };
         return paging;
     }

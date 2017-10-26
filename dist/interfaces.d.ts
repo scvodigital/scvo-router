@@ -103,7 +103,11 @@ export interface IPaging {
     currentPage?: number;
     nextPage?: number;
     prevPage?: number;
-    pageRange?: number[];
+    pageRange?: IPagingPage[];
+}
+export interface IPagingPage {
+    pageNumber: number;
+    distance: number;
 }
 export interface IDocumentResult {
     Id: string;
