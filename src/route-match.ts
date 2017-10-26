@@ -1,6 +1,8 @@
 // Module imports
-import { Client, SearchResponse, MSearchResponse, ConfigOptions } from 'elasticsearch'; 
+import { Client, SearchResponse, MSearchResponse, ConfigOptions } from 'elasticsearch';
 import * as handlebars from 'handlebars';
+import * as helpers from 'handlebars-helpers';
+helpers({ handlebars: handlebars });
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
@@ -75,7 +77,7 @@ export class RouteMatch implements IRouteMatch {
     get supplimentaryQueries(): any {
         if(!this._supplimentaryQueries){
             // If we haven't already got these queries we need to generate them
-            
+
             // Extend our parameters that will be used when generating supplimentary queries
             // by adding the primary result set
             var supplimentaryParams = this.params;
@@ -155,13 +157,13 @@ export class RouteMatch implements IRouteMatch {
             size: size,
             sort: sort,
             totalResults: totalResults,
-            
+
             totalPages: totalPages,
             currentPage: currentPage,
-            
+
             nextPage: nextPage,
             prevPage: prevPage,
-            
+
             pageRange: pages
         };
         return paging;
@@ -199,10 +201,10 @@ export class RouteMatch implements IRouteMatch {
      */
     constructor(route: Route, public params: any){
         // Implement route
-        Object.assign(this, route);   
-        
+        Object.assign(this, route);
+
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledTemplate = handlebars.compile(this.template);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
 
@@ -217,7 +219,7 @@ export class RouteMatch implements IRouteMatch {
                 if(err) return reject(err);
                 // Save the results for use in our rendered template
                 this.primaryResponse = primaryResponse;
-                
+
                 if(Object.keys(this.supplimentarySearchTemplates).length > 0){
                     // If we have any supplimentary searches to do, do them
                     this.esClient.msearch(this.supplimentaryQueries, (err: any, supplimentaryResponses: MSearchResponse<IDocumentResult>) => {
@@ -234,10 +236,9 @@ export class RouteMatch implements IRouteMatch {
                     });
                 }else{
                     // We don't need to get anything else so let the promise owner know
-                    resolve();               
-                }                
+                    resolve();
+                }
             });
         });
     }
 }
-
