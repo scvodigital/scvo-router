@@ -1,8 +1,6 @@
 // Module imports
 import { Client, SearchResponse, MSearchResponse, ConfigOptions } from 'elasticsearch';
 import * as handlebars from 'handlebars';
-import * as helpers from 'handlebars-helpers';
-helpers({ handlebars: handlebars });
 const hbs = require('nymag-handlebars')();
 
 // Internal imports

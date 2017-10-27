@@ -31,13 +31,13 @@ export class SearchTemplate implements ISearchTemplate, IJsonable {
      * @param {ISearchTemplate} - The JSON required to consturct an Elasticsearch query
      */
     constructor(searchTemplate: ISearchTemplate) {
-        // Implement our JSON 
+        // Implement our JSON
         Object.assign(this, searchTemplate);
 
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledTemplate = handlebars.compile(this.template);
     }
-    
+
     /**
      * Render the query template to a string of JSON
      * @param {any} params - The data to pass into the handlebars template
