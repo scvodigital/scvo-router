@@ -6,6 +6,8 @@ import * as querystring from 'querystring';
 
 // Module imports
 import { Results, Result } from 'route-recognizer';
+import { SearchResponse } from 'elasticsearch';
+import * as ua from 'universal-analytics';
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 const RouteRecognizer = require('route-recognizer');
 
@@ -18,11 +20,22 @@ import { RouteMatch } from './route-match';
 export class Router {
     private routeRecognizer: any;
     private defaultResult: Result;
+
+    private _visitor: any = null;
+    private get visitor(): any {
+        if(!this.uaId) return null;
+        if(!this._visitor){
+            this._visitor = ua(this.uaId, this.uaUid);
+        }
+        return this._visitor;
+    }
+
+
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    constructor(private routes: IRoutes){
+    constructor(private routes: IRoutes, private uaId: string = null, private uaUid: string = null){
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context
@@ -58,6 +71,8 @@ export class Router {
         return new Promise<IRouteMatch>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
 
+            this.trackRoute(uri.path);
+
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
@@ -75,10 +90,39 @@ export class Router {
             var routeMatch = new RouteMatch(handler, params);
 
             routeMatch.getResults().then(() => {
+                this.trackDocumentHit(routeMatch.primaryResponse); 
                 resolve(routeMatch.toJSON());
             }).catch((err) => {
                 reject(err);  
             });
         });
-    }  
+    }
+
+    trackRoute(path: string){
+        if(!this.visitor) return;
+        this.visitor.pageview(path, (err) => {
+            if(err){
+                console.error('[UA ' + this.uaId + '] Failed to track route:', path, err);
+            }
+        });
+    }
+
+    trackDocumentHit(results: SearchResponse<any>) {
+        console.log('RESULTS.HITS.HITS', results.hits.hits);
+        if(!this.visitor || !results.hits.hits || results.hits.hits.length === 0) return;
+        var hitType = results.hits.total > 1 ? 'Multi' : 'Single';
+        
+        results.hits.hits.forEach((hit) => {
+            var documentType = hit._type;
+            var documentId = hit._id;
+            console.log('TRACK DOCUMENT HIT:', documentType, documentId);
+            this.visitor.event('Document Access', 'Hit', documentType, documentId, (err) => {
+                if(err){
+                    console.error('[UA ' + this.uaId + '] Failed to track hit:', documentType, documentId, err);
+                }else{
+                    console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
+                } 
+            });
+        });
+    }
 }

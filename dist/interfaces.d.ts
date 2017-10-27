@@ -13,6 +13,7 @@ export interface IContext {
     routes: IRoutes;
     sass: string;
     template: string;
+    uaId: string;
 }
 export interface IMenus {
     [name: string]: IMenuItem[];
