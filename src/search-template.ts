@@ -8,6 +8,7 @@ import { SearchParams } from 'elasticsearch';
 
 // Internal imports
 import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery, IJsonable } from './interfaces';
+import { Helpers } from './helpers';
 
 /** Class to construct an Elasticsearch query */
 export class SearchTemplate implements ISearchTemplate, IJsonable {
@@ -34,6 +35,8 @@ export class SearchTemplate implements ISearchTemplate, IJsonable {
         // Implement our JSON
         Object.assign(this, searchTemplate);
 
+        Helpers.register(hbs);
+        
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
     }

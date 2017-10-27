@@ -5,6 +5,7 @@ var elasticsearch_1 = require("elasticsearch");
 var handlebars = require("handlebars");
 var hbs = require('nymag-handlebars')();
 var map_jsonify_1 = require("./map-jsonify");
+var helpers_1 = require("./helpers");
 /** Class that handles matched routes and gets results */
 var RouteMatch = /** @class */ (function () {
     /**
@@ -37,6 +38,7 @@ var RouteMatch = /** @class */ (function () {
         this._esClient = null;
         // Implement route
         Object.assign(this, route);
+        helpers_1.Helpers.register(hbs);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);

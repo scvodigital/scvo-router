@@ -8,6 +8,7 @@ import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, I
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
+import { Helpers } from './helpers';
 
 /** Class that handles matched routes and gets results */
 export class RouteMatch implements IRouteMatch {
@@ -201,6 +202,8 @@ export class RouteMatch implements IRouteMatch {
         // Implement route
         Object.assign(this, route);
 
+        Helpers.register(hbs);
+        
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
