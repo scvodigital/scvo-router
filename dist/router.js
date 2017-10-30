@@ -50,10 +50,10 @@ var Router = /** @class */ (function () {
                 return null;
             if (!this._visitor) {
                 if (this.uaDebug) {
-                    this._visitor = ua(this.uaId, this.uaUid).debug();
+                    this._visitor = ua(this.uaId, this.uaUid, { https: true }).debug();
                 }
                 else {
-                    this._visitor = ua(this.uaId, this.uaUid);
+                    this._visitor = ua(this.uaId, this.uaUid, { https: true });
                 }
             }
             return this._visitor;
