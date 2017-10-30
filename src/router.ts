@@ -25,7 +25,11 @@ export class Router {
     private get visitor(): any {
         if(!this.uaId) return null;
         if(!this._visitor){
-            this._visitor = ua(this.uaId, this.uaUid);
+            if(this.uaDebug){
+                this._visitor = ua(this.uaId, this.uaUid).debug();
+            }else{
+                this._visitor = ua(this.uaId, this.uaUid);
+            }
         }
         return this._visitor;
     }
@@ -35,7 +39,7 @@ export class Router {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    constructor(private routes: IRoutes, private uaId: string = null, private uaUid: string = null){
+    constructor(private routes: IRoutes, private uaId: string = null, private uaUid: string = null, private uaDebug: boolean = false){
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context

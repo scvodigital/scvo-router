@@ -13,13 +13,15 @@ var Router = /** @class */ (function () {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    function Router(routes, uaId, uaUid) {
+    function Router(routes, uaId, uaUid, uaDebug) {
         if (uaId === void 0) { uaId = null; }
         if (uaUid === void 0) { uaUid = null; }
+        if (uaDebug === void 0) { uaDebug = false; }
         var _this = this;
         this.routes = routes;
         this.uaId = uaId;
         this.uaUid = uaUid;
+        this.uaDebug = uaDebug;
         this._visitor = null;
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
@@ -47,7 +49,12 @@ var Router = /** @class */ (function () {
             if (!this.uaId)
                 return null;
             if (!this._visitor) {
-                this._visitor = ua(this.uaId, this.uaUid);
+                if (this.uaDebug) {
+                    this._visitor = ua(this.uaId, this.uaUid).debug();
+                }
+                else {
+                    this._visitor = ua(this.uaId, this.uaUid);
+                }
             }
             return this._visitor;
         },

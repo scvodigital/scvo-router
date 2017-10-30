@@ -5,6 +5,7 @@ export declare class Router {
     private routes;
     private uaId;
     private uaUid;
+    private uaDebug;
     private routeRecognizer;
     private defaultResult;
     private _visitor;
@@ -13,7 +14,7 @@ export declare class Router {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    constructor(routes: IRoutes, uaId?: string, uaUid?: string);
+    constructor(routes: IRoutes, uaId?: string, uaUid?: string, uaDebug?: boolean);
     generateUrl(routeName: string, params: any): any;
     /**
      * Execute the route against a URI to get a matched route and rendered responses
