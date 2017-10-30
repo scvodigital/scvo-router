@@ -100,7 +100,6 @@ var Router = /** @class */ (function () {
     };
     Router.prototype.trackDocumentHit = function (results) {
         var _this = this;
-        console.log('RESULTS.HITS.HITS', results.hits.hits);
         if (!this.visitor || !results.hits.hits || results.hits.hits.length === 0)
             return;
         var hitType = results.hits.total > 1 ? 'Multi' : 'Single';

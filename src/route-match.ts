@@ -50,7 +50,6 @@ export class RouteMatch implements IRouteMatch {
             metaData: this.metaData
         };
         var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
-        console.log('JSON LD:', output);
         return output;
     }
 

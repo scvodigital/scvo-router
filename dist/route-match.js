@@ -70,7 +70,6 @@ var RouteMatch = /** @class */ (function () {
                 metaData: this.metaData
             };
             var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
-            console.log('JSON LD:', output);
             return output;
         },
         enumerable: true,
