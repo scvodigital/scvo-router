@@ -80,7 +80,7 @@ var Router = /** @class */ (function () {
             var handler = firstResult.handler;
             var params = Object.assign({}, firstResult.params);
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
-            var idFriendlyPath = uri.path.replace(/\//g, '_');
+            var idFriendlyPath = uri.pathname.replace(/\//g, '_');
             if (idFriendlyPath.startsWith('_')) {
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
