@@ -19,6 +19,7 @@ export declare class RouteMatch implements IRouteMatch {
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     elasticsearchConfig: ConfigOptions;
+    multipleResults: boolean;
     /**
      * Get the rendered view of the results
      */

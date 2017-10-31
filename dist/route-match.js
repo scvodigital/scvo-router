@@ -28,6 +28,7 @@ var RouteMatch = /** @class */ (function () {
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
+        this.multipleResults = false;
         // Instance specific properties
         this.compiledTemplate = null;
         this.compiledJsonLdTemplate = null;
@@ -196,6 +197,7 @@ var RouteMatch = /** @class */ (function () {
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
             params: this.params,
+            multipleResults: this.multipleResults,
             paging: this.paging
         };
     };

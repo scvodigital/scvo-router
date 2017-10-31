@@ -56,6 +56,7 @@ export interface IRoute {
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
+    multipleResults: boolean;
 }
 
 export interface IRouteMatch extends IRoute {

@@ -15,6 +15,7 @@ export declare class Route implements IRoute, IJsonable {
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
+    multipleResults: boolean;
     toJSON(): IRoute;
     /**
      * Create a Route
