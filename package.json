@@ -1,6 +1,6 @@
 {
   "name": "scvo-router",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Pipes to open Elasticsearch to everything we do",
   "main": "./dist/index.js",
   "scripts": {
@@ -44,6 +44,7 @@
     "handlebars": "^4.0.10",
     "nymag-handlebars": "^3.2.0",
     "route-recognizer": "^0.3.3",
+    "string": "^3.3.3",
     "universal-analytics": "^0.4.15"
   }
 }

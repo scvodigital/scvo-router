@@ -1,4 +1,5 @@
 import * as Url from 'url';
+import * as s from 'string';
 
 export class Helpers {
     static register(hbs: any) {
@@ -27,5 +28,10 @@ export class Helpers {
         if(!Array.isArray(arr)) return null;
         if(arr.length === 0) return null;
         return arr[arr.length - 1];
+    }
+
+    static helper_slugify(str: string) {
+        var slug = s(str).slugify().s;
+        return slug;
     }
 }

@@ -3,4 +3,5 @@ export declare class Helpers {
     static helper_split(str: string, delimiter: string): string[];
     static helper_firstItem(arr: any[]): any;
     static helper_lastItem(arr: any[]): any;
+    static helper_slugify(str: string): any;
 }
