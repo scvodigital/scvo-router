@@ -26,6 +26,7 @@ export declare class RouteMatch implements IRouteMatch {
      */
     readonly rendered: string;
     readonly jsonLd: string;
+    readonly defaultParamsCopy: any;
     private compiledTemplate;
     private compiledJsonLdTemplate;
     private orderMap;

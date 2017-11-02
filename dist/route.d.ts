@@ -18,6 +18,7 @@ export declare class Route implements IRoute, IJsonable {
     multipleResults: boolean;
     defaultParams: any;
     toJSON(): IRoute;
+    readonly defaultParamsCopy: any;
     /**
      * Create a Route
      * @param {IRoute} [route] - Optional JSON that contains information about the route

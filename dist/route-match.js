@@ -77,6 +77,15 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RouteMatch.prototype, "defaultParamsCopy", {
+        get: function () {
+            var copy = {};
+            Object.assign(copy, this.defaultParams);
+            return copy;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(RouteMatch.prototype, "primaryQuery", {
         // Build our primary query
         get: function () {

@@ -48,6 +48,12 @@ export class Route implements IRoute, IJsonable {
         };
     }
 
+    get defaultParamsCopy(): any {
+        var copy = {};
+        Object.assign(copy, this.defaultParams);
+        return copy;
+    }
+
     /**
      * Create a Route 
      * @param {IRoute} [route] - Optional JSON that contains information about the route

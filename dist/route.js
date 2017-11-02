@@ -54,6 +54,15 @@ var Route = /** @class */ (function () {
             defaultParams: this.defaultParams,
         };
     };
+    Object.defineProperty(Route.prototype, "defaultParamsCopy", {
+        get: function () {
+            var copy = {};
+            Object.assign(copy, this.defaultParams);
+            return copy;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Route;
 }());
 exports.Route = Route;

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var url = require("url");
 var querystring = require("querystring");
+var deepExtend = require("deep-extend");
 var ua = require("universal-analytics");
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 var RouteRecognizer = require('route-recognizer');
@@ -78,13 +79,15 @@ var Router = /** @class */ (function () {
             var recognizedRoutes = _this.routeRecognizer.recognize(uri.path) || [_this.defaultResult];
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
-            var params = Object.assign(handler.defaultParams, firstResult.params);
+            var params = {};
+            Object.assign(params, handler.defaultParams);
+            Object.assign(params, firstResult.params);
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.pathname.replace(/\//g, '_');
             if (idFriendlyPath.startsWith('_')) {
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
-            Object.assign(params, { query: query, path: idFriendlyPath });
+            deepExtend(params, { query: query, path: idFriendlyPath });
             //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
             var routeMatch = new route_match_1.RouteMatch(handler, params);
             routeMatch.getResults().then(function () {

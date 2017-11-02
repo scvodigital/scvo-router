@@ -55,6 +55,12 @@ export class RouteMatch implements IRouteMatch {
         return output;
     }
 
+    get defaultParamsCopy(): any {
+        var copy = {};
+        Object.assign(copy, this.defaultParams);
+        return copy;
+    }
+
     // Instance specific properties
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
     private compiledJsonLdTemplate: (obj: any, hbs?: any) => string = null;

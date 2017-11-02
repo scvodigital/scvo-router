@@ -7,6 +7,7 @@ import * as querystring from 'querystring';
 // Module imports
 import { Results, Result } from 'route-recognizer';
 import { SearchResponse } from 'elasticsearch';
+import * as deepExtend from 'deep-extend';
 import * as ua from 'universal-analytics';
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 const RouteRecognizer = require('route-recognizer');
@@ -33,7 +34,6 @@ export class Router {
         }
         return this._visitor;
     }
-
 
     /**
      * Create a Router for matching routes and rendering responses
@@ -80,14 +80,17 @@ export class Router {
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
-            var params = Object.assign(handler.defaultParams, firstResult.params);
+
+            var params = {};
+            Object.assign(params, handler.defaultParams);
+            Object.assign(params, firstResult.params);
+
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.pathname.replace(/\//g, '_');
             if(idFriendlyPath.startsWith('_')){
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
-
-            Object.assign(params, { query: query, path: idFriendlyPath });
+            deepExtend(params, { query: query, path: idFriendlyPath });
 
             //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
 
