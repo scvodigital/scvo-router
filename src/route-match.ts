@@ -27,6 +27,7 @@ export class RouteMatch implements IRouteMatch {
     supplimentaryResponses: ISearchResponseSet = {};
     elasticsearchConfig: ConfigOptions = null;
     multipleResults: boolean = false;
+    defaultParams: any = {};
 
     /**
      * Get the rendered view of the results
@@ -190,7 +191,8 @@ export class RouteMatch implements IRouteMatch {
             rendered: this.rendered,
             params: this.params,
             multipleResults: this.multipleResults,
-            paging: this.paging
+            paging: this.paging,
+            defaultParams: this.defaultParams,
         };
     }
 

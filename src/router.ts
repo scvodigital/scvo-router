@@ -80,7 +80,7 @@ export class Router {
             var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
             var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
             var handler: Route = <Route>firstResult.handler;
-            var params = Object.assign({}, firstResult.params);
+            var params = Object.assign(handler.defaultParams, firstResult.params);
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.pathname.replace(/\//g, '_');
             if(idFriendlyPath.startsWith('_')){

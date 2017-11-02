@@ -20,6 +20,7 @@ export declare class RouteMatch implements IRouteMatch {
     supplimentaryResponses: ISearchResponseSet;
     elasticsearchConfig: ConfigOptions;
     multipleResults: boolean;
+    defaultParams: any;
     /**
      * Get the rendered view of the results
      */

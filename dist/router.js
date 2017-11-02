@@ -78,7 +78,7 @@ var Router = /** @class */ (function () {
             var recognizedRoutes = _this.routeRecognizer.recognize(uri.path) || [_this.defaultResult];
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
-            var params = Object.assign({}, firstResult.params);
+            var params = Object.assign(handler.defaultParams, firstResult.params);
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.pathname.replace(/\//g, '_');
             if (idFriendlyPath.startsWith('_')) {

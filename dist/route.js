@@ -24,6 +24,7 @@ var Route = /** @class */ (function () {
         this.supplimentarySearchTemplates = {};
         this.elasticsearchConfig = null;
         this.multipleResults = false;
+        this.defaultParams = {};
         if (route) {
             // If given an IRoute, implement it
             Object.assign(this, route);
@@ -49,7 +50,8 @@ var Route = /** @class */ (function () {
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig,
-            multipleResults: this.multipleResults
+            multipleResults: this.multipleResults,
+            defaultParams: this.defaultParams,
         };
     };
     return Route;
