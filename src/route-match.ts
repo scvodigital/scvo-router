@@ -18,6 +18,7 @@ export class RouteMatch implements IRouteMatch {
     metaData: any = {};
     pattern: string|INamedPattern = null;
     template: string = '';
+    titleTemplate: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
     jsonLdTemplate: string = '';
@@ -44,6 +45,18 @@ export class RouteMatch implements IRouteMatch {
         return output;
     }
 
+    get title(): string {
+        var routeTemplateData: any = {
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: this.supplimentaryResponses,
+            params: this.params,
+            metaData: this.metaData,
+            paging: this.paging,
+        };
+        var output = this.compiledTitleTemplate(routeTemplateData);
+        return output;
+    }
+    
     get jsonLd(): string {
         var jsonLdTemplateData: any = {
             primaryResponse: this.primaryResponse,
@@ -63,6 +76,7 @@ export class RouteMatch implements IRouteMatch {
 
     // Instance specific properties
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
+    private compiledTitleTemplate: (obj: any, hbs?: any) => string = null;
     private compiledJsonLdTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
@@ -185,6 +199,7 @@ export class RouteMatch implements IRouteMatch {
             metaData: this.metaData,
             pattern: this.pattern,
             template: this.template,
+            titleTemplate: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             jsonLdTemplate: this.jsonLdTemplate,
@@ -195,6 +210,7 @@ export class RouteMatch implements IRouteMatch {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
+            title: this.title,
             params: this.params,
             multipleResults: this.multipleResults,
             paging: this.paging,
@@ -215,6 +231,7 @@ export class RouteMatch implements IRouteMatch {
         
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
+        this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
 

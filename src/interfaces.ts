@@ -50,6 +50,7 @@ export interface IRoute {
     metaData: any;
     pattern: string|INamedPattern;
     template: string;
+    titleTemplate: string;
     queryDelimiter: string;
     queryEquals: string;
     jsonLdTemplate: string;
@@ -70,6 +71,7 @@ export interface IRouteMatch extends IRoute {
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;
+    title: string;
     paging: IPaging;
 }
 

@@ -11,6 +11,7 @@ export declare class RouteMatch implements IRouteMatch {
     metaData: any;
     pattern: string | INamedPattern;
     template: string;
+    titleTemplate: string;
     queryDelimiter: string;
     queryEquals: string;
     jsonLdTemplate: string;
@@ -25,9 +26,11 @@ export declare class RouteMatch implements IRouteMatch {
      * Get the rendered view of the results
      */
     readonly rendered: string;
+    readonly title: string;
     readonly jsonLd: string;
     readonly defaultParamsCopy: any;
     private compiledTemplate;
+    private compiledTitleTemplate;
     private compiledJsonLdTemplate;
     private orderMap;
     private _primaryQuery;

@@ -21,6 +21,7 @@ export class Route implements IRoute, IJsonable {
                 {{{_view}}}
             {{/forEach}}
         {{/and}}`;
+    titleTemplate: string = '';
     jsonLdTemplate: string = '';
     primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
@@ -39,6 +40,7 @@ export class Route implements IRoute, IJsonable {
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             template: this.template,
+            titleTemplate: this.titleTemplate,
             jsonLdTemplate: this.jsonLdTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,

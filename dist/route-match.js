@@ -21,6 +21,7 @@ var RouteMatch = /** @class */ (function () {
         this.metaData = {};
         this.pattern = null;
         this.template = '';
+        this.titleTemplate = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
         this.jsonLdTemplate = '';
@@ -32,6 +33,7 @@ var RouteMatch = /** @class */ (function () {
         this.defaultParams = {};
         // Instance specific properties
         this.compiledTemplate = null;
+        this.compiledTitleTemplate = null;
         this.compiledJsonLdTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
@@ -43,6 +45,7 @@ var RouteMatch = /** @class */ (function () {
         helpers_1.Helpers.register(hbs);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
+        this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
     Object.defineProperty(RouteMatch.prototype, "rendered", {
@@ -58,6 +61,21 @@ var RouteMatch = /** @class */ (function () {
                 paging: this.paging,
             };
             var output = this.compiledTemplate(routeTemplateData);
+            return output;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RouteMatch.prototype, "title", {
+        get: function () {
+            var routeTemplateData = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                paging: this.paging,
+            };
+            var output = this.compiledTitleTemplate(routeTemplateData);
             return output;
         },
         enumerable: true,
@@ -196,6 +214,7 @@ var RouteMatch = /** @class */ (function () {
             metaData: this.metaData,
             pattern: this.pattern,
             template: this.template,
+            titleTemplate: this.template,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             jsonLdTemplate: this.jsonLdTemplate,
@@ -206,6 +225,7 @@ var RouteMatch = /** @class */ (function () {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
+            title: this.title,
             params: this.params,
             multipleResults: this.multipleResults,
             paging: this.paging,
