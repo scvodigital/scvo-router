@@ -41,6 +41,11 @@ var Helpers = /** @class */ (function () {
         return slug;
     };
     Helpers.helper_querystringify = function (obj) {
+        if (obj === void 0) { obj = {}; }
+        var args = arguments[1];
+        if (args && args.hash) {
+            Object.assign(obj, args.hash);
+        }
         var qs = querystring.stringify(obj);
         return qs;
     };

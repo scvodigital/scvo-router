@@ -36,8 +36,18 @@ export class Helpers {
         return slug;
     }
 
-    static helper_querystringify(obj: any) {
+    static helper_querystringify(obj: any = {}) {
+        var args: IHelperArgs = arguments[1];
+        if(args && args.hash){
+            Object.assign(obj, args.hash);
+        }
         var qs = querystring.stringify(obj);
         return qs;
     }
+}
+
+export interface IHelperArgs {
+    name: string;
+    hash: any;
+    data: any;
 }
