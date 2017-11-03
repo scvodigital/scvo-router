@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var querystring = require("querystring");
 var s = require("string");
 var Helpers = /** @class */ (function () {
     function Helpers() {
@@ -38,6 +39,10 @@ var Helpers = /** @class */ (function () {
     Helpers.helper_slugify = function (str) {
         var slug = s(str).slugify().s;
         return slug;
+    };
+    Helpers.helper_querystringify = function (obj) {
+        var qs = querystring.stringify(obj);
+        return qs;
     };
     return Helpers;
 }());

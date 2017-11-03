@@ -4,4 +4,5 @@ export declare class Helpers {
     static helper_firstItem(arr: any[]): any;
     static helper_lastItem(arr: any[]): any;
     static helper_slugify(str: string): any;
+    static helper_querystringify(obj: any): string;
 }

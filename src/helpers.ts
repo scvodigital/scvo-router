@@ -1,4 +1,5 @@
 import * as Url from 'url';
+import * as querystring from 'querystring';
 import * as s from 'string';
 
 export class Helpers {
@@ -33,5 +34,10 @@ export class Helpers {
     static helper_slugify(str: string) {
         var slug = s(str).slugify().s;
         return slug;
+    }
+
+    static helper_querystringify(obj: any) {
+        var qs = querystring.stringify(obj);
+        return qs;
     }
 }
