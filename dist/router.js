@@ -37,11 +37,22 @@ var Router = /** @class */ (function () {
             }
             else {
                 // Any other route needs to be added to our RouteRecognizer
-                var routeDef = {
-                    path: route.pattern,
-                    handler: route
-                };
-                _this.routeRecognizer.add([routeDef], { as: routeName });
+                if (typeof route.pattern === 'string') {
+                    var routeDef = {
+                        path: route.pattern,
+                        handler: route
+                    };
+                    _this.routeRecognizer.add([routeDef], { as: routeName });
+                }
+                else {
+                    Object.keys(route.pattern).forEach(function (suffix) {
+                        var routeDef = {
+                            path: route.pattern[suffix],
+                            handler: route
+                        };
+                        _this.routeRecognizer.add([routeDef], { as: routeName + '_' + suffix });
+                    });
+                }
             }
         });
     }

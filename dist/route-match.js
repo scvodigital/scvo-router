@@ -52,7 +52,7 @@ var RouteMatch = /** @class */ (function () {
         get: function () {
             var routeTemplateData = {
                 primaryResponse: this.primaryResponse,
-                supplimentaryResponse: this.supplimentaryResponses,
+                supplimentaryResponses: this.supplimentaryResponses,
                 params: this.params,
                 metaData: this.metaData,
                 paging: this.paging,
@@ -219,6 +219,7 @@ var RouteMatch = /** @class */ (function () {
     RouteMatch.prototype.getResults = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            console.log('#### ROUTE NAME:', _this.name, '####');
             // Perform our primary search
             _this.esClient.search(_this.primaryQuery, function (err, primaryResponse) {
                 if (err)

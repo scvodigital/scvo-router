@@ -13,7 +13,7 @@ import * as ua from 'universal-analytics';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IRoutes, IRouteMatch, IContext, ILinkTag, IMetaTag } from './interfaces';
+import { IRoutes, IRouteMatch, IContext, ILinkTag, IMetaTag, INamedPattern } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
@@ -52,11 +52,21 @@ export class Router {
                 this.defaultResult = { handler: route, isDynamic: true, params: {} };
             }else{
                 // Any other route needs to be added to our RouteRecognizer
-                var routeDef = {
-                    path: route.pattern,
-                    handler: route
-                };
-                this.routeRecognizer.add([routeDef], { as: routeName });
+                if(typeof route.pattern === 'string'){
+                    var routeDef = {
+                        path: route.pattern,
+                        handler: route
+                    };
+                    this.routeRecognizer.add([routeDef], { as: routeName });
+                }else{
+                    Object.keys(route.pattern).forEach((suffix: string) => {
+                        var routeDef = {
+                            path: route.pattern[suffix],
+                            handler: route
+                        };
+                        this.routeRecognizer.add([routeDef], { as: routeName + '_' + suffix });
+                    });
+                }
             }
         });
     }

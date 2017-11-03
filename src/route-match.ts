@@ -4,7 +4,7 @@ import * as handlebars from 'handlebars';
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
@@ -16,7 +16,7 @@ export class RouteMatch implements IRouteMatch {
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
     metaData: any = {};
-    pattern: string = null;
+    pattern: string|INamedPattern = null;
     template: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
@@ -35,7 +35,7 @@ export class RouteMatch implements IRouteMatch {
     get rendered(): string {
         var routeTemplateData: any = {
             primaryResponse: this.primaryResponse,
-            supplimentaryResponse: this.supplimentaryResponses,
+            supplimentaryResponses: this.supplimentaryResponses,
             params: this.params,
             metaData: this.metaData,
             paging: this.paging,
@@ -224,6 +224,7 @@ export class RouteMatch implements IRouteMatch {
      */
     getResults(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
+            console.log('#### ROUTE NAME:', this.name, '####'); 
             // Perform our primary search
             this.esClient.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
                 if(err) return reject(err);

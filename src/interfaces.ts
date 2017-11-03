@@ -48,7 +48,7 @@ export interface IRoute {
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     metaData: any;
-    pattern: string;
+    pattern: string|INamedPattern;
     template: string;
     queryDelimiter: string;
     queryEquals: string;
@@ -58,6 +58,10 @@ export interface IRoute {
     elasticsearchConfig: ConfigOptions;
     multipleResults: boolean;
     defaultParams: any;
+}
+
+export interface INamedPattern {
+    [suffix: string]: string;
 }
 
 export interface IRouteMatch extends IRoute {

@@ -2,7 +2,7 @@
 import { ConfigOptions } from 'elasticsearch';
 
 // Internal imports
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern } from './interfaces';
 import { SearchTemplate } from './search-template';
 import { MapJsonify } from './map-jsonify';
 
@@ -12,7 +12,7 @@ export class Route implements IRoute, IJsonable {
     linkTags: ILinkTag[] = null;
     metaTags: IMetaTag[] = null;
     metaData: any = {};
-    pattern: string = '';
+    pattern: string|INamedPattern = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
     template: string = `
