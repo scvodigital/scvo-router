@@ -128,7 +128,7 @@ var Router = /** @class */ (function () {
             var documentType = hit._type;
             var documentId = hit._id;
             console.log('TRACK DOCUMENT HIT:', documentType, documentId);
-            _this.visitor.event('Document Access', 'Hit', documentType, documentId, function (err) {
+            _this.visitor.event('Document Hit', documentType, documentId, function (err) {
                 if (err) {
                     console.error('[UA ' + _this.uaId + '] Failed to track hit:', documentType, documentId, err);
                 }

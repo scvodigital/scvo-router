@@ -132,7 +132,7 @@ export class Router {
             var documentType = hit._type;
             var documentId = hit._id;
             console.log('TRACK DOCUMENT HIT:', documentType, documentId);
-            this.visitor.event('Document Access', 'Hit', documentType, documentId, (err) => {
+            this.visitor.event('Document Hit', documentType, documentId, (err) => {
                 if(err){
                     console.error('[UA ' + this.uaId + '] Failed to track hit:', documentType, documentId, err);
                 }else{
