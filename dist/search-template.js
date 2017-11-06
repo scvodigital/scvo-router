@@ -18,7 +18,7 @@ var SearchTemplate = /** @class */ (function () {
         this.compiledTemplate = null;
         // Implement our JSON
         Object.assign(this, searchTemplate);
-        helpers_1.Helpers.register(hbs);
+        helpers_1.Helpers.register(handlebars);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
     }

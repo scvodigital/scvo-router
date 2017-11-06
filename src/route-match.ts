@@ -231,8 +231,10 @@ export class RouteMatch implements IRouteMatch {
         // Implement route
         Object.assign(this, route);
 
-        Helpers.register(hbs);
-        hbs.registerPartial(context.templatePartials);
+        Helpers.register(handlebars);
+        Object.keys(context.templatePartials).forEach((name: string) => {
+            handlebars.registerPartial(name, context.templatePartials[name]);
+        });
 
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);

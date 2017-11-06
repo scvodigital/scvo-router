@@ -35,7 +35,7 @@ export class SearchTemplate implements ISearchTemplate, IJsonable {
         // Implement our JSON
         Object.assign(this, searchTemplate);
 
-        Helpers.register(hbs);
+        Helpers.register(handlebars);
         
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);

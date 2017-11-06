@@ -43,8 +43,10 @@ var RouteMatch = /** @class */ (function () {
         this._esClient = null;
         // Implement route
         Object.assign(this, route);
-        helpers_1.Helpers.register(hbs);
-        hbs.registerPartial(context.templatePartials);
+        helpers_1.Helpers.register(handlebars);
+        Object.keys(context.templatePartials).forEach(function (name) {
+            handlebars.registerPartial(name, context.templatePartials[name]);
+        });
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
         this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);

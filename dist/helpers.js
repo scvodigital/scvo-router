@@ -49,9 +49,10 @@ var Helpers = /** @class */ (function () {
         var qs = querystring.stringify(obj);
         return qs;
     };
-    Helpers.helper_ngJsonFriendlify = function (str) {
-        str = str.replace(/\{/g, "{{ '{' }}").replace(/\}/g, "{{ '}' }}");
-        return str;
+    Helpers.helper_ngStringify = function (obj) {
+        var json = JSON.stringify(obj, null, 4);
+        json = json.replace(/\{/g, "{{ '{' }}");
+        return json;
     };
     Helpers.helper_contains = function (arr, val) {
         var contains = arr.indexOf(val) > -1;

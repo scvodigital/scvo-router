@@ -45,9 +45,10 @@ export class Helpers {
         return qs;
     }
 
-    static helper_ngJsonFriendlify(str: string) {
-        str = str.replace(/\{/g, "{{ '{' }}").replace(/\}/g, "{{ '}' }}");
-        return str;
+    static helper_ngStringify(obj: any) {
+        var json = JSON.stringify(obj, null, 4);
+        json = json.replace(/\{/g, "{{ '{' }}");
+        return json;
     }
 
     static helper_contains(arr: any[], val: any) {
