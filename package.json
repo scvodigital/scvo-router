@@ -1,6 +1,6 @@
 {
   "name": "scvo-router",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "Pipes to open Elasticsearch to everything we do",
   "main": "./dist/index.js",
   "scripts": {

@@ -44,6 +44,16 @@ export class Helpers {
         var qs = querystring.stringify(obj);
         return qs;
     }
+
+    static helper_ngJsonFriendlify(str: string) {
+        str = str.replace(/\{/g, "{{ '{' }}").replace(/\}/g, "{{ '}' }}");
+        return str;
+    }
+
+    static helper_contains(arr: any[], val: any) {
+        var contains = arr.indexOf(val) > -1;
+        return contains;
+    }
 }
 
 export interface IHelperArgs {
