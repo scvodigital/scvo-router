@@ -232,7 +232,8 @@ export class RouteMatch implements IRouteMatch {
         Object.assign(this, route);
 
         Helpers.register(hbs);
-        
+        hbs.registerPartial(context.templatePartials);
+
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
         this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);

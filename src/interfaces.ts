@@ -17,6 +17,11 @@ export interface IContext {
     sass: string;
     template: string;
     uaId: string;
+    templatePartials: IPartials;
+}
+
+export interface IPartials {
+    [name: string]: string;
 }
 
 export interface IMenus {

@@ -44,6 +44,7 @@ var RouteMatch = /** @class */ (function () {
         // Implement route
         Object.assign(this, route);
         helpers_1.Helpers.register(hbs);
+        hbs.registerPartial(context.templatePartials);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
         this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
