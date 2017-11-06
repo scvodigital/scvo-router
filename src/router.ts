@@ -39,13 +39,13 @@ export class Router {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    constructor(private routes: IRoutes, private uaId: string = null, private uaUid: string = null, private uaDebug: boolean = false){
+    constructor(private context: IContext, private uaId: string = null, private uaUid: string = null, private uaDebug: boolean = false){
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context
-        Object.keys(routes).forEach((routeName: string) => {
+        Object.keys(context.routes).forEach((routeName: string) => {
             // Create a new Route object
-            var route: Route = new Route(routes[routeName]);
+            var route: Route = new Route(context.routes[routeName], context);
             route.name = routeName;        
             if(routeName === '_default'){
                 // Treat routes called `_default` as the default handler
@@ -104,7 +104,7 @@ export class Router {
 
             //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
 
-            var routeMatch = new RouteMatch(handler, params);
+            var routeMatch = new RouteMatch(handler, params, this.context);
 
             routeMatch.getResults().then(() => {
                 this.trackDocumentHit(routeMatch.primaryResponse); 

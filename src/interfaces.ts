@@ -59,6 +59,7 @@ export interface IRoute {
     elasticsearchConfig: ConfigOptions;
     multipleResults: boolean;
     defaultParams: any;
+    context: IContext;
 }
 
 export interface INamedPattern {

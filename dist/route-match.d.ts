@@ -1,10 +1,11 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
 export declare class RouteMatch implements IRouteMatch {
     params: any;
+    context: IContext;
     name: string;
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
@@ -46,7 +47,7 @@ export declare class RouteMatch implements IRouteMatch {
      * @param {Route} route - The route that has been matched
      * @param {any} params - The parameters that the route recognizer has found
      */
-    constructor(route: Route, params: any);
+    constructor(route: Route, params: any, context: IContext);
     /**
      * Get primary and supplimentary results for this route match
      * @return {Promise<void>} A promise to tell when results have been fetched

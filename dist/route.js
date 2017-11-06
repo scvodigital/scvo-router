@@ -8,9 +8,10 @@ var Route = /** @class */ (function () {
      * Create a Route
      * @param {IRoute} [route] - Optional JSON that contains information about the route
      */
-    function Route(route) {
+    function Route(route, context) {
         if (route === void 0) { route = null; }
         var _this = this;
+        this.context = context;
         this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
@@ -54,6 +55,7 @@ var Route = /** @class */ (function () {
             elasticsearchConfig: this.elasticsearchConfig,
             multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
+            context: this.context
         };
     };
     Object.defineProperty(Route.prototype, "defaultParamsCopy", {

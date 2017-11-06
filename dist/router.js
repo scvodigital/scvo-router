@@ -14,12 +14,12 @@ var Router = /** @class */ (function () {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    function Router(routes, uaId, uaUid, uaDebug) {
+    function Router(context, uaId, uaUid, uaDebug) {
         if (uaId === void 0) { uaId = null; }
         if (uaUid === void 0) { uaUid = null; }
         if (uaDebug === void 0) { uaDebug = false; }
         var _this = this;
-        this.routes = routes;
+        this.context = context;
         this.uaId = uaId;
         this.uaUid = uaUid;
         this.uaDebug = uaDebug;
@@ -27,9 +27,9 @@ var Router = /** @class */ (function () {
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
         // Loop through each route in the current context
-        Object.keys(routes).forEach(function (routeName) {
+        Object.keys(context.routes).forEach(function (routeName) {
             // Create a new Route object
-            var route = new route_1.Route(routes[routeName]);
+            var route = new route_1.Route(context.routes[routeName], context);
             route.name = routeName;
             if (routeName === '_default') {
                 // Treat routes called `_default` as the default handler
@@ -100,7 +100,7 @@ var Router = /** @class */ (function () {
             }
             deepExtend(params, { query: query, path: idFriendlyPath });
             //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
-            var routeMatch = new route_match_1.RouteMatch(handler, params);
+            var routeMatch = new route_match_1.RouteMatch(handler, params, _this.context);
             routeMatch.getResults().then(function () {
                 _this.trackDocumentHit(routeMatch.primaryResponse);
                 resolve(routeMatch.toJSON());

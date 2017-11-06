@@ -13,8 +13,9 @@ var RouteMatch = /** @class */ (function () {
      * @param {Route} route - The route that has been matched
      * @param {any} params - The parameters that the route recognizer has found
      */
-    function RouteMatch(route, params) {
+    function RouteMatch(route, params, context) {
         this.params = params;
+        this.context = context;
         this.name = '_default';
         this.linkTags = null;
         this.metaTags = null;
@@ -59,6 +60,7 @@ var RouteMatch = /** @class */ (function () {
                 params: this.params,
                 metaData: this.metaData,
                 paging: this.paging,
+                context: this.context,
             };
             var output = this.compiledTemplate(routeTemplateData);
             return output;
@@ -74,6 +76,7 @@ var RouteMatch = /** @class */ (function () {
                 params: this.params,
                 metaData: this.metaData,
                 paging: this.paging,
+                context: this.context,
             };
             var output = this.compiledTitleTemplate(routeTemplateData);
             return output;
@@ -87,7 +90,8 @@ var RouteMatch = /** @class */ (function () {
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponses: this.supplimentaryResponses,
                 params: this.params,
-                metaData: this.metaData
+                metaData: this.metaData,
+                context: this.context,
             };
             var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
             return output;
@@ -230,6 +234,7 @@ var RouteMatch = /** @class */ (function () {
             multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
+            context: this.context,
         };
     };
     /**

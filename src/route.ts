@@ -2,7 +2,7 @@
 import { ConfigOptions } from 'elasticsearch';
 
 // Internal imports
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern, IContext } from './interfaces';
 import { SearchTemplate } from './search-template';
 import { MapJsonify } from './map-jsonify';
 
@@ -47,6 +47,7 @@ export class Route implements IRoute, IJsonable {
             elasticsearchConfig: this.elasticsearchConfig,
             multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
+            context: this.context
         };
     }
 
@@ -60,7 +61,7 @@ export class Route implements IRoute, IJsonable {
      * Create a Route 
      * @param {IRoute} [route] - Optional JSON that contains information about the route
      */
-    constructor(route: IRoute = null){
+    constructor(route: IRoute = null, public context: IContext){
         if(route){
             // If given an IRoute, implement it
             Object.assign(this, route);

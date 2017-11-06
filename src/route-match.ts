@@ -4,7 +4,7 @@ import * as handlebars from 'handlebars';
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
@@ -40,6 +40,7 @@ export class RouteMatch implements IRouteMatch {
             params: this.params,
             metaData: this.metaData,
             paging: this.paging,
+            context: this.context,
         };
         var output = this.compiledTemplate(routeTemplateData);
         return output;
@@ -52,6 +53,7 @@ export class RouteMatch implements IRouteMatch {
             params: this.params,
             metaData: this.metaData,
             paging: this.paging,
+            context: this.context,
         };
         var output = this.compiledTitleTemplate(routeTemplateData);
         return output;
@@ -62,7 +64,8 @@ export class RouteMatch implements IRouteMatch {
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: this.supplimentaryResponses,
             params: this.params,
-            metaData: this.metaData
+            metaData: this.metaData,
+            context: this.context,
         };
         var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
         return output;
@@ -215,6 +218,7 @@ export class RouteMatch implements IRouteMatch {
             multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
+            context: this.context,
         };
     }
 
@@ -223,7 +227,7 @@ export class RouteMatch implements IRouteMatch {
      * @param {Route} route - The route that has been matched
      * @param {any} params - The parameters that the route recognizer has found
      */
-    constructor(route: Route, public params: any){
+    constructor(route: Route, public params: any, public context: IContext){
         // Implement route
         Object.assign(this, route);
 
