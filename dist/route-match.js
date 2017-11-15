@@ -172,9 +172,9 @@ var RouteMatch = /** @class */ (function () {
             var sort = this.primaryQuery.body.sort || null;
             var totalResults = this.primaryResponse.hits.total || 0;
             var totalPages = Math.floor(totalResults / size) + 1;
-            var currentPage = (from / size) + 1;
-            var nextPage = currentPage < totalPages ? currentPage + 1 : null;
-            var prevPage = currentPage > 1 ? currentPage - 1 : null;
+            var currentPage = Math.floor(from / size) + 1;
+            var nextPage = currentPage < totalPages ? Math.floor(currentPage + 1) : null;
+            var prevPage = currentPage > 1 ? Math.floor(currentPage - 1) : null;
             // Setup an array (range) of 10 numbers surrounding our current page
             var pageRange = Array.from(new Array(9).keys(), function (p, i) { return i + (currentPage - 4); });
             // Move range forward until none of the numbers are less than 1
@@ -191,7 +191,7 @@ var RouteMatch = /** @class */ (function () {
             pageRange.forEach(function (page) {
                 var distance = Math.abs(currentPage - page);
                 pages.push({
-                    pageNumber: page,
+                    pageNumber: Math.floor(page),
                     distance: distance,
                 });
             });
@@ -206,6 +206,7 @@ var RouteMatch = /** @class */ (function () {
                 prevPage: prevPage,
                 pageRange: pages
             };
+            console.log('PAGING:', JSON.stringify(paging, null, 4));
             return paging;
         },
         enumerable: true,

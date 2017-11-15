@@ -144,10 +144,10 @@ export class RouteMatch implements IRouteMatch {
         var sort = this.primaryQuery.body.sort || null;
         var totalResults = this.primaryResponse.hits.total || 0;
         var totalPages = Math.floor(totalResults / size) + 1;
-        var currentPage = (from / size) + 1;
+        var currentPage = Math.floor(from / size) + 1;
 
-        var nextPage = currentPage < totalPages ? currentPage + 1 : null;
-        var prevPage = currentPage > 1 ? currentPage - 1 : null;
+        var nextPage = currentPage < totalPages ? Math.floor(currentPage + 1) : null;
+        var prevPage = currentPage > 1 ? Math.floor(currentPage - 1) : null;
 
         // Setup an array (range) of 10 numbers surrounding our current page
         var pageRange = Array.from(new Array(9).keys(), (p, i) => i + (currentPage - 4));
@@ -170,7 +170,7 @@ export class RouteMatch implements IRouteMatch {
         pageRange.forEach((page: number) => {
             var distance: number = Math.abs(currentPage - page);
             pages.push({
-                pageNumber: page,
+                pageNumber: Math.floor(page),
                 distance: distance,
             });
         });
@@ -189,6 +189,7 @@ export class RouteMatch implements IRouteMatch {
 
             pageRange: pages
         };
+        console.log('PAGING:', JSON.stringify(paging, null, 4));
         return paging;
     }
 
