@@ -8,6 +8,7 @@ export interface IContext {
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     scriptTags: IScriptTag[];
+    javascript: string;
     metaData: any;
     menus: IMenus;
     routes: IRoutes;
