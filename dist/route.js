@@ -27,6 +27,7 @@ var Route = /** @class */ (function () {
         this.elasticsearchConfig = null;
         this.multipleResults = false;
         this.defaultParams = {};
+        this.javascript = '';
         if (route) {
             // If given an IRoute, implement it
             Object.assign(this, route);
@@ -55,6 +56,7 @@ var Route = /** @class */ (function () {
             elasticsearchConfig: this.elasticsearchConfig,
             multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
+            javascript: this.javascript,
             context: this.context
         };
     };

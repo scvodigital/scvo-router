@@ -28,6 +28,7 @@ export class Route implements IRoute, IJsonable {
     elasticsearchConfig: ConfigOptions = null;
     multipleResults: boolean = false;
     defaultParams: any = {};
+    javascript: string = '';
 
     public toJSON(): IRoute{
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
@@ -47,6 +48,7 @@ export class Route implements IRoute, IJsonable {
             elasticsearchConfig: this.elasticsearchConfig,
             multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
+            javascript: this.javascript,
             context: this.context
         };
     }

@@ -29,6 +29,7 @@ export class RouteMatch implements IRouteMatch {
     elasticsearchConfig: ConfigOptions = null;
     multipleResults: boolean = false;
     defaultParams: any = {};
+    javascript: string = '';
 
     /**
      * Get the rendered view of the results
@@ -218,6 +219,7 @@ export class RouteMatch implements IRouteMatch {
             multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
+            javascript: this.javascript,
             context: this.context,
         };
     }

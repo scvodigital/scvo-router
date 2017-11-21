@@ -57,6 +57,7 @@ export interface IRoute {
     multipleResults: boolean;
     defaultParams: any;
     context: IContext;
+    javascript: string;
 }
 export interface INamedPattern {
     [suffix: string]: string;
