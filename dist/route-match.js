@@ -206,7 +206,6 @@ var RouteMatch = /** @class */ (function () {
                 prevPage: prevPage,
                 pageRange: pages
             };
-            console.log('PAGING:', JSON.stringify(paging, null, 4));
             return paging;
         },
         enumerable: true,

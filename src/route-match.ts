@@ -189,7 +189,6 @@ export class RouteMatch implements IRouteMatch {
 
             pageRange: pages
         };
-        console.log('PAGING:', JSON.stringify(paging, null, 4));
         return paging;
     }
 
