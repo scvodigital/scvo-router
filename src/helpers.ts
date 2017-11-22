@@ -60,6 +60,14 @@ export class Helpers {
         var obj = JSON.parse(str);
         return obj;
     }
+
+    static helper_keyValue(obj: any) {
+        var props = [];
+        Object.keys(obj).forEach((key: string) => {
+            props.push({ key: key, value: obj[key] });
+        });
+        return props;
+    }
 }
 
 export interface IHelperArgs {

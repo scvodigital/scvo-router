@@ -62,6 +62,13 @@ var Helpers = /** @class */ (function () {
         var obj = JSON.parse(str);
         return obj;
     };
+    Helpers.helper_keyValue = function (obj) {
+        var props = [];
+        Object.keys(obj).forEach(function (key) {
+            props.push({ key: key, value: obj[key] });
+        });
+        return props;
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;
