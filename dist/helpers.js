@@ -58,6 +58,10 @@ var Helpers = /** @class */ (function () {
         var contains = arr.indexOf(val) > -1;
         return contains;
     };
+    Helpers.helper_parse = function (str) {
+        var obj = JSON.parse(str);
+        return obj;
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;

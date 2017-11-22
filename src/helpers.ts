@@ -55,6 +55,11 @@ export class Helpers {
         var contains = arr.indexOf(val) > -1;
         return contains;
     }
+
+    static helper_parse(str: string) {
+        var obj = JSON.parse(str);
+        return obj;
+    }
 }
 
 export interface IHelperArgs {

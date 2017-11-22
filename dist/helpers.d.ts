@@ -7,6 +7,7 @@ export declare class Helpers {
     static helper_querystringify(obj?: any): string;
     static helper_ngStringify(obj: any): string;
     static helper_contains(arr: any[], val: any): boolean;
+    static helper_parse(str: string): any;
 }
 export interface IHelperArgs {
     name: string;
