@@ -2,7 +2,7 @@
 import { ConfigOptions } from 'elasticsearch';
 
 // Internal imports
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern, IContext } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern, INamedTemplate, IContext } from './interfaces';
 import { SearchTemplate } from './search-template';
 import { MapJsonify } from './map-jsonify';
 
@@ -15,12 +15,12 @@ export class Route implements IRoute, IJsonable {
     pattern: string|INamedPattern = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    template: string = `
+    templates: INamedTemplate = { default: `
         {{#and primaryResultSet primaryResultSet.documents}}
             {{#forEach primaryResultSet.documents}}
                 {{{_view}}}
             {{/forEach}}
-        {{/and}}`;
+        {{/and}}` };
     titleTemplate: string = '';
     jsonLdTemplate: string = '';
     primarySearchTemplate: SearchTemplate = null;
@@ -40,7 +40,7 @@ export class Route implements IRoute, IJsonable {
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            template: this.template,
+            templates: this.templates,
             titleTemplate: this.titleTemplate,
             jsonLdTemplate: this.jsonLdTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),

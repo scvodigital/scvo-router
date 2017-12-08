@@ -1,6 +1,7 @@
 import * as Url from 'url';
 import * as querystring from 'querystring';
 import * as s from 'string';
+import * as moment from 'moment';
 
 export class Helpers {
     static register(hbs: any) {
@@ -67,6 +68,24 @@ export class Helpers {
             props.push({ key: key, value: obj[key] });
         });
         return props;
+    }
+
+    static helper_moment(date: any = null, format: string = null) {
+        if (!date) {
+            return moment();
+        } else if (!format) {
+            return moment(date);
+        } else {
+            return moment(date, format);
+        }
+    }
+
+    static helper_momentFormat(date: moment.Moment, format: string = null) {
+        if (!format) {
+            return date.format();
+        } else {
+            return date.format(format);
+        }
     }
 }
 

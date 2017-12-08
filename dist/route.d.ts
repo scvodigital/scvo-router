@@ -1,5 +1,5 @@
 import { ConfigOptions } from 'elasticsearch';
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplateSet, IJsonable, INamedPattern, IContext } from './interfaces';
+import { IRoute, ILinkTag, IMetaTag, ISearchTemplateSet, IJsonable, INamedPattern, INamedTemplate, IContext } from './interfaces';
 import { SearchTemplate } from './search-template';
 /** Class that handles a route match, implements search templates and gets results */
 export declare class Route implements IRoute, IJsonable {
@@ -11,7 +11,7 @@ export declare class Route implements IRoute, IJsonable {
     pattern: string | INamedPattern;
     queryDelimiter: string;
     queryEquals: string;
-    template: string;
+    templates: INamedTemplate;
     titleTemplate: string;
     jsonLdTemplate: string;
     primarySearchTemplate: SearchTemplate;

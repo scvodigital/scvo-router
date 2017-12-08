@@ -4,7 +4,7 @@ import * as handlebars from 'handlebars';
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext } from './interfaces';
+import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
@@ -17,7 +17,7 @@ export class RouteMatch implements IRouteMatch {
     metaTags: IMetaTag[] = null;
     metaData: any = {};
     pattern: string|INamedPattern = null;
-    template: string = '';
+    templates: INamedTemplate = {};
     titleTemplate: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
@@ -31,6 +31,17 @@ export class RouteMatch implements IRouteMatch {
     defaultParams: any = {};
     javascript: string = '';
 
+    get templateName(): string {
+        var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
+        if(templateName != 'default' && !this.templates.hasOwnProperty(templateName)){
+            templateName = 'default';
+        }
+        if(!this.templates.hasOwnProperty(templateName)){
+            templateName = Object.keys(this.templates)[0];
+        }
+        return templateName;
+    }
+
     /**
      * Get the rendered view of the results
      */
@@ -43,7 +54,7 @@ export class RouteMatch implements IRouteMatch {
             paging: this.paging,
             context: this.context,
         };
-        var output = this.compiledTemplate(routeTemplateData);
+        var output = this.compiledTemplates[this.templateName](routeTemplateData);
         return output;
     }
 
@@ -79,7 +90,7 @@ export class RouteMatch implements IRouteMatch {
     }
 
     // Instance specific properties
-    private compiledTemplate: (obj: any, hbs?: any) => string = null;
+    private compiledTemplates: { [name: string]: (obj: any, hbs?: any) => string } = {};
     private compiledTitleTemplate: (obj: any, hbs?: any) => string = null;
     private compiledJsonLdTemplate: (obj: any, hbs?: any) => string = null;
 
@@ -202,8 +213,9 @@ export class RouteMatch implements IRouteMatch {
             metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
-            template: this.template,
-            titleTemplate: this.template,
+            templates: this.templates,
+            templateName: this.templateName,
+            titleTemplate: this.titleTemplate,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             jsonLdTemplate: this.jsonLdTemplate,
@@ -239,7 +251,9 @@ export class RouteMatch implements IRouteMatch {
         });
 
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);
+        Object.keys(this.templates).forEach((name: string) => {
+            this.compiledTemplates[name] = handlebars.compile(this.templates[name]);
+        });
         this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }

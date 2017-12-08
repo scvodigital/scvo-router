@@ -14,6 +14,7 @@ var RouteMatch = /** @class */ (function () {
      * @param {any} params - The parameters that the route recognizer has found
      */
     function RouteMatch(route, params, context) {
+        var _this = this;
         this.params = params;
         this.context = context;
         this.name = '_default';
@@ -21,7 +22,7 @@ var RouteMatch = /** @class */ (function () {
         this.metaTags = null;
         this.metaData = {};
         this.pattern = null;
-        this.template = '';
+        this.templates = {};
         this.titleTemplate = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
@@ -34,7 +35,7 @@ var RouteMatch = /** @class */ (function () {
         this.defaultParams = {};
         this.javascript = '';
         // Instance specific properties
-        this.compiledTemplate = null;
+        this.compiledTemplates = {};
         this.compiledTitleTemplate = null;
         this.compiledJsonLdTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
@@ -49,10 +50,26 @@ var RouteMatch = /** @class */ (function () {
             handlebars.registerPartial(name, context.templatePartials[name]);
         });
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);
+        Object.keys(this.templates).forEach(function (name) {
+            _this.compiledTemplates[name] = handlebars.compile(_this.templates[name]);
+        });
         this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
         this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
     }
+    Object.defineProperty(RouteMatch.prototype, "templateName", {
+        get: function () {
+            var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
+            if (templateName != 'default' && !this.templates.hasOwnProperty(templateName)) {
+                templateName = 'default';
+            }
+            if (!this.templates.hasOwnProperty(templateName)) {
+                templateName = Object.keys(this.templates)[0];
+            }
+            return templateName;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(RouteMatch.prototype, "rendered", {
         /**
          * Get the rendered view of the results
@@ -66,7 +83,7 @@ var RouteMatch = /** @class */ (function () {
                 paging: this.paging,
                 context: this.context,
             };
-            var output = this.compiledTemplate(routeTemplateData);
+            var output = this.compiledTemplates[this.templateName](routeTemplateData);
             return output;
         },
         enumerable: true,
@@ -221,8 +238,9 @@ var RouteMatch = /** @class */ (function () {
             metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
-            template: this.template,
-            titleTemplate: this.template,
+            templates: this.templates,
+            templateName: this.templateName,
+            titleTemplate: this.titleTemplate,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             jsonLdTemplate: this.jsonLdTemplate,

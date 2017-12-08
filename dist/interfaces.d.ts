@@ -46,7 +46,7 @@ export interface IRoute {
     metaTags: IMetaTag[];
     metaData: any;
     pattern: string | INamedPattern;
-    template: string;
+    templates: INamedTemplate;
     titleTemplate: string;
     queryDelimiter: string;
     queryEquals: string;
@@ -59,6 +59,9 @@ export interface IRoute {
     context: IContext;
     javascript: string;
 }
+export interface INamedTemplate {
+    [name: string]: string;
+}
 export interface INamedPattern {
     [suffix: string]: string;
 }
@@ -70,6 +73,7 @@ export interface IRouteMatch extends IRoute {
     rendered: string;
     title: string;
     paging: IPaging;
+    templateName: string;
 }
 export interface IElasticsearchConfig {
     username: string;

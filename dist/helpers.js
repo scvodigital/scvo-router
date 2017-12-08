@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var querystring = require("querystring");
 var s = require("string");
+var moment = require("moment");
 var Helpers = /** @class */ (function () {
     function Helpers() {
     }
@@ -68,6 +69,28 @@ var Helpers = /** @class */ (function () {
             props.push({ key: key, value: obj[key] });
         });
         return props;
+    };
+    Helpers.helper_moment = function (date, format) {
+        if (date === void 0) { date = null; }
+        if (format === void 0) { format = null; }
+        if (!date) {
+            return moment();
+        }
+        else if (!format) {
+            return moment(date);
+        }
+        else {
+            return moment(date, format);
+        }
+    };
+    Helpers.helper_momentFormat = function (date, format) {
+        if (format === void 0) { format = null; }
+        if (!format) {
+            return date.format();
+        }
+        else {
+            return date.format(format);
+        }
     };
     return Helpers;
 }());
