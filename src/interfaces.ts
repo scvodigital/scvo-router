@@ -51,15 +51,12 @@ export interface IRoutes {
 
 export interface IRoute {
     name: string;
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
     metaData: any;
     pattern: string|INamedPattern;
     templates: INamedTemplate;
-    titleTemplate: string;
     queryDelimiter: string;
     queryEquals: string;
-    jsonLdTemplate: string;
+    headTagsTemplate: string;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
@@ -79,11 +76,10 @@ export interface INamedPattern {
 
 export interface IRouteMatch extends IRoute {
     params: any;
-    jsonLd: string;
+    headTags: string;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;
-    title: string;
     paging: IPaging;
     templateName: string;
 }

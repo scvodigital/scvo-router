@@ -9,20 +9,12 @@ import { MapJsonify } from './map-jsonify';
 /** Class that handles a route match, implements search templates and gets results */
 export class Route implements IRoute, IJsonable {
     name: string = '_default';
-    linkTags: ILinkTag[] = null;
-    metaTags: IMetaTag[] = null;
     metaData: any = {};
     pattern: string|INamedPattern = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    templates: INamedTemplate = { default: `
-        {{#and primaryResultSet primaryResultSet.documents}}
-            {{#forEach primaryResultSet.documents}}
-                {{{_view}}}
-            {{/forEach}}
-        {{/and}}` };
-    titleTemplate: string = '';
-    jsonLdTemplate: string = '';
+    templates: INamedTemplate = { default: '' };
+    headTagsTemplate: string = '';
     primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
     elasticsearchConfig: ConfigOptions = null;
@@ -34,15 +26,12 @@ export class Route implements IRoute, IJsonable {
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
         return {
             name: this.name,
-            linkTags: this.linkTags,
-            metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             templates: this.templates,
-            titleTemplate: this.titleTemplate,
-            jsonLdTemplate: this.jsonLdTemplate,
+            headTagsTemplate: this.headTagsTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig,

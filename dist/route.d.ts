@@ -1,19 +1,16 @@
 import { ConfigOptions } from 'elasticsearch';
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplateSet, IJsonable, INamedPattern, INamedTemplate, IContext } from './interfaces';
+import { IRoute, ISearchTemplateSet, IJsonable, INamedPattern, INamedTemplate, IContext } from './interfaces';
 import { SearchTemplate } from './search-template';
 /** Class that handles a route match, implements search templates and gets results */
 export declare class Route implements IRoute, IJsonable {
     context: IContext;
     name: string;
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
     metaData: any;
     pattern: string | INamedPattern;
     queryDelimiter: string;
     queryEquals: string;
     templates: INamedTemplate;
-    titleTemplate: string;
-    jsonLdTemplate: string;
+    headTagsTemplate: string;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;

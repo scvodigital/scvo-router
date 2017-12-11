@@ -1,5 +1,5 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext } from './interfaces';
+import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
@@ -7,15 +7,12 @@ export declare class RouteMatch implements IRouteMatch {
     params: any;
     context: IContext;
     name: string;
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
     metaData: any;
     pattern: string | INamedPattern;
     templates: INamedTemplate;
-    titleTemplate: string;
     queryDelimiter: string;
     queryEquals: string;
-    jsonLdTemplate: string;
+    headTagsTemplate: string;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet;
     primaryResponse: SearchResponse<IDocumentResult>;
@@ -29,12 +26,10 @@ export declare class RouteMatch implements IRouteMatch {
      * Get the rendered view of the results
      */
     readonly rendered: string;
-    readonly title: string;
-    readonly jsonLd: string;
+    readonly headTags: string;
     readonly defaultParamsCopy: any;
     private compiledTemplates;
-    private compiledTitleTemplate;
-    private compiledJsonLdTemplate;
+    private compiledHeadTagsTemplate;
     private orderMap;
     private _primaryQuery;
     readonly primaryQuery: ISearchQuery;

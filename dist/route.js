@@ -13,15 +13,12 @@ var Route = /** @class */ (function () {
         var _this = this;
         this.context = context;
         this.name = '_default';
-        this.linkTags = null;
-        this.metaTags = null;
         this.metaData = {};
         this.pattern = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
-        this.templates = { default: "\n        {{#and primaryResultSet primaryResultSet.documents}}\n            {{#forEach primaryResultSet.documents}}\n                {{{_view}}}\n            {{/forEach}}\n        {{/and}}" };
-        this.titleTemplate = '';
-        this.jsonLdTemplate = '';
+        this.templates = { default: '' };
+        this.headTagsTemplate = '';
         this.primarySearchTemplate = null;
         this.supplimentarySearchTemplates = {};
         this.elasticsearchConfig = null;
@@ -42,15 +39,12 @@ var Route = /** @class */ (function () {
         var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
         return {
             name: this.name,
-            linkTags: this.linkTags,
-            metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             templates: this.templates,
-            titleTemplate: this.titleTemplate,
-            jsonLdTemplate: this.jsonLdTemplate,
+            headTagsTemplate: this.headTagsTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig,

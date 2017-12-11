@@ -18,15 +18,12 @@ var RouteMatch = /** @class */ (function () {
         this.params = params;
         this.context = context;
         this.name = '_default';
-        this.linkTags = null;
-        this.metaTags = null;
         this.metaData = {};
         this.pattern = null;
         this.templates = {};
-        this.titleTemplate = '';
         this.queryDelimiter = '&';
         this.queryEquals = '=';
-        this.jsonLdTemplate = '';
+        this.headTagsTemplate = '';
         this.supplimentarySearchTemplates = {};
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
@@ -36,8 +33,7 @@ var RouteMatch = /** @class */ (function () {
         this.javascript = '';
         // Instance specific properties
         this.compiledTemplates = {};
-        this.compiledTitleTemplate = null;
-        this.compiledJsonLdTemplate = null;
+        this.compiledHeadTagsTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
@@ -53,8 +49,7 @@ var RouteMatch = /** @class */ (function () {
         Object.keys(this.templates).forEach(function (name) {
             _this.compiledTemplates[name] = handlebars.compile(_this.templates[name]);
         });
-        this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
-        this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
+        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
     }
     Object.defineProperty(RouteMatch.prototype, "templateName", {
         get: function () {
@@ -89,32 +84,16 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(RouteMatch.prototype, "title", {
+    Object.defineProperty(RouteMatch.prototype, "headTags", {
         get: function () {
-            var routeTemplateData = {
-                primaryResponse: this.primaryResponse,
-                supplimentaryResponses: this.supplimentaryResponses,
-                params: this.params,
-                metaData: this.metaData,
-                paging: this.paging,
-                context: this.context,
-            };
-            var output = this.compiledTitleTemplate(routeTemplateData);
-            return output;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RouteMatch.prototype, "jsonLd", {
-        get: function () {
-            var jsonLdTemplateData = {
+            var headTagsTemplateData = {
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponses: this.supplimentaryResponses,
                 params: this.params,
                 metaData: this.metaData,
                 context: this.context,
             };
-            var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
+            var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
             return output;
         },
         enumerable: true,
@@ -234,24 +213,20 @@ var RouteMatch = /** @class */ (function () {
         var responses = map_jsonify_1.MapJsonify(this.supplimentaryResponses);
         return {
             name: this.name,
-            linkTags: this.linkTags,
-            metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
             templates: this.templates,
             templateName: this.templateName,
-            titleTemplate: this.titleTemplate,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            jsonLdTemplate: this.jsonLdTemplate,
-            jsonLd: this.jsonLd,
+            headTagsTemplate: this.headTagsTemplate,
+            headTags: this.headTags,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
-            title: this.title,
             params: this.params,
             multipleResults: this.multipleResults,
             paging: this.paging,

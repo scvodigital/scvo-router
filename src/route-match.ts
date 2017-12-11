@@ -13,15 +13,12 @@ import { Helpers } from './helpers';
 /** Class that handles matched routes and gets results */
 export class RouteMatch implements IRouteMatch {
     name: string = '_default';
-    linkTags: ILinkTag[] = null;
-    metaTags: IMetaTag[] = null;
     metaData: any = {};
     pattern: string|INamedPattern = null;
     templates: INamedTemplate = {};
-    titleTemplate: string = '';
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    jsonLdTemplate: string = '';
+    headTagsTemplate: string = '';
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet = {};
     primaryResponse: SearchResponse<IDocumentResult> = null;
@@ -58,28 +55,15 @@ export class RouteMatch implements IRouteMatch {
         return output;
     }
 
-    get title(): string {
-        var routeTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            paging: this.paging,
-            context: this.context,
-        };
-        var output = this.compiledTitleTemplate(routeTemplateData);
-        return output;
-    }
-    
-    get jsonLd(): string {
-        var jsonLdTemplateData: any = {
+    get headTags(): string {
+        var headTagsTemplateData: any = {
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: this.supplimentaryResponses,
             params: this.params,
             metaData: this.metaData,
             context: this.context,
         };
-        var output = this.compiledJsonLdTemplate(jsonLdTemplateData);
+        var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
         return output;
     }
 
@@ -91,8 +75,7 @@ export class RouteMatch implements IRouteMatch {
 
     // Instance specific properties
     private compiledTemplates: { [name: string]: (obj: any, hbs?: any) => string } = {};
-    private compiledTitleTemplate: (obj: any, hbs?: any) => string = null;
-    private compiledJsonLdTemplate: (obj: any, hbs?: any) => string = null;
+    private compiledHeadTagsTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
     private orderMap: string[] = [];
@@ -209,24 +192,20 @@ export class RouteMatch implements IRouteMatch {
         var responses = MapJsonify<SearchResponse<IDocumentResult>>(this.supplimentaryResponses);
         return {
             name: this.name,
-            linkTags: this.linkTags,
-            metaTags: this.metaTags,
             metaData: this.metaData,
             pattern: this.pattern,
             templates: this.templates,
             templateName: this.templateName,
-            titleTemplate: this.titleTemplate,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            jsonLdTemplate: this.jsonLdTemplate,
-            jsonLd: this.jsonLd,
+            headTagsTemplate: this.headTagsTemplate,
+            headTags: this.headTags,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             rendered: this.rendered,
-            title: this.title,
             params: this.params,
             multipleResults: this.multipleResults,
             paging: this.paging,
@@ -254,8 +233,7 @@ export class RouteMatch implements IRouteMatch {
         Object.keys(this.templates).forEach((name: string) => {
             this.compiledTemplates[name] = handlebars.compile(this.templates[name]);
         });
-        this.compiledTitleTemplate = handlebars.compile(this.titleTemplate);
-        this.compiledJsonLdTemplate = handlebars.compile(this.jsonLdTemplate);
+        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
     }
 
     /**
