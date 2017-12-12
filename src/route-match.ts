@@ -138,7 +138,7 @@ export class RouteMatch implements IRouteMatch {
         var size = this.primaryQuery.body.size || 10;
         var sort = this.primaryQuery.body.sort || null;
         var totalResults = this.primaryResponse.hits.total || 0;
-        var totalPages = Math.floor(totalResults / size) + 1;
+        var totalPages = Math.ceil(totalResults / size);
         var currentPage = Math.floor(from / size) + 1;
 
         var nextPage = currentPage < totalPages ? Math.floor(currentPage + 1) : null;
