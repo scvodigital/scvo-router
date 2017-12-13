@@ -4,7 +4,12 @@ import * as handlebars from 'handlebars';
 const hbs = require('nymag-handlebars')();
 
 // Internal imports
-import { IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext } from './interfaces';
+import { 
+    IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, 
+    ISearchResponseSet, ISearchQuery, IDocumentResult, 
+    IPaging, INamedPattern, INamedTemplate, IContext,
+    IMenus, IMenuItem
+} from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 import { MapJsonify } from './map-jsonify';
@@ -234,6 +239,23 @@ export class RouteMatch implements IRouteMatch {
             this.compiledTemplates[name] = handlebars.compile(this.templates[name]);
         });
         this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
+
+        Object.keys(this.context.menus).forEach((name: string) => {
+            this.context.menus[name] = this.traverseMenu(this.context.menus[name]);
+        });
+    }
+
+    traverseMenu(menuItems: IMenuItem[], level: number = 0): IMenuItem[] {
+        menuItems.forEach((menuItem) => {
+            var pattern = new RegExp(menuItem.route, 'i');
+            menuItem.match = pattern.test(this.params.uri.path);
+            menuItem.level = level;
+            if (menuItem.children) {
+                menuItem.children = this.traverseMenu(menuItem.children, level + 1);
+            }
+        });
+
+        return menuItems;
     }
 
     /**
@@ -242,7 +264,7 @@ export class RouteMatch implements IRouteMatch {
      */
     getResults(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            console.log('#### ROUTE NAME:', this.name, '####'); 
+            console.log('#### ROUTE NAME:', this.name, '####');
             // Perform our primary search
             this.esClient.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
                 if(err) return reject(err);

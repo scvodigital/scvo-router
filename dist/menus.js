@@ -31,6 +31,8 @@ var MenuProcessor = /** @class */ (function () {
                 }
             });
         });
+        console.log('routeRecognizer', this.routeRecognizer);
+        console.log('menus', this.menus);
     }
     /**
      * Get all registered menus and add a "match" flag next to each one that matches a given route
@@ -42,19 +44,24 @@ var MenuProcessor = /** @class */ (function () {
         if (start === void 0) { start = 0; }
         if (depth === void 0) { depth = 1; }
         if (!uriString) {
+            console.log('getMenus()');
             return this.menus;
         }
+        console.log('getMenus(uriString:', uriString, ', start:', start, ', depth:', depth);
         var uri = url.parse(uriString);
         var recognizedRoutes = this.routeRecognizer.recognize(uri.path);
+        console.log('recognizedRoutes:', recognizedRoutes);
         var matchDotPaths = (recognizedRoutes || []).slice().map(function (route) {
             return route.handler;
         });
+        console.log('matchDotPaths:', matchDotPaths);
         var menus = {};
         var max = start + depth;
         Object.keys(this.menus).forEach(function (name) {
             menus[name] = _this.menus[name].map(function (item) { return item.toJSON(matchDotPaths); });
             // menus[name] = this.prune(menus[name], start, max); // Might not be needed or needs to be implemented elsewhere
         });
+        console.log('menus:', menus);
         return menus;
     };
     MenuProcessor.prototype.prune = function (items, min, max) {

@@ -29,6 +29,8 @@ export interface IMenuItem {
     route: string;
     children: IMenuItem[];
     metaData: any;
+    level?: number;
+    match?: boolean;
 }
 export interface IMenuItemMatch extends IMenuItem {
     children: IMenuItemMatch[];

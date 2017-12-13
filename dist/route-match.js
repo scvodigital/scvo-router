@@ -50,6 +50,9 @@ var RouteMatch = /** @class */ (function () {
             _this.compiledTemplates[name] = handlebars.compile(_this.templates[name]);
         });
         this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
+        Object.keys(this.context.menus).forEach(function (name) {
+            _this.context.menus[name] = _this.traverseMenu(_this.context.menus[name]);
+        });
     }
     Object.defineProperty(RouteMatch.prototype, "templateName", {
         get: function () {
@@ -234,6 +237,19 @@ var RouteMatch = /** @class */ (function () {
             javascript: this.javascript,
             context: this.context,
         };
+    };
+    RouteMatch.prototype.traverseMenu = function (menuItems, level) {
+        var _this = this;
+        if (level === void 0) { level = 0; }
+        menuItems.forEach(function (menuItem) {
+            var pattern = new RegExp(menuItem.route, 'i');
+            menuItem.match = pattern.test(_this.params.uri.path);
+            menuItem.level = level;
+            if (menuItem.children) {
+                menuItem.children = _this.traverseMenu(menuItem.children, level + 1);
+            }
+        });
+        return menuItems;
     };
     /**
      * Get primary and supplimentary results for this route match

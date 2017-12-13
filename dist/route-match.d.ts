@@ -1,5 +1,5 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext } from './interfaces';
+import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext, IMenuItem } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
@@ -45,6 +45,7 @@ export declare class RouteMatch implements IRouteMatch {
      * @param {any} params - The parameters that the route recognizer has found
      */
     constructor(route: Route, params: any, context: IContext);
+    traverseMenu(menuItems: IMenuItem[], level?: number): IMenuItem[];
     /**
      * Get primary and supplimentary results for this route match
      * @return {Promise<void>} A promise to tell when results have been fetched
