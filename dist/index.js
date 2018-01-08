@@ -7,6 +7,5 @@ __export(require("./router"));
 __export(require("./route-match"));
 __export(require("./route"));
 __export(require("./search-template"));
-__export(require("./menus"));
 __export(require("./helpers"));
 //# sourceMappingURL=index.js.map

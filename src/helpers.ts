@@ -87,6 +87,18 @@ export class Helpers {
             return date.format(format);
         }
     }
+
+    static helper_atob(b64: string) {
+        var buff = Buffer.from(b64, 'base64');
+        var str = buff.toString('ascii');
+        return str;
+    }
+
+    static helper_btoa(str: string) {
+        var buff = Buffer.from(str);
+        var b64 = buff.toString('base64');
+        return b64;
+    }
 }
 
 export interface IHelperArgs {

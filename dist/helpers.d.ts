@@ -12,6 +12,8 @@ export declare class Helpers {
     static helper_keyValue(obj: any): any[];
     static helper_moment(date?: any, format?: string): moment.Moment;
     static helper_momentFormat(date: moment.Moment, format?: string): string;
+    static helper_atob(b64: string): string;
+    static helper_btoa(str: string): string;
 }
 export interface IHelperArgs {
     name: string;

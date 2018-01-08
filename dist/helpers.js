@@ -92,6 +92,16 @@ var Helpers = /** @class */ (function () {
             return date.format(format);
         }
     };
+    Helpers.helper_atob = function (b64) {
+        var buff = Buffer.from(b64, 'base64');
+        var str = buff.toString('ascii');
+        return str;
+    };
+    Helpers.helper_btoa = function (str) {
+        var buff = Buffer.from(str);
+        var b64 = buff.toString('base64');
+        return b64;
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;
