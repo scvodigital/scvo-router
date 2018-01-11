@@ -131,12 +131,12 @@ export class Router {
         results.hits.hits.forEach((hit) => {
             var documentType = hit._type;
             var documentId = hit._id;
-            console.log('TRACK DOCUMENT HIT:', documentType, documentId);
+            //console.log('TRACK DOCUMENT HIT:', documentType, documentId);
             this.visitor.event('Document Hit', documentType, documentId, (err) => {
                 if(err){
                     console.error('[UA ' + this.uaId + '] Failed to track hit:', documentType, documentId, err);
                 }else{
-                    console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
+                    //console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
                 } 
             });
         });

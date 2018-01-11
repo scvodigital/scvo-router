@@ -127,13 +127,13 @@ var Router = /** @class */ (function () {
         results.hits.hits.forEach(function (hit) {
             var documentType = hit._type;
             var documentId = hit._id;
-            console.log('TRACK DOCUMENT HIT:', documentType, documentId);
+            //console.log('TRACK DOCUMENT HIT:', documentType, documentId);
             _this.visitor.event('Document Hit', documentType, documentId, function (err) {
                 if (err) {
                     console.error('[UA ' + _this.uaId + '] Failed to track hit:', documentType, documentId, err);
                 }
                 else {
-                    console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
+                    //console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
                 }
             });
         });

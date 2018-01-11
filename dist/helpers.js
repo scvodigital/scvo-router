@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var querystring = require("querystring");
 var s = require("string");
 var moment = require("moment");
+var dot = require("dot-object");
 var Helpers = /** @class */ (function () {
     function Helpers() {
     }
@@ -55,9 +56,17 @@ var Helpers = /** @class */ (function () {
         json = json.replace(/\{/g, "{{ '{' }}");
         return json;
     };
-    Helpers.helper_contains = function (arr, val) {
-        var contains = arr.indexOf(val) > -1;
-        return contains;
+    Helpers.helper_contains = function (input, val) {
+        var found = false;
+        if (typeof input == 'string') {
+            if (typeof val == 'string') {
+                found = input.indexOf(val.toString()) > -1;
+            }
+        }
+        else if (Array.isArray(input)) {
+            found = input.indexOf(val) > -1;
+        }
+        return found;
     };
     Helpers.helper_parse = function (str) {
         var obj = JSON.parse(str);
@@ -101,6 +110,23 @@ var Helpers = /** @class */ (function () {
         var buff = Buffer.from(str);
         var b64 = buff.toString('base64');
         return b64;
+    };
+    Helpers.helper_removeEntities = function (str) {
+        var out = s(str).decodeHTMLEntities().s;
+        return out;
+    };
+    Helpers.helper_getProperty = function (obj, path) {
+        if (!obj || !path) {
+            return null;
+        }
+        var val = dot.pick(path, obj);
+        return val;
+    };
+    Helpers.helper_getType = function (obj) {
+        if (Array.isArray(obj)) {
+            return 'array';
+        }
+        return typeof obj;
     };
     return Helpers;
 }());

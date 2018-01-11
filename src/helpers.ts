@@ -2,6 +2,7 @@ import * as Url from 'url';
 import * as querystring from 'querystring';
 import * as s from 'string';
 import * as moment from 'moment';
+import * as dot from 'dot-object';
 
 export class Helpers {
     static register(hbs: any) {
@@ -52,9 +53,16 @@ export class Helpers {
         return json;
     }
 
-    static helper_contains(arr: any[], val: any) {
-        var contains = arr.indexOf(val) > -1;
-        return contains;
+    static helper_contains(input: any[]|string, val: any) {
+        var found = false;
+        if (typeof input == 'string') {
+            if (typeof val == 'string') {
+                found = input.indexOf(val.toString()) > -1;
+            }
+        } else if (Array.isArray(input)) {
+            found = input.indexOf(val) > -1;
+        }
+        return found;
     }
 
     static helper_parse(str: string) {
@@ -98,6 +106,26 @@ export class Helpers {
         var buff = Buffer.from(str);
         var b64 = buff.toString('base64');
         return b64;
+    }
+
+    static helper_removeEntities(str: string) {
+        var out = s(str).decodeHTMLEntities().s;
+        return out;
+    }
+
+    static helper_getProperty(obj: any, path: string) {
+        if (!obj || !path) {
+            return null;
+        }
+        var val = dot.pick(path, obj);
+        return val;
+    }
+
+    static helper_getType(obj: any) {
+        if (Array.isArray(obj)) {
+            return 'array';
+        }
+        return typeof obj;
     }
 }
 
