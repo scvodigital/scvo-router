@@ -17,6 +17,7 @@ export declare class Helpers {
     static helper_removeEntities(str: string): any;
     static helper_getProperty(obj: any, path: string): any;
     static helper_getType(obj: any): "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function" | "array";
+    static helper_regexReplace(input: string, expression: string, options: string, replace: string): string;
 }
 export interface IHelperArgs {
     name: string;

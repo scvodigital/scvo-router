@@ -127,6 +127,14 @@ export class Helpers {
         }
         return typeof obj;
     }
+
+    static helper_regexReplace(input: string, expression: string, options: string, replace: string) {
+        console.log('REGEXREPLACE INPUT | input:', input, '| expression:', expression, '| options:', options, '| replace:', replace);
+        var regex = new RegExp(expression, options);
+        var output = input.replace(regex, replace);
+        console.log('REGEXREPLACE OUTPUT:', output);
+        return output;
+    }
 }
 
 export interface IHelperArgs {

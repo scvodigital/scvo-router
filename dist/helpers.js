@@ -128,6 +128,13 @@ var Helpers = /** @class */ (function () {
         }
         return typeof obj;
     };
+    Helpers.helper_regexReplace = function (input, expression, options, replace) {
+        console.log('REGEXREPLACE INPUT | input:', input, '| expression:', expression, '| options:', options, '| replace:', replace);
+        var regex = new RegExp(expression, options);
+        var output = input.replace(regex, replace);
+        console.log('REGEXREPLACE OUTPUT:', output);
+        return output;
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;
