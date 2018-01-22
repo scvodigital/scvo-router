@@ -129,11 +129,26 @@ export class Helpers {
     }
 
     static helper_regexReplace(input: string, expression: string, options: string, replace: string) {
-        console.log('REGEXREPLACE INPUT | input:', input, '| expression:', expression, '| options:', options, '| replace:', replace);
         var regex = new RegExp(expression, options);
         var output = input.replace(regex, replace);
-        console.log('REGEXREPLACE OUTPUT:', output);
         return output;
+    }
+
+    static helper_regexMatch(input: string, expression: string, options: string) {
+        var regex = new RegExp(expression, options);
+        var output = regex.test(input);
+        return output;
+    }
+
+    static helper_reverse(input: any[]) {
+        if (!Array.isArray(input)) {
+            return [];
+        }
+        var reversed = [];
+        while (input.length > 0) {
+            reversed.push(input.pop());
+        }
+        return reversed;
     }
 }
 

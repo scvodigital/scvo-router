@@ -18,6 +18,8 @@ export declare class Helpers {
     static helper_getProperty(obj: any, path: string): any;
     static helper_getType(obj: any): "string" | "number" | "boolean" | "symbol" | "undefined" | "object" | "function" | "array";
     static helper_regexReplace(input: string, expression: string, options: string, replace: string): string;
+    static helper_regexMatch(input: string, expression: string, options: string): boolean;
+    static helper_reverse(input: any[]): any[];
 }
 export interface IHelperArgs {
     name: string;

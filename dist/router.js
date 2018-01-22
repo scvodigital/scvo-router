@@ -91,7 +91,7 @@ var Router = /** @class */ (function () {
             var firstResult = recognizedRoutes[0] || _this.defaultResult;
             var handler = firstResult.handler;
             var params = {};
-            Object.assign(params, handler.defaultParams);
+            Object.assign(params, handler.defaultParamsCopy);
             Object.assign(params, firstResult.params);
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
             var idFriendlyPath = uri.pathname.replace(/\//g, '_');

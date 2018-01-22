@@ -264,7 +264,7 @@ export class RouteMatch implements IRouteMatch {
      */
     getResults(): Promise<void> {
         return new Promise<void>((resolve, reject) => {
-            console.log('#### ROUTE NAME:', this.name, '####');
+            //console.log('#### ROUTE NAME:', this.name, '####');
             // Perform our primary search
             this.esClient.search(this.primaryQuery, (err: any, primaryResponse: SearchResponse<IDocumentResult>) => {
                 if(err) return reject(err);

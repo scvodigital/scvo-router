@@ -92,7 +92,7 @@ export class Router {
             var handler: Route = <Route>firstResult.handler;
 
             var params = {};
-            Object.assign(params, handler.defaultParams);
+            Object.assign(params, handler.defaultParamsCopy);
             Object.assign(params, firstResult.params);
 
             var query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);

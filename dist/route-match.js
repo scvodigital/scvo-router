@@ -258,7 +258,7 @@ var RouteMatch = /** @class */ (function () {
     RouteMatch.prototype.getResults = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            console.log('#### ROUTE NAME:', _this.name, '####');
+            //console.log('#### ROUTE NAME:', this.name, '####');
             // Perform our primary search
             _this.esClient.search(_this.primaryQuery, function (err, primaryResponse) {
                 if (err)
