@@ -28,7 +28,7 @@ Class for managing incoming requests, routing them to Elasticsearch queries, and
 ### ⊕ **new Router**(routes: *[IRoutes](../interfaces/_interfaces_.iroutes.md)*): [Router](_router_.router.md)
 
 
-*Defined in [router.ts:24](https://github.com/scvodigital/scvo-router/blob/aecc349/src/router.ts#L24)*
+*Defined in [router.ts:20](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/router.ts#L20)*
 
 
 
@@ -56,11 +56,11 @@ Create a Router for matching routes and rendering responses
 
 ###  execute
 
-► **execute**(uriString: *`string`*): `Promise`.<[RouteMatch](_route_match_.routematch.md)>
+► **execute**(uriString: *`string`*): `Promise`.<[IRouteMatch](../interfaces/_interfaces_.iroutematch.md)>
 
 
 
-*Defined in [router.ts:57](https://github.com/scvodigital/scvo-router/blob/aecc349/src/router.ts#L57)*
+*Defined in [router.ts:52](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/router.ts#L52)*
 
 
 
@@ -77,7 +77,7 @@ Execute the route against a URI to get a matched route and rendered responses
 
 
 
-**Returns:** `Promise`.<[RouteMatch](_route_match_.routematch.md)>
+**Returns:** `Promise`.<[IRouteMatch](../interfaces/_interfaces_.iroutematch.md)>
 The matched route with rendered results
 
 

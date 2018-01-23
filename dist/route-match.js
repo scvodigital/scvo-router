@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Module imports
 var elasticsearch_1 = require("elasticsearch");
 var handlebars = require("handlebars");
-var helpers = require("handlebars-helpers");
-helpers({ handlebars: handlebars });
+var hbs = require('nymag-handlebars')();
+var map_jsonify_1 = require("./map-jsonify");
+var helpers_1 = require("./helpers");
 /** Class that handles matched routes and gets results */
 var RouteMatch = /** @class */ (function () {
     /**
@@ -12,29 +13,61 @@ var RouteMatch = /** @class */ (function () {
      * @param {Route} route - The route that has been matched
      * @param {any} params - The parameters that the route recognizer has found
      */
-    function RouteMatch(route, params) {
+    function RouteMatch(route, params, context) {
+        var _this = this;
         this.params = params;
-        this.linkTags = null;
-        this.metaTags = null;
+        this.context = context;
+        this.name = '_default';
+        this.metaData = {};
         this.pattern = null;
-        this.template = '';
+        this.templates = {};
         this.queryDelimiter = '&';
         this.queryEquals = '=';
+        this.headTagsTemplate = '';
         this.supplimentarySearchTemplates = {};
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
+        this.multipleResults = false;
+        this.defaultParams = {};
+        this.javascript = '';
         // Instance specific properties
-        this.compiledTemplate = null;
+        this.compiledTemplates = {};
+        this.compiledHeadTagsTemplate = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
         this._supplimentaryQueries = null;
+        this._esClient = null;
         // Implement route
         Object.assign(this, route);
+        helpers_1.Helpers.register(handlebars);
+        Object.keys(context.templatePartials).forEach(function (name) {
+            handlebars.registerPartial(name, context.templatePartials[name]);
+        });
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);
+        Object.keys(this.templates).forEach(function (name) {
+            _this.compiledTemplates[name] = handlebars.compile(_this.templates[name]);
+        });
+        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
+        Object.keys(this.context.menus).forEach(function (name) {
+            _this.context.menus[name] = _this.traverseMenu(_this.context.menus[name]);
+        });
     }
+    Object.defineProperty(RouteMatch.prototype, "templateName", {
+        get: function () {
+            var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
+            if (templateName != 'default' && !this.templates.hasOwnProperty(templateName)) {
+                templateName = 'default';
+            }
+            if (!this.templates.hasOwnProperty(templateName)) {
+                templateName = Object.keys(this.templates)[0];
+            }
+            return templateName;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(RouteMatch.prototype, "rendered", {
         /**
          * Get the rendered view of the results
@@ -42,11 +75,38 @@ var RouteMatch = /** @class */ (function () {
         get: function () {
             var routeTemplateData = {
                 primaryResponse: this.primaryResponse,
-                supplimentaryResponse: this.supplimentaryResponses,
-                params: this.params
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                paging: this.paging,
+                context: this.context,
             };
-            var output = this.compiledTemplate(routeTemplateData);
+            var output = this.compiledTemplates[this.templateName](routeTemplateData);
             return output;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RouteMatch.prototype, "headTags", {
+        get: function () {
+            var headTagsTemplateData = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                context: this.context,
+            };
+            var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
+            return output;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RouteMatch.prototype, "defaultParamsCopy", {
+        get: function () {
+            var copy = {};
+            Object.assign(copy, this.defaultParams);
+            return copy;
         },
         enumerable: true,
         configurable: true
@@ -94,6 +154,103 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RouteMatch.prototype, "esClient", {
+        get: function () {
+            if (!this._esClient) {
+                var config = Object.assign({}, this.elasticsearchConfig);
+                this._esClient = new elasticsearch_1.Client(config);
+            }
+            return this._esClient;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RouteMatch.prototype, "paging", {
+        get: function () {
+            var from = this.primaryQuery.body.from || 0;
+            var size = this.primaryQuery.body.size || 10;
+            var sort = this.primaryQuery.body.sort || null;
+            var totalResults = this.primaryResponse.hits.total || 0;
+            var totalPages = Math.ceil(totalResults / size);
+            var currentPage = Math.floor(from / size) + 1;
+            var nextPage = currentPage < totalPages ? Math.floor(currentPage + 1) : null;
+            var prevPage = currentPage > 1 ? Math.floor(currentPage - 1) : null;
+            // Setup an array (range) of 10 numbers surrounding our current page
+            var pageRange = Array.from(new Array(9).keys(), function (p, i) { return i + (currentPage - 4); });
+            // Move range forward until none of the numbers are less than 1
+            var rangeMin = pageRange[0];
+            var positiveShift = rangeMin < 1 ? 1 - rangeMin : 0;
+            pageRange = pageRange.map(function (p) { return p + positiveShift; });
+            // Move range backwards until none of the numbers are greater than totalPages
+            var rangeMax = pageRange[pageRange.length - 1];
+            var negativeShift = rangeMax > totalPages ? rangeMax - totalPages : 0;
+            pageRange = pageRange.map(function (p) { return p - negativeShift; });
+            // Prune everything that appears outside of our 1 to totalPages range
+            pageRange = pageRange.filter(function (p) { return p >= 1 && p <= totalPages; });
+            var pages = [];
+            pageRange.forEach(function (page) {
+                var distance = Math.abs(currentPage - page);
+                pages.push({
+                    pageNumber: Math.floor(page),
+                    distance: distance,
+                });
+            });
+            var paging = {
+                from: from,
+                size: size,
+                sort: sort,
+                totalResults: totalResults,
+                totalPages: totalPages,
+                currentPage: currentPage,
+                nextPage: nextPage,
+                prevPage: prevPage,
+                pageRange: pages
+            };
+            return paging;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RouteMatch.prototype.toJSON = function () {
+        var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
+        var responses = map_jsonify_1.MapJsonify(this.supplimentaryResponses);
+        return {
+            name: this.name,
+            metaData: this.metaData,
+            pattern: this.pattern,
+            templates: this.templates,
+            templateName: this.templateName,
+            queryDelimiter: this.queryDelimiter,
+            queryEquals: this.queryEquals,
+            headTagsTemplate: this.headTagsTemplate,
+            headTags: this.headTags,
+            primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            supplimentarySearchTemplates: templates,
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: responses,
+            elasticsearchConfig: this.elasticsearchConfig,
+            rendered: this.rendered,
+            params: this.params,
+            multipleResults: this.multipleResults,
+            paging: this.paging,
+            defaultParams: this.defaultParams,
+            javascript: this.javascript,
+            context: this.context,
+        };
+    };
+    RouteMatch.prototype.traverseMenu = function (menuItems, level) {
+        var _this = this;
+        if (level === void 0) { level = 0; }
+        menuItems.forEach(function (menuItem) {
+            var pattern = new RegExp(menuItem.route, 'i');
+            menuItem.match = pattern.test(_this.params.uri.path);
+            menuItem.level = level;
+            if (menuItem.children) {
+                menuItem.children = _this.traverseMenu(menuItem.children, level + 1);
+            }
+        });
+        return menuItems;
+    };
     /**
      * Get primary and supplimentary results for this route match
      * @return {Promise<void>} A promise to tell when results have been fetched
@@ -101,15 +258,18 @@ var RouteMatch = /** @class */ (function () {
     RouteMatch.prototype.getResults = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            // Setup an elasticsearch client to use, these details should move to
-            var client = new elasticsearch_1.Client(_this.elasticsearchConfig);
+            //console.log('#### ROUTE NAME:', this.name, '####');
             // Perform our primary search
-            client.search(_this.primarySearchTemplate.getPrimary).then(function (primaryResponse) {
+            _this.esClient.search(_this.primaryQuery, function (err, primaryResponse) {
+                if (err)
+                    return reject(err);
                 // Save the results for use in our rendered template
                 _this.primaryResponse = primaryResponse;
                 if (Object.keys(_this.supplimentarySearchTemplates).length > 0) {
                     // If we have any supplimentary searches to do, do them
-                    client.msearch(_this.supplimentaryQueries).then(function (supplimentaryResponses) {
+                    _this.esClient.msearch(_this.supplimentaryQueries, function (err, supplimentaryResponses) {
+                        if (err)
+                            return reject(err);
                         // Loop through each of our supplimentary responses
                         supplimentaryResponses.responses.map(function (supplimentaryResponse, i) {
                             // Find out the name/key of the associated supplimentary search
@@ -119,16 +279,12 @@ var RouteMatch = /** @class */ (function () {
                         });
                         // We're done so let the promise owner know
                         resolve();
-                    }).catch(function (err) {
-                        reject(err);
                     });
                 }
                 else {
                     // We don't need to get anything else so let the promise owner know
                     resolve();
                 }
-            }).catch(function (err) {
-                reject(err);
             });
         });
     };

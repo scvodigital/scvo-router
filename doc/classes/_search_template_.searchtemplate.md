@@ -10,6 +10,7 @@ Class to construct an Elasticsearch query
 ## Implements
 
 * [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)
+* [IJsonable](../interfaces/_interfaces_.ijsonable.md)
 
 ## Index
 
@@ -22,7 +23,6 @@ Class to construct an Elasticsearch query
 
 * [compiledTemplate](_search_template_.searchtemplate.md#compiledtemplate)
 * [index](_search_template_.searchtemplate.md#index)
-* [preferredView](_search_template_.searchtemplate.md#preferredview)
 * [template](_search_template_.searchtemplate.md#template)
 * [type](_search_template_.searchtemplate.md#type)
 
@@ -33,6 +33,7 @@ Class to construct an Elasticsearch query
 * [getHead](_search_template_.searchtemplate.md#gethead)
 * [getPrimary](_search_template_.searchtemplate.md#getprimary)
 * [renderQuery](_search_template_.searchtemplate.md#renderquery)
+* [toJSON](_search_template_.searchtemplate.md#tojson)
 
 
 
@@ -44,7 +45,7 @@ Class to construct an Elasticsearch query
 ### ⊕ **new SearchTemplate**(searchTemplate: *[ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)*): [SearchTemplate](_search_template_.searchtemplate.md)
 
 
-*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L19)*
+*Defined in [search-template.ts:27](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L27)*
 
 
 
@@ -73,7 +74,7 @@ Create a search template
 
 **●  compiledTemplate**:  *`function`*  =  null
 
-*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L19)*
+*Defined in [search-template.ts:19](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L19)*
 
 
 #### Type declaration
@@ -109,21 +110,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[index](../interfaces/_interfaces_.isearchtemplate.md#index)*
 
-*Defined in [search-template.ts:13](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L13)*
-
-
-
-
-
-___
-
-<a id="preferredview"></a>
-
-###  preferredView
-
-**●  preferredView**:  *`string`[]*  =  null
-
-*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L16)*
+*Defined in [search-template.ts:14](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L14)*
 
 
 
@@ -139,7 +126,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[template](../interfaces/_interfaces_.isearchtemplate.md#template)*
 
-*Defined in [search-template.ts:15](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L15)*
+*Defined in [search-template.ts:16](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L16)*
 
 
 
@@ -155,7 +142,7 @@ ___
 
 *Implementation of [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md).[type](../interfaces/_interfaces_.isearchtemplate.md#type)*
 
-*Defined in [search-template.ts:14](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L14)*
+*Defined in [search-template.ts:15](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L15)*
 
 
 
@@ -173,7 +160,7 @@ ___
 
 
 
-*Defined in [search-template.ts:64](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L64)*
+*Defined in [search-template.ts:72](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L72)*
 
 
 
@@ -208,7 +195,7 @@ ___
 
 
 
-*Defined in [search-template.ts:52](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L52)*
+*Defined in [search-template.ts:60](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L60)*
 
 
 
@@ -231,11 +218,11 @@ ___
 
 ###  getPrimary
 
-► **getPrimary**(params: *`any`*): [ISearchQuery](../interfaces/_interfaces_.isearchquery.md)
+► **getPrimary**(params: *`any`*): `any`
 
 
 
-*Defined in [search-template.ts:80](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L80)*
+*Defined in [search-template.ts:88](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L88)*
 
 
 
@@ -252,7 +239,7 @@ Get a standalone query
 
 
 
-**Returns:** [ISearchQuery](../interfaces/_interfaces_.isearchquery.md)
+**Returns:** `any`
 A usable Elasticsearch query payload
 
 
@@ -270,7 +257,7 @@ ___
 
 
 
-*Defined in [search-template.ts:38](https://github.com/scvodigital/scvo-router/blob/aecc349/src/search-template.ts#L38)*
+*Defined in [search-template.ts:46](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L46)*
 
 
 
@@ -290,6 +277,30 @@ Render the query template to a string of JSON
 **Returns:** `string`
 A search query rendered as a string of JSON
 
+
+
+
+
+
+___
+
+<a id="tojson"></a>
+
+###  toJSON
+
+► **toJSON**(): [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)
+
+
+
+*Implementation of [IJsonable](../interfaces/_interfaces_.ijsonable.md).[toJSON](../interfaces/_interfaces_.ijsonable.md#tojson)*
+
+*Defined in [search-template.ts:21](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/search-template.ts#L21)*
+
+
+
+
+
+**Returns:** [ISearchTemplate](../interfaces/_interfaces_.isearchtemplate.md)
 
 
 

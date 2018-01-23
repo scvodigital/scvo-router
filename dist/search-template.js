@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Module imports
 var handlebars = require("handlebars");
-var helpers = require("handlebars-helpers");
-helpers({ handlebars: handlebars });
+var hbs = require('nymag-handlebars')(handlebars);
+var helpers_1 = require("./helpers");
 /** Class to construct an Elasticsearch query */
 var SearchTemplate = /** @class */ (function () {
     /**
@@ -14,14 +14,21 @@ var SearchTemplate = /** @class */ (function () {
         this.index = null;
         this.type = null;
         this.template = null;
-        this.preferredView = null;
         // Instance specific properties
         this.compiledTemplate = null;
-        // Implement our JSON 
+        // Implement our JSON
         Object.assign(this, searchTemplate);
+        helpers_1.Helpers.register(handlebars);
         // Compile our template
         this.compiledTemplate = handlebars.compile(this.template);
     }
+    SearchTemplate.prototype.toJSON = function () {
+        return {
+            index: this.index,
+            type: this.type,
+            template: this.template
+        };
+    };
     /**
      * Render the query template to a string of JSON
      * @param {any} params - The data to pass into the handlebars template

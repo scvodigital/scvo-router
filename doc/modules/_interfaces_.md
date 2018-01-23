@@ -14,6 +14,7 @@
 * [IGeoDetails](../interfaces/_interfaces_.igeodetails.md)
 * [IGeoInfo](../interfaces/_interfaces_.igeoinfo.md)
 * [IGeoPoint](../interfaces/_interfaces_.igeopoint.md)
+* [IJsonable](../interfaces/_interfaces_.ijsonable.md)
 * [ILinkTag](../interfaces/_interfaces_.ilinktag.md)
 * [IMenuItem](../interfaces/_interfaces_.imenuitem.md)
 * [IMenus](../interfaces/_interfaces_.imenus.md)

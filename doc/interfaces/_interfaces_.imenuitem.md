@@ -12,7 +12,7 @@
 
 **●  label**:  *`string`* 
 
-*Defined in [interfaces.ts:20](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L20)*
+*Defined in [interfaces.ts:24](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L24)*
 
 
 
@@ -26,7 +26,7 @@ ___
 
 **●  path**:  *`string`* 
 
-*Defined in [interfaces.ts:21](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L21)*
+*Defined in [interfaces.ts:25](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L25)*
 
 
 
@@ -40,7 +40,7 @@ ___
 
 **●  subMenu**:  *[IMenuItem](_interfaces_.imenuitem.md)[]* 
 
-*Defined in [interfaces.ts:22](https://github.com/scvodigital/scvo-router/blob/aecc349/src/interfaces.ts#L22)*
+*Defined in [interfaces.ts:26](https://github.com/scvodigital/scvo-router/blob/627f4b0/src/interfaces.ts#L26)*
 
 
 

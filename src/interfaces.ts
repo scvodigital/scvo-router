@@ -1,15 +1,28 @@
 // Module imports
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
 
+export interface IJsonable {
+    toJSON(): any;
+}
+
 export interface IContext {
     name: string;
+    domains: string[];
     linkTags: ILinkTag[];
     metaTags: IMetaTag[];
     scriptTags: IScriptTag[];
+    javascript: string;
+    metaData: any;
     menus: IMenus;
     routes: IRoutes;
     sass: string;
     template: string;
+    uaId: string;
+    templatePartials: IPartials;
+}
+
+export interface IPartials {
+    [name: string]: string;
 }
 
 export interface IMenus {
@@ -19,7 +32,19 @@ export interface IMenus {
 export interface IMenuItem {
     label: string;
     path: string;
-    subMenu: IMenuItem[];
+    route: string;
+    children: IMenuItem[];
+    metaData: any;
+    level?: number;
+    match?: boolean;
+}
+
+export interface IMenuItemMatch extends IMenuItem {
+    children: IMenuItemMatch[];
+    dotPath: string;
+    order: number;
+    level: number;
+    match: boolean;
 }
 
 export interface IRoutes {
@@ -27,22 +52,38 @@ export interface IRoutes {
 }
 
 export interface IRoute {
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
-    pattern: string;
-    template: string;
+    name: string;
+    metaData: any;
+    pattern: string|INamedPattern;
+    templates: INamedTemplate;
     queryDelimiter: string;
     queryEquals: string;
+    headTagsTemplate: string;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
+    multipleResults: boolean;
+    defaultParams: any;
+    context: IContext;
+    javascript: string;
+}
+
+export interface INamedTemplate {
+    [name: string]: string;
+}
+
+export interface INamedPattern {
+    [suffix: string]: string;
 }
 
 export interface IRouteMatch extends IRoute {
     params: any;
+    headTags: string;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;
+    paging: IPaging;
+    templateName: string;
 }
 
 export interface IElasticsearchConfig {
@@ -95,6 +136,17 @@ export interface IPaging {
     from ? : number;
     size ? : number;
     sort ? : any;
+    totalResults ? : number;
+    totalPages ? : number;
+    currentPage ? : number;
+    nextPage ? : number;
+    prevPage ? : number;
+    pageRange ? : IPagingPage[];
+}
+
+export interface IPagingPage {
+    pageNumber: number;
+    distance: number;
 }
 
 export interface IDocumentResult {

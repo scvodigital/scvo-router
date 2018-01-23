@@ -1,35 +1,46 @@
+// Node imports
+import * as util from 'util';
+
 // Module imports
 import * as handlebars from 'handlebars';
-import * as helpers from 'handlebars-helpers';
+const hbs = require('nymag-handlebars')(handlebars);
 import { SearchParams } from 'elasticsearch';
 
 // Internal imports
-import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery } from './interfaces';
-
-helpers({ handlebars: handlebars });
+import { ISearchTemplate, ISearchTemplateSet, ISearchHead, ISearchQuery, IJsonable } from './interfaces';
+import { Helpers } from './helpers';
 
 /** Class to construct an Elasticsearch query */
-export class SearchTemplate implements ISearchTemplate {
+export class SearchTemplate implements ISearchTemplate, IJsonable {
     index: string = null;
     type: string = null;
     template: string = null;
-    preferredView: string[] = null;
 
     // Instance specific properties
     private compiledTemplate: (obj: any, hbs?: any) => string = null;
+
+    public toJSON(): ISearchTemplate {
+        return {
+            index: this.index,
+            type: this.type,
+            template: this.template
+        };
+    }
 
     /**
      * Create a search template
      * @param {ISearchTemplate} - The JSON required to consturct an Elasticsearch query
      */
     constructor(searchTemplate: ISearchTemplate) {
-        // Implement our JSON 
+        // Implement our JSON
         Object.assign(this, searchTemplate);
 
+        Helpers.register(handlebars);
+        
         // Compile our template
-        this.compiledTemplate = handlebars.compile(this.template);       
+        this.compiledTemplate = handlebars.compile(this.template);
     }
-    
+
     /**
      * Render the query template to a string of JSON
      * @param {any} params - The data to pass into the handlebars template
@@ -77,7 +88,7 @@ export class SearchTemplate implements ISearchTemplate {
      * @param {any} params - The data to pass into the handlebars template
      * @return {ISearchQuery} A usable Elasticsearch query payload
      */
-    getPrimary(params: any): ISearchQuery {
+    getPrimary(params: any): any {
         var parsed: any = this.getBody(params);
         var payload: ISearchQuery = {
             index: this.index,
