@@ -46,7 +46,7 @@ export class Router {
         Object.keys(context.routes).forEach((routeName: string) => {
             // Create a new Route object
             var route: Route = new Route(context.routes[routeName], context);
-            route.name = routeName;        
+            route.name = routeName;
             if(routeName === '_default'){
                 // Treat routes called `_default` as the default handler
                 this.defaultResult = { handler: route, isDynamic: true, params: {} };
@@ -102,15 +102,15 @@ export class Router {
             }
             deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
 
-            //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
+            console.log('[ROUTER], \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params);
 
             var routeMatch = new RouteMatch(handler, params, this.context);
 
             routeMatch.getResults().then(() => {
-                this.trackDocumentHit(routeMatch.primaryResponse); 
+                this.trackDocumentHit(routeMatch.primaryResponse);
                 resolve(routeMatch.toJSON());
             }).catch((err) => {
-                reject(err);  
+                reject(err);
             });
         });
     }
@@ -127,7 +127,7 @@ export class Router {
     trackDocumentHit(results: SearchResponse<any>) {
         if(!this.visitor || !results.hits.hits || results.hits.hits.length === 0) return;
         var hitType = results.hits.total > 1 ? 'Multi' : 'Single';
-        
+
         results.hits.hits.forEach((hit) => {
             var documentType = hit._type;
             var documentId = hit._id;
@@ -137,7 +137,7 @@ export class Router {
                     console.error('[UA ' + this.uaId + '] Failed to track hit:', documentType, documentId, err);
                 }else{
                     //console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
-                } 
+                }
             });
         });
     }
