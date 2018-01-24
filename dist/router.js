@@ -99,7 +99,7 @@ var Router = /** @class */ (function () {
                 idFriendlyPath = idFriendlyPath.substr(1);
             }
             deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
-            //console.log('Route Match, \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params); 
+            console.log('[ROUTER], \n\tURL:', uriString, '\n\tMatch:', handler.name, '\n\tParams:', params);
             var routeMatch = new route_match_1.RouteMatch(handler, params, _this.context);
             routeMatch.getResults().then(function () {
                 _this.trackDocumentHit(routeMatch.primaryResponse);
