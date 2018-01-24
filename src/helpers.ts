@@ -150,6 +150,14 @@ export class Helpers {
         }
         return reversed;
     }
+
+    static helper_stripTrailingSlash(input: string) {
+        if (typeof input === 'string' && input.endsWith('/')) {
+            return input.substr(0, input.length - 1);
+        } else {
+            return input;
+        }
+    }
 }
 
 export interface IHelperArgs {
