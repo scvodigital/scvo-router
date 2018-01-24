@@ -148,6 +148,14 @@ var Helpers = /** @class */ (function () {
         }
         return reversed;
     };
+    Helpers.helper_stripTrailingSlash = function (input) {
+        if (typeof input === 'string' && input.endsWith('/')) {
+            return input.substr(0, input.length - 1);
+        }
+        else {
+            return input;
+        }
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;

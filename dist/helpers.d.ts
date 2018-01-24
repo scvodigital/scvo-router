@@ -20,6 +20,7 @@ export declare class Helpers {
     static helper_regexReplace(input: string, expression: string, options: string, replace: string): string;
     static helper_regexMatch(input: string, expression: string, options: string): boolean;
     static helper_reverse(input: any[]): any[];
+    static helper_stripTrailingSlash(input: string): string;
 }
 export interface IHelperArgs {
     name: string;
