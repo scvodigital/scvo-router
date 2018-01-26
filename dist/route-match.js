@@ -269,7 +269,6 @@ var RouteMatch = /** @class */ (function () {
         };
         console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
         var template = handlebars.compile(this.context.layouts[layoutName].template);
-        console.log('CONTEXT DATA:', contextData);
         var output = template(contextData);
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
             console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);

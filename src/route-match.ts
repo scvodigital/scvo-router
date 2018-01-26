@@ -291,7 +291,6 @@ export class RouteMatch implements IRouteMatch {
         console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
 
         var template = handlebars.compile(this.context.layouts[layoutName].template);
-        console.log('CONTEXT DATA:', contextData);
         var output = template(contextData);
 
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
