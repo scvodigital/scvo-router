@@ -72,17 +72,13 @@ var Helpers = /** @class */ (function () {
         return haystack[index];
     };
     Helpers.helper_corresponding = function (source, target, item) {
-        console.log('#### CORRESPONDING HELPER -> source:', source, '| target:', target, '| item:', item);
         if (!Array.isArray(source) || !Array.isArray(source) || !item) {
             return null;
         }
         var srcIndex = source.indexOf(item);
-        console.log('#### CORRESPONDING HELPER -> index:', srcIndex);
         if (srcIndex === -1 || srcIndex >= target.length) {
-            console.log('#### CORRESPONDING HELPER -> Target array too small or item not found');
             return null;
         }
-        console.log('#### CORRESPONDING HELPER -> Item found:', target[srcIndex]);
         return target[srcIndex];
     };
     Helpers.helper_contains = function (input, val) {

@@ -230,24 +230,19 @@ var RouteMatch = /** @class */ (function () {
         var _this = this;
         // Compile our template
         var layoutName = 'default';
-        console.log('AVAILABLE LAYOUTS:', Object.keys(this.layouts));
         Object.keys(this.layouts).forEach(function (name) {
             if (name === 'default' || layoutName !== 'default')
                 return;
             if (_this.context.layouts.hasOwnProperty(name)) {
                 var pattern = _this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
-                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', _this.params.uri.href);
                 if (regex.test(_this.params.uri.href)) {
-                    console.log('MATCHED LAYOUT:', name);
                     layoutName = name;
                 }
                 else {
-                    console.log('DID NOT MATCH LAYOUT:', name);
                 }
             }
         });
-        console.log('LAYOUT NAME:', layoutName);
         var routeTemplateData = {
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: this.supplimentaryResponses,
@@ -271,11 +266,9 @@ var RouteMatch = /** @class */ (function () {
             uaId: this.context.uaId,
             templatePartials: this.context.templatePartials,
         };
-        console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
         var template = handlebars.compile(this.context.layouts[layoutName].template);
         var output = template(contextData);
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
-            console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);
             if (sections.hasOwnProperty(m2)) {
                 return sections[m2];
             }
