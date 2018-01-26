@@ -71,22 +71,16 @@ export class Helpers {
     }
 
     static helper_corresponding(source: any[], target: any[], item: any): any {
-        console.log('#### CORRESPONDING HELPER -> source:', source, '| target:', target, '| item:', item);
-        
         if (!Array.isArray(source) || !Array.isArray(source) || !item) {
             return null;
         }
 
         var srcIndex = source.indexOf(item);
 
-        console.log('#### CORRESPONDING HELPER -> index:', srcIndex);
-
         if (srcIndex === -1 || srcIndex >= target.length) {
-            console.log('#### CORRESPONDING HELPER -> Target array too small or item not found');
             return null;
         }
 
-        console.log('#### CORRESPONDING HELPER -> Item found:', target[srcIndex]);
         return target[srcIndex];
     }
 

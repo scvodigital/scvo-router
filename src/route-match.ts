@@ -246,24 +246,17 @@ export class RouteMatch implements IRouteMatch {
         // Compile our template
         var layoutName: string = 'default';
 
-        console.log('AVAILABLE LAYOUTS:', Object.keys(this.layouts));
-
         Object.keys(this.layouts).forEach((name: string) => {
             if (name === 'default' || layoutName !== 'default') return;
             if (this.context.layouts.hasOwnProperty(name)) {
                 var pattern = this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
-                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', this.params.uri.href);
                 if (regex.test(this.params.uri.href)) {
-                    console.log('MATCHED LAYOUT:', name);
                     layoutName = name;
                 } else { 
-                    console.log('DID NOT MATCH LAYOUT:', name);
                 }
             }
         });
-
-        console.log('LAYOUT NAME:', layoutName);
 
         var routeTemplateData: any = {
             primaryResponse: this.primaryResponse,
@@ -291,13 +284,10 @@ export class RouteMatch implements IRouteMatch {
             templatePartials: this.context.templatePartials,
         };
        
-        console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
-
         var template = handlebars.compile(this.context.layouts[layoutName].template);
         var output = template(contextData);
 
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
-            console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);
             if (sections.hasOwnProperty(m2)) {
                 return sections[m2];
             } else { 
