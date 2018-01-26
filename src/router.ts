@@ -81,8 +81,8 @@ export class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    public execute(uriString: string): Promise<IRouteMatch>{
-        return new Promise<IRouteMatch>((resolve, reject) => {
+    public execute(uriString: string): Promise<string>{
+        return new Promise<string>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
 
             this.trackRoute(uri.path);
@@ -108,7 +108,7 @@ export class Router {
 
             routeMatch.getResults().then(() => {
                 this.trackDocumentHit(routeMatch.primaryResponse);
-                resolve(routeMatch.toJSON());
+                resolve(routeMatch.rendered);
             }).catch((err) => {
                 reject(err);
             });

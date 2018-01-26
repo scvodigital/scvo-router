@@ -20,19 +20,14 @@ var RouteMatch = /** @class */ (function () {
         this.name = '_default';
         this.metaData = {};
         this.pattern = null;
-        this.templates = {};
         this.queryDelimiter = '&';
         this.queryEquals = '=';
-        this.headTagsTemplate = '';
         this.supplimentarySearchTemplates = {};
         this.primaryResponse = null;
         this.supplimentaryResponses = {};
         this.elasticsearchConfig = null;
-        this.multipleResults = false;
         this.defaultParams = {};
-        // Instance specific properties
-        this.compiledTemplates = {};
-        this.compiledHeadTagsTemplate = null;
+        this.layouts = null;
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
@@ -44,63 +39,10 @@ var RouteMatch = /** @class */ (function () {
         Object.keys(context.templatePartials).forEach(function (name) {
             handlebars.registerPartial(name, context.templatePartials[name]);
         });
-        // Compile our template
-        Object.keys(this.templates).forEach(function (name) {
-            _this.compiledTemplates[name] = handlebars.compile(_this.templates[name]);
-        });
-        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
         Object.keys(this.context.menus).forEach(function (name) {
             _this.context.menus[name] = _this.traverseMenu(_this.context.menus[name]);
         });
     }
-    Object.defineProperty(RouteMatch.prototype, "templateName", {
-        get: function () {
-            var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
-            if (templateName != 'default' && !this.templates.hasOwnProperty(templateName)) {
-                templateName = 'default';
-            }
-            if (!this.templates.hasOwnProperty(templateName)) {
-                templateName = Object.keys(this.templates)[0];
-            }
-            return templateName;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RouteMatch.prototype, "rendered", {
-        /**
-         * Get the rendered view of the results
-         */
-        get: function () {
-            var routeTemplateData = {
-                primaryResponse: this.primaryResponse,
-                supplimentaryResponses: this.supplimentaryResponses,
-                params: this.params,
-                metaData: this.metaData,
-                paging: this.paging,
-                context: this.context,
-            };
-            var output = this.compiledTemplates[this.templateName](routeTemplateData);
-            return output;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(RouteMatch.prototype, "headTags", {
-        get: function () {
-            var headTagsTemplateData = {
-                primaryResponse: this.primaryResponse,
-                supplimentaryResponses: this.supplimentaryResponses,
-                params: this.params,
-                metaData: this.metaData,
-                context: this.context,
-            };
-            var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
-            return output;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(RouteMatch.prototype, "defaultParamsCopy", {
         get: function () {
             var copy = {};
@@ -217,20 +159,16 @@ var RouteMatch = /** @class */ (function () {
             name: this.name,
             metaData: this.metaData,
             pattern: this.pattern,
-            templates: this.templates,
-            templateName: this.templateName,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            headTagsTemplate: this.headTagsTemplate,
-            headTags: this.headTags,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
+            layouts: this.layouts,
             rendered: this.rendered,
             params: this.params,
-            multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
             context: this.context,
@@ -275,16 +213,73 @@ var RouteMatch = /** @class */ (function () {
                             // Save the response to the appropriately named property of our supplimentary responses
                             _this.supplimentaryResponses[responseName] = supplimentaryResponse;
                         });
+                        _this.renderResults();
                         // We're done so let the promise owner know
                         resolve();
                     });
                 }
                 else {
+                    _this.renderResults();
                     // We don't need to get anything else so let the promise owner know
                     resolve();
                 }
             });
         });
+    };
+    RouteMatch.prototype.renderResults = function () {
+        var _this = this;
+        // Compile our template
+        var layoutName = 'default';
+        console.log('AVAILABLE LAYOUTS:', Object.keys(this.layouts));
+        Object.keys(this.layouts).forEach(function (name) {
+            if (name === 'default' || layoutName !== 'default')
+                return;
+            if (_this.context.layouts.hasOwnProperty(name)) {
+                var pattern = _this.context.layouts[name].pattern;
+                var regex = new RegExp(pattern, 'ig');
+                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', _this.params.uri);
+                if (regex.test(_this.params.uri)) {
+                    layoutName = name;
+                }
+            }
+        });
+        console.log('LAYOUT NAME:', layoutName);
+        var routeTemplateData = {
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: this.supplimentaryResponses,
+            params: this.params,
+            metaData: this.metaData,
+            paging: this.paging,
+            context: this.context,
+        };
+        var sections = {};
+        Object.keys(this.layouts[layoutName]).forEach(function (sectionName) {
+            var template = handlebars.compile(_this.layouts[layoutName][sectionName]);
+            var output = template(routeTemplateData);
+            sections[sectionName] = output;
+        });
+        var contextData = {
+            metaData: this.context.metaData,
+            domains: this.context.domains,
+            menus: this.context.menus,
+            routes: this.context.routes,
+            route: this.toJSON,
+            uaId: this.context.uaId,
+            templatePartials: this.context.templatePartials,
+        };
+        console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
+        var template = handlebars.compile(this.context.layouts[layoutName].template);
+        var output = template(contextData);
+        output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
+            console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);
+            if (sections.hasOwnProperty(m2)) {
+                return sections[m2];
+            }
+            else {
+                return match;
+            }
+        });
+        this.rendered = output;
     };
     return RouteMatch;
 }());

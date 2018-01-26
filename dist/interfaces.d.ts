@@ -11,6 +11,16 @@ export interface IContext {
     template: string;
     uaId: string;
     templatePartials: IPartials;
+    layouts: ILayouts;
+}
+export interface ILayouts {
+    default: ILayout;
+    [name: string]: ILayout;
+}
+export interface ILayout {
+    template: string;
+    sections: string[];
+    pattern: string;
 }
 export interface IPartials {
     [name: string]: string;
@@ -41,16 +51,21 @@ export interface IRoute {
     name: string;
     metaData: any;
     pattern: string | INamedPattern;
-    templates: INamedTemplate;
     queryDelimiter: string;
     queryEquals: string;
-    headTagsTemplate: string;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
-    multipleResults: boolean;
     defaultParams: any;
     context: IContext;
+    layouts: IRouteLayouts;
+}
+export interface IRouteLayouts {
+    default: IRouteLayout;
+    [name: string]: IRouteLayout;
+}
+export interface IRouteLayout {
+    [section: string]: string;
 }
 export interface INamedTemplate {
     [name: string]: string;
@@ -60,12 +75,10 @@ export interface INamedPattern {
 }
 export interface IRouteMatch extends IRoute {
     params: any;
-    headTags: string;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     rendered: string;
     paging: IPaging;
-    templateName: string;
 }
 export interface IElasticsearchConfig {
     username: string;

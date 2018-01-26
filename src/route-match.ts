@@ -7,7 +7,8 @@ const hbs = require('nymag-handlebars')();
 import { 
     IRouteMatch, ISearchTemplate, ISearchResponseSet, 
     ISearchQuery, IDocumentResult, IPaging, INamedPattern, 
-    INamedTemplate, IContext, IMenus, IMenuItem
+    INamedTemplate, IContext, IMenus, IMenuItem,
+    IRouteLayouts, IRouteLayout
 } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
@@ -19,66 +20,22 @@ export class RouteMatch implements IRouteMatch {
     name: string = '_default';
     metaData: any = {};
     pattern: string|INamedPattern = null;
-    templates: INamedTemplate = {};
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    headTagsTemplate: string = '';
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet = {};
     primaryResponse: SearchResponse<IDocumentResult> = null;
     supplimentaryResponses: ISearchResponseSet = {};
     elasticsearchConfig: ConfigOptions = null;
-    multipleResults: boolean = false;
     defaultParams: any = {};
-
-    get templateName(): string {
-        var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
-        if(templateName != 'default' && !this.templates.hasOwnProperty(templateName)){
-            templateName = 'default';
-        }
-        if(!this.templates.hasOwnProperty(templateName)){
-            templateName = Object.keys(this.templates)[0];
-        }
-        return templateName;
-    }
-
-    /**
-     * Get the rendered view of the results
-     */
-    get rendered(): string {
-        var routeTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            paging: this.paging,
-            context: this.context,
-        };
-        var output = this.compiledTemplates[this.templateName](routeTemplateData);
-        return output;
-    }
-
-    get headTags(): string {
-        var headTagsTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            context: this.context,
-        };
-        var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
-        return output;
-    }
+    layouts: IRouteLayouts = null;
+    rendered: string;
 
     get defaultParamsCopy(): any {
         var copy = {};
         Object.assign(copy, this.defaultParams);
         return copy;
     }
-
-    // Instance specific properties
-    private compiledTemplates: { [name: string]: (obj: any, hbs?: any) => string } = {};
-    private compiledHeadTagsTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
     private orderMap: string[] = [];
@@ -197,20 +154,16 @@ export class RouteMatch implements IRouteMatch {
             name: this.name,
             metaData: this.metaData,
             pattern: this.pattern,
-            templates: this.templates,
-            templateName: this.templateName,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            headTagsTemplate: this.headTagsTemplate,
-            headTags: this.headTags,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
+            layouts: this.layouts,
             rendered: this.rendered,
             params: this.params,
-            multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
             context: this.context,
@@ -230,13 +183,7 @@ export class RouteMatch implements IRouteMatch {
         Object.keys(context.templatePartials).forEach((name: string) => {
             handlebars.registerPartial(name, context.templatePartials[name]);
         });
-
-        // Compile our template
-        Object.keys(this.templates).forEach((name: string) => {
-            this.compiledTemplates[name] = handlebars.compile(this.templates[name]);
-        });
-        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
-
+    
         Object.keys(this.context.menus).forEach((name: string) => {
             this.context.menus[name] = this.traverseMenu(this.context.menus[name]);
         });
@@ -279,14 +226,82 @@ export class RouteMatch implements IRouteMatch {
                             // Save the response to the appropriately named property of our supplimentary responses
                             this.supplimentaryResponses[responseName] = supplimentaryResponse;
                         });
+
+                        this.renderResults();
+
                         // We're done so let the promise owner know
                         resolve();
                     });
                 }else{
+                    this.renderResults();
+
                     // We don't need to get anything else so let the promise owner know
                     resolve();
                 }
             });
         });
+    }
+
+    renderResults() {
+        // Compile our template
+        var layoutName: string = 'default';
+
+        console.log('AVAILABLE LAYOUTS:', Object.keys(this.layouts));
+
+        Object.keys(this.layouts).forEach((name: string) => {
+            if (name === 'default' || layoutName !== 'default') return;
+            if (this.context.layouts.hasOwnProperty(name)) {
+                var pattern = this.context.layouts[name].pattern;
+                var regex = new RegExp(pattern, 'ig');
+                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', this.params.uri);
+                if (regex.test(this.params.uri)) {
+                    layoutName = name;
+                }
+            }
+        });
+
+        console.log('LAYOUT NAME:', layoutName);
+
+        var routeTemplateData: any = {
+            primaryResponse: this.primaryResponse,
+            supplimentaryResponses: this.supplimentaryResponses,
+            params: this.params,
+            metaData: this.metaData,
+            paging: this.paging,
+            context: this.context,
+        };
+       
+        var sections: IRouteLayout = {};
+        Object.keys(this.layouts[layoutName]).forEach((sectionName: string) => {
+            var template = handlebars.compile(this.layouts[layoutName][sectionName]);
+            var output = template(routeTemplateData);
+            sections[sectionName] = output;
+        });
+
+        var contextData = {
+            metaData: this.context.metaData,
+            domains: this.context.domains,
+            menus: this.context.menus,
+            routes: this.context.routes,
+            route: this.toJSON,
+            uaId: this.context.uaId,
+            templatePartials: this.context.templatePartials,
+        };
+       
+        console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
+
+        var template = handlebars.compile(this.context.layouts[layoutName].template);
+        var output = template(contextData);
+
+        output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
+            console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);
+            if (sections.hasOwnProperty(m2)) {
+                return sections[m2];
+            } else { 
+                return match;
+            }
+        });
+
+        this.rendered = output;
     }
 }

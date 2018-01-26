@@ -103,7 +103,7 @@ var Router = /** @class */ (function () {
             var routeMatch = new route_match_1.RouteMatch(handler, params, _this.context);
             routeMatch.getResults().then(function () {
                 _this.trackDocumentHit(routeMatch.primaryResponse);
-                resolve(routeMatch.toJSON());
+                resolve(routeMatch.rendered);
             }).catch(function (err) {
                 reject(err);
             });
