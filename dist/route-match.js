@@ -237,7 +237,7 @@ var RouteMatch = /** @class */ (function () {
             if (_this.context.layouts.hasOwnProperty(name)) {
                 var pattern = _this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
-                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', _this.params.uri);
+                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', _this.params.uri.href);
                 if (regex.test(_this.params.uri)) {
                     layoutName = name;
                 }
@@ -263,12 +263,13 @@ var RouteMatch = /** @class */ (function () {
             domains: this.context.domains,
             menus: this.context.menus,
             routes: this.context.routes,
-            route: this.toJSON,
+            route: this.toJSON(),
             uaId: this.context.uaId,
             templatePartials: this.context.templatePartials,
         };
         console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
         var template = handlebars.compile(this.context.layouts[layoutName].template);
+        console.log('CONTEXT DATA:', contextData);
         var output = template(contextData);
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
             console.log('TEMPLATE INSERTER -> match:', match, '| m1:', m1, '| m2:', m2, '| m3:', m3);

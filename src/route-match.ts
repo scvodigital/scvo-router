@@ -253,7 +253,7 @@ export class RouteMatch implements IRouteMatch {
             if (this.context.layouts.hasOwnProperty(name)) {
                 var pattern = this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
-                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', this.params.uri);
+                console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', this.params.uri.href);
                 if (regex.test(this.params.uri)) {
                     layoutName = name;
                 }
@@ -283,7 +283,7 @@ export class RouteMatch implements IRouteMatch {
             domains: this.context.domains,
             menus: this.context.menus,
             routes: this.context.routes,
-            route: this.toJSON,
+            route: this.toJSON(),
             uaId: this.context.uaId,
             templatePartials: this.context.templatePartials,
         };
@@ -291,6 +291,7 @@ export class RouteMatch implements IRouteMatch {
         console.log('CONTEXT LAYOUTS:', Object.keys(this.context.layouts));
 
         var template = handlebars.compile(this.context.layouts[layoutName].template);
+        console.log('CONTEXT DATA:', contextData);
         var output = template(contextData);
 
         output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
