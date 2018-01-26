@@ -254,8 +254,11 @@ export class RouteMatch implements IRouteMatch {
                 var pattern = this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
                 console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', this.params.uri.href);
-                if (regex.test(this.params.uri)) {
+                if (regex.test(this.params.uri.href)) {
+                    console.log('MATCHED LAYOUT:', name);
                     layoutName = name;
+                } else { 
+                    console.log('DID NOT MATCH LAYOUT:', name);
                 }
             }
         });

@@ -238,8 +238,12 @@ var RouteMatch = /** @class */ (function () {
                 var pattern = _this.context.layouts[name].pattern;
                 var regex = new RegExp(pattern, 'ig');
                 console.log('TESTING LAYOUT MATCH -> layoutName:', name, '| regex:', regex, '| uri:', _this.params.uri.href);
-                if (regex.test(_this.params.uri)) {
+                if (regex.test(_this.params.uri.href)) {
+                    console.log('MATCHED LAYOUT:', name);
                     layoutName = name;
+                }
+                else {
+                    console.log('DID NOT MATCH LAYOUT:', name);
                 }
             }
         });
