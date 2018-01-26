@@ -129,12 +129,18 @@ export class Helpers {
     }
 
     static helper_regexReplace(input: string, expression: string, options: string, replace: string) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = input.replace(regex, replace);
         return output;
     }
 
     static helper_regexMatch(input: string, expression: string, options: string) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = regex.test(input);
         return output;

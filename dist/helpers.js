@@ -129,11 +129,17 @@ var Helpers = /** @class */ (function () {
         return typeof obj;
     };
     Helpers.helper_regexReplace = function (input, expression, options, replace) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = input.replace(regex, replace);
         return output;
     };
     Helpers.helper_regexMatch = function (input, expression, options) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = regex.test(input);
         return output;
