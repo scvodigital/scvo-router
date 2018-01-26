@@ -5,10 +5,9 @@ const hbs = require('nymag-handlebars')();
 
 // Internal imports
 import { 
-    IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, 
-    ISearchResponseSet, ISearchQuery, IDocumentResult, 
-    IPaging, INamedPattern, INamedTemplate, IContext,
-    IMenus, IMenuItem
+    IRouteMatch, ISearchTemplate, ISearchResponseSet, 
+    ISearchQuery, IDocumentResult, IPaging, INamedPattern, 
+    INamedTemplate, IContext, IMenus, IMenuItem
 } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
@@ -31,7 +30,6 @@ export class RouteMatch implements IRouteMatch {
     elasticsearchConfig: ConfigOptions = null;
     multipleResults: boolean = false;
     defaultParams: any = {};
-    javascript: string = '';
 
     get templateName(): string {
         var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
@@ -215,7 +213,6 @@ export class RouteMatch implements IRouteMatch {
             multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
-            javascript: this.javascript,
             context: this.context,
         };
     }

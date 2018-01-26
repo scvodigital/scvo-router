@@ -16,7 +16,6 @@ export declare class Route implements IRoute, IJsonable {
     elasticsearchConfig: ConfigOptions;
     multipleResults: boolean;
     defaultParams: any;
-    javascript: string;
     toJSON(): IRoute;
     readonly defaultParamsCopy: any;
     /**

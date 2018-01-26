@@ -20,7 +20,6 @@ export declare class RouteMatch implements IRouteMatch {
     elasticsearchConfig: ConfigOptions;
     multipleResults: boolean;
     defaultParams: any;
-    javascript: string;
     readonly templateName: string;
     /**
      * Get the rendered view of the results

@@ -30,7 +30,6 @@ var RouteMatch = /** @class */ (function () {
         this.elasticsearchConfig = null;
         this.multipleResults = false;
         this.defaultParams = {};
-        this.javascript = '';
         // Instance specific properties
         this.compiledTemplates = {};
         this.compiledHeadTagsTemplate = null;
@@ -234,7 +233,6 @@ var RouteMatch = /** @class */ (function () {
             multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
-            javascript: this.javascript,
             context: this.context,
         };
     };

@@ -8,14 +8,9 @@ export interface IJsonable {
 export interface IContext {
     name: string;
     domains: string[];
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
-    scriptTags: IScriptTag[];
-    javascript: string;
     metaData: any;
     menus: IMenus;
     routes: IRoutes;
-    sass: string;
     template: string;
     uaId: string;
     templatePartials: IPartials;
@@ -65,7 +60,6 @@ export interface IRoute {
     multipleResults: boolean;
     defaultParams: any;
     context: IContext;
-    javascript: string;
 }
 
 export interface INamedTemplate {
@@ -111,25 +105,6 @@ export interface ISearchQuery {
     index: string;
     type: string;
     body: any;
-}
-
-export interface IScriptTag {
-    src: string;
-    [attribute: string]: string;
-}
-
-export interface IMetaTag {
-    content: string;
-    name: string;
-    [attribute: string]: string;
-}
-
-export interface ILinkTag {
-    href: string;
-    rel: string;
-    name ? : string;
-    type: string;
-    [attribute: string]: string;
 }
 
 export interface IPaging {

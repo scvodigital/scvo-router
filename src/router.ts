@@ -13,7 +13,7 @@ import * as ua from 'universal-analytics';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IRoutes, IRouteMatch, IContext, ILinkTag, IMetaTag, INamedPattern } from './interfaces';
+import { IRoutes, IRouteMatch, IContext, INamedPattern } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
