@@ -33,6 +33,7 @@ var RouteMatch = /** @class */ (function () {
         this._primaryQuery = null;
         this._supplimentaryQueries = null;
         this._esClient = null;
+        this._domainStripper = null;
         // Implement route
         Object.assign(this, route);
         helpers_1.Helpers.register(handlebars);
@@ -152,6 +153,18 @@ var RouteMatch = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RouteMatch.prototype, "domainStripper", {
+        get: function () {
+            if (!this._domainStripper) {
+                var stripDomains = this.context.domains.map(function (domain) { return domain.replace(/\./g, '\\.'); });
+                var domainRegexString = '((https?)?:\\/\\/)((' + stripDomains.join(')|(') + '))';
+                this._domainStripper = new RegExp(domainRegexString, 'ig');
+            }
+            return this._domainStripper;
+        },
+        enumerable: true,
+        configurable: true
+    });
     RouteMatch.prototype.toJSON = function () {
         var templates = map_jsonify_1.MapJsonify(this.supplimentarySearchTemplates);
         var responses = map_jsonify_1.MapJsonify(this.supplimentaryResponses);
@@ -255,6 +268,7 @@ var RouteMatch = /** @class */ (function () {
         Object.keys(this.layouts[layoutName]).forEach(function (sectionName) {
             var template = handlebars.compile(_this.layouts[layoutName][sectionName]);
             var output = template(routeTemplateData);
+            output = output.replace(_this.domainStripper, '');
             sections[sectionName] = output;
         });
         var contextData = {

@@ -146,6 +146,16 @@ export class RouteMatch implements IRouteMatch {
         };
         return paging;
     }
+    
+    _domainStripper: RegExp = null;
+    get domainStripper(): RegExp {
+        if(!this._domainStripper){
+            var stripDomains = this.context.domains.map((domain: string) => { return domain.replace(/\./g, '\\.'); });
+            var domainRegexString = '((https?)?:\\/\\/)((' + stripDomains.join(')|(') + '))';
+            this._domainStripper = new RegExp(domainRegexString, 'ig');
+        }
+        return this._domainStripper;
+    }
 
     public toJSON(): IRouteMatch {
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
@@ -271,6 +281,7 @@ export class RouteMatch implements IRouteMatch {
         Object.keys(this.layouts[layoutName]).forEach((sectionName: string) => {
             var template = handlebars.compile(this.layouts[layoutName][sectionName]);
             var output = template(routeTemplateData);
+            output = output.replace(this.domainStripper, '');
             sections[sectionName] = output;
         });
 

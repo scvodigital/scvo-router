@@ -28,6 +28,8 @@ export declare class RouteMatch implements IRouteMatch {
     private _esClient;
     private readonly esClient;
     readonly paging: IPaging;
+    _domainStripper: RegExp;
+    readonly domainStripper: RegExp;
     toJSON(): IRouteMatch;
     /**
      * Create a matched route to get results using parameters

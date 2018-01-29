@@ -34,7 +34,7 @@ export class Router {
         }
         return this._visitor;
     }
-
+    
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
