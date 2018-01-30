@@ -314,6 +314,7 @@ export class RouteMatch implements IRouteMatch {
 
             this.response.contentBody = output;
         } catch (err) {
+            console.error('Error rendering route:', err);
             this.response.contentBody = JSON.stringify(err);
             this.response.statusCode = 500;
             this.response.contentType = 'application/json';  
