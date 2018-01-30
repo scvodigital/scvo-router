@@ -56,6 +56,31 @@ var Helpers = /** @class */ (function () {
         json = json.replace(/\{/g, "{{ '{' }}");
         return json;
     };
+    Helpers.helper_indexOf = function (haystack, needle) {
+        if (!Array.isArray(haystack)) {
+            return null;
+        }
+        return haystack.indexOf(needle);
+    };
+    Helpers.helper_itemAt = function (haystack, index) {
+        if (!Array.isArray(haystack) || typeof index !== 'number') {
+            return null;
+        }
+        if (index >= haystack.length) {
+            return null;
+        }
+        return haystack[index];
+    };
+    Helpers.helper_corresponding = function (source, target, item) {
+        if (!Array.isArray(source) || !Array.isArray(source) || !item) {
+            return null;
+        }
+        var srcIndex = source.indexOf(item);
+        if (srcIndex === -1 || srcIndex >= target.length) {
+            return null;
+        }
+        return target[srcIndex];
+    };
     Helpers.helper_contains = function (input, val) {
         var found = false;
         if (typeof input == 'string') {
@@ -129,11 +154,17 @@ var Helpers = /** @class */ (function () {
         return typeof obj;
     };
     Helpers.helper_regexReplace = function (input, expression, options, replace) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = input.replace(regex, replace);
         return output;
     };
     Helpers.helper_regexMatch = function (input, expression, options) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = regex.test(input);
         return output;
@@ -147,6 +178,14 @@ var Helpers = /** @class */ (function () {
             reversed.push(input.pop());
         }
         return reversed;
+    };
+    Helpers.helper_stripTrailingSlash = function (input) {
+        if (typeof input === 'string' && input.endsWith('/')) {
+            return input.substr(0, input.length - 1);
+        }
+        else {
+            return input;
+        }
     };
     return Helpers;
 }());

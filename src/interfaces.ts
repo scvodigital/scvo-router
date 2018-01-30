@@ -8,17 +8,25 @@ export interface IJsonable {
 export interface IContext {
     name: string;
     domains: string[];
-    linkTags: ILinkTag[];
-    metaTags: IMetaTag[];
-    scriptTags: IScriptTag[];
-    javascript: string;
     metaData: any;
     menus: IMenus;
     routes: IRoutes;
-    sass: string;
     template: string;
     uaId: string;
     templatePartials: IPartials;
+    layouts: ILayouts;
+}
+
+export interface ILayouts {
+    default: ILayout;
+    [name: string]: ILayout;
+}
+
+export interface ILayout {
+    template: string;
+    sections: string[];
+    pattern: string;
+    contentType: string;
 }
 
 export interface IPartials {
@@ -55,17 +63,23 @@ export interface IRoute {
     name: string;
     metaData: any;
     pattern: string|INamedPattern;
-    templates: INamedTemplate;
     queryDelimiter: string;
     queryEquals: string;
-    headTagsTemplate: string;
     primarySearchTemplate: ISearchTemplate;
     supplimentarySearchTemplates: ISearchTemplateSet;
     elasticsearchConfig: ConfigOptions;
-    multipleResults: boolean;
     defaultParams: any;
     context: IContext;
-    javascript: string;
+    layouts: IRouteLayouts;
+}
+
+export interface IRouteLayouts {
+    default: IRouteLayout;
+    [name: string]: IRouteLayout;
+}
+
+export interface IRouteLayout {
+    [section: string]: string;
 }
 
 export interface INamedTemplate {
@@ -78,12 +92,11 @@ export interface INamedPattern {
 
 export interface IRouteMatch extends IRoute {
     params: any;
-    headTags: string;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
-    rendered: string;
     paging: IPaging;
-    templateName: string;
+    layoutName: string;
+    response: IRouteResponse;
 }
 
 export interface IElasticsearchConfig {
@@ -111,25 +124,6 @@ export interface ISearchQuery {
     index: string;
     type: string;
     body: any;
-}
-
-export interface IScriptTag {
-    src: string;
-    [attribute: string]: string;
-}
-
-export interface IMetaTag {
-    content: string;
-    name: string;
-    [attribute: string]: string;
-}
-
-export interface ILinkTag {
-    href: string;
-    rel: string;
-    name ? : string;
-    type: string;
-    [attribute: string]: string;
 }
 
 export interface IPaging {
@@ -223,4 +217,11 @@ export interface IGeoDetails {
         ccg: string,
         nuts: string
     }
+}
+
+export interface IRouteResponse {
+    contentType: string;
+    contentBody: string;
+    statusCode: number;
+
 }

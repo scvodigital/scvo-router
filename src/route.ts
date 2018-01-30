@@ -2,7 +2,11 @@
 import { ConfigOptions } from 'elasticsearch';
 
 // Internal imports
-import { IRoute, ILinkTag, IMetaTag, ISearchTemplate, ISearchTemplateSet, IJsonable, INamedPattern, INamedTemplate, IContext } from './interfaces';
+import { 
+    IRoute, ISearchTemplate, ISearchTemplateSet, IJsonable, 
+    INamedPattern, INamedTemplate, IContext, IRouteLayouts,
+    IRouteLayout
+} from './interfaces';
 import { SearchTemplate } from './search-template';
 import { MapJsonify } from './map-jsonify';
 
@@ -14,13 +18,11 @@ export class Route implements IRoute, IJsonable {
     queryDelimiter: string = '&';
     queryEquals: string = '=';
     templates: INamedTemplate = { default: '' };
-    headTagsTemplate: string = '';
     primarySearchTemplate: SearchTemplate = null;
     supplimentarySearchTemplates: ISearchTemplateSet = {};
     elasticsearchConfig: ConfigOptions = null;
-    multipleResults: boolean = false;
+    layouts: IRouteLayouts = null;
     defaultParams: any = {};
-    javascript: string = '';
 
     public toJSON(): IRoute{
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
@@ -30,14 +32,11 @@ export class Route implements IRoute, IJsonable {
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            templates: this.templates,
-            headTagsTemplate: this.headTagsTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig,
-            multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
-            javascript: this.javascript,
+            layouts: this.layouts,
             context: this.context
         };
     }

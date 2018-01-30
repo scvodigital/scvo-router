@@ -7,6 +7,9 @@ export declare class Helpers {
     static helper_slugify(str: string): any;
     static helper_querystringify(obj?: any): string;
     static helper_ngStringify(obj: any): string;
+    static helper_indexOf(haystack: any[], needle: any): number;
+    static helper_itemAt(haystack: any[], index: number): any;
+    static helper_corresponding(source: any[], target: any[], item: any): any;
     static helper_contains(input: any[] | string, val: any): boolean;
     static helper_parse(str: string): any;
     static helper_keyValue(obj: any): any[];
@@ -20,6 +23,7 @@ export declare class Helpers {
     static helper_regexReplace(input: string, expression: string, options: string, replace: string): string;
     static helper_regexMatch(input: string, expression: string, options: string): boolean;
     static helper_reverse(input: any[]): any[];
+    static helper_stripTrailingSlash(input: string): string;
 }
 export interface IHelperArgs {
     name: string;

@@ -1,5 +1,5 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, INamedTemplate, IContext, IMenuItem } from './interfaces';
+import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext, IMenuItem, IRouteLayouts, IRouteResponse } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
@@ -9,27 +9,18 @@ export declare class RouteMatch implements IRouteMatch {
     name: string;
     metaData: any;
     pattern: string | INamedPattern;
-    templates: INamedTemplate;
     queryDelimiter: string;
     queryEquals: string;
-    headTagsTemplate: string;
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
     elasticsearchConfig: ConfigOptions;
-    multipleResults: boolean;
     defaultParams: any;
-    javascript: string;
-    readonly templateName: string;
-    /**
-     * Get the rendered view of the results
-     */
-    readonly rendered: string;
-    readonly headTags: string;
+    layouts: IRouteLayouts;
+    layoutName: string;
+    response: IRouteResponse;
     readonly defaultParamsCopy: any;
-    private compiledTemplates;
-    private compiledHeadTagsTemplate;
     private orderMap;
     private _primaryQuery;
     readonly primaryQuery: ISearchQuery;
@@ -38,6 +29,8 @@ export declare class RouteMatch implements IRouteMatch {
     private _esClient;
     private readonly esClient;
     readonly paging: IPaging;
+    _domainStripper: RegExp;
+    readonly domainStripper: RegExp;
     toJSON(): IRouteMatch;
     /**
      * Create a matched route to get results using parameters
@@ -51,4 +44,5 @@ export declare class RouteMatch implements IRouteMatch {
      * @return {Promise<void>} A promise to tell when results have been fetched
      */
     getResults(): Promise<void>;
+    renderResults(): void;
 }

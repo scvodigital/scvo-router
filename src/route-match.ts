@@ -5,10 +5,10 @@ const hbs = require('nymag-handlebars')();
 
 // Internal imports
 import { 
-    IRouteMatch, ILinkTag, IMetaTag, ISearchTemplate, 
-    ISearchResponseSet, ISearchQuery, IDocumentResult, 
-    IPaging, INamedPattern, INamedTemplate, IContext,
-    IMenus, IMenuItem
+    IRouteMatch, ISearchTemplate, ISearchResponseSet, 
+    ISearchQuery, IDocumentResult, IPaging, INamedPattern, 
+    INamedTemplate, IContext, IMenus, IMenuItem,
+    IRouteLayouts, IRouteLayout, IRouteResponse
 } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
@@ -20,56 +20,20 @@ export class RouteMatch implements IRouteMatch {
     name: string = '_default';
     metaData: any = {};
     pattern: string|INamedPattern = null;
-    templates: INamedTemplate = {};
     queryDelimiter: string = '&';
     queryEquals: string = '=';
-    headTagsTemplate: string = '';
     primarySearchTemplate: SearchTemplate;
     supplimentarySearchTemplates: SearchTemplateSet = {};
     primaryResponse: SearchResponse<IDocumentResult> = null;
     supplimentaryResponses: ISearchResponseSet = {};
     elasticsearchConfig: ConfigOptions = null;
-    multipleResults: boolean = false;
     defaultParams: any = {};
-    javascript: string = '';
-
-    get templateName(): string {
-        var templateName = this.params.query ? this.params.query._view || 'default' : 'default';
-        if(templateName != 'default' && !this.templates.hasOwnProperty(templateName)){
-            templateName = 'default';
-        }
-        if(!this.templates.hasOwnProperty(templateName)){
-            templateName = Object.keys(this.templates)[0];
-        }
-        return templateName;
-    }
-
-    /**
-     * Get the rendered view of the results
-     */
-    get rendered(): string {
-        var routeTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            paging: this.paging,
-            context: this.context,
-        };
-        var output = this.compiledTemplates[this.templateName](routeTemplateData);
-        return output;
-    }
-
-    get headTags(): string {
-        var headTagsTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            context: this.context,
-        };
-        var output = this.compiledHeadTagsTemplate(headTagsTemplateData);
-        return output;
+    layouts: IRouteLayouts = null;
+    layoutName: string = 'default';
+    response: IRouteResponse = {
+        contentBody: '',
+        contentType: 'text/html',
+        statusCode: 200
     }
 
     get defaultParamsCopy(): any {
@@ -77,10 +41,6 @@ export class RouteMatch implements IRouteMatch {
         Object.assign(copy, this.defaultParams);
         return copy;
     }
-
-    // Instance specific properties
-    private compiledTemplates: { [name: string]: (obj: any, hbs?: any) => string } = {};
-    private compiledHeadTagsTemplate: (obj: any, hbs?: any) => string = null;
 
     // Used to remember which order our supplimentary queries were executed in
     private orderMap: string[] = [];
@@ -191,6 +151,16 @@ export class RouteMatch implements IRouteMatch {
         };
         return paging;
     }
+    
+    _domainStripper: RegExp = null;
+    get domainStripper(): RegExp {
+        if(!this._domainStripper){
+            var stripDomains = this.context.domains.map((domain: string) => { return domain.replace(/\./g, '\\.'); });
+            var domainRegexString = '((https?)?:\\/\\/)((' + stripDomains.join(')|(') + '))';
+            this._domainStripper = new RegExp(domainRegexString, 'ig');
+        }
+        return this._domainStripper;
+    }
 
     public toJSON(): IRouteMatch {
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
@@ -199,24 +169,20 @@ export class RouteMatch implements IRouteMatch {
             name: this.name,
             metaData: this.metaData,
             pattern: this.pattern,
-            templates: this.templates,
-            templateName: this.templateName,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            headTagsTemplate: this.headTagsTemplate,
-            headTags: this.headTags,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
-            rendered: this.rendered,
+            layouts: this.layouts,
+            response: this.response,
             params: this.params,
-            multipleResults: this.multipleResults,
             paging: this.paging,
             defaultParams: this.defaultParams,
-            javascript: this.javascript,
             context: this.context,
+            layoutName: this.layoutName,
         };
     }
 
@@ -233,15 +199,22 @@ export class RouteMatch implements IRouteMatch {
         Object.keys(context.templatePartials).forEach((name: string) => {
             handlebars.registerPartial(name, context.templatePartials[name]);
         });
-
-        // Compile our template
-        Object.keys(this.templates).forEach((name: string) => {
-            this.compiledTemplates[name] = handlebars.compile(this.templates[name]);
-        });
-        this.compiledHeadTagsTemplate = handlebars.compile(this.headTagsTemplate);
-
+    
         Object.keys(this.context.menus).forEach((name: string) => {
             this.context.menus[name] = this.traverseMenu(this.context.menus[name]);
+        });
+        
+        Object.keys(this.layouts).forEach((name: string) => {
+            if (name === 'default' || this.layoutName !== 'default') return;
+            if (this.context.layouts.hasOwnProperty(name)) {
+                var pattern = this.context.layouts[name].pattern;
+                var regex = new RegExp(pattern, 'ig');
+                if (regex.test(this.params.uri.href)) {
+                    this.layoutName = name;
+                    this.response.contentType = this.context.layouts[name].contentType;
+                } else { 
+                }
+            }
         });
     }
 
@@ -282,14 +255,69 @@ export class RouteMatch implements IRouteMatch {
                             // Save the response to the appropriately named property of our supplimentary responses
                             this.supplimentaryResponses[responseName] = supplimentaryResponse;
                         });
+
+                        this.renderResults();
+
                         // We're done so let the promise owner know
                         resolve();
                     });
                 }else{
+                    this.renderResults();
+
                     // We don't need to get anything else so let the promise owner know
                     resolve();
                 }
             });
         });
+    }
+
+    renderResults() {
+        try {
+            // Compile our template
+            var routeTemplateData: any = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                paging: this.paging,
+                context: this.context,
+            };
+           
+            var sections: IRouteLayout = {};
+            Object.keys(this.layouts[this.layoutName]).forEach((sectionName: string) => {
+                var template = handlebars.compile(this.layouts[this.layoutName][sectionName]);
+                var output = template(routeTemplateData);
+                output = output.replace(this.domainStripper, '');
+                sections[sectionName] = output;
+            });
+
+            var contextData = {
+                metaData: this.context.metaData,
+                domains: this.context.domains,
+                menus: this.context.menus,
+                routes: this.context.routes,
+                route: this.toJSON(),
+                uaId: this.context.uaId,
+                templatePartials: this.context.templatePartials,
+            };
+           
+            var template = handlebars.compile(this.context.layouts[this.layoutName].template);
+            var output = template(contextData);
+
+            output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
+                if (sections.hasOwnProperty(m2)) {
+                    return sections[m2];
+                } else { 
+                    return match;
+                }
+            });
+
+            this.response.contentBody = output;
+        } catch (err) {
+            console.error('Error rendering route:', err);
+            this.response.contentBody = JSON.stringify(err);
+            this.response.statusCode = 500;
+            this.response.contentType = 'application/json';  
+        }
     }
 }

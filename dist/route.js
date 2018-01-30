@@ -18,13 +18,11 @@ var Route = /** @class */ (function () {
         this.queryDelimiter = '&';
         this.queryEquals = '=';
         this.templates = { default: '' };
-        this.headTagsTemplate = '';
         this.primarySearchTemplate = null;
         this.supplimentarySearchTemplates = {};
         this.elasticsearchConfig = null;
-        this.multipleResults = false;
+        this.layouts = null;
         this.defaultParams = {};
-        this.javascript = '';
         if (route) {
             // If given an IRoute, implement it
             Object.assign(this, route);
@@ -43,14 +41,11 @@ var Route = /** @class */ (function () {
             pattern: this.pattern,
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
-            templates: this.templates,
-            headTagsTemplate: this.headTagsTemplate,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
             supplimentarySearchTemplates: templates,
             elasticsearchConfig: this.elasticsearchConfig,
-            multipleResults: this.multipleResults,
             defaultParams: this.defaultParams,
-            javascript: this.javascript,
+            layouts: this.layouts,
             context: this.context
         };
     };

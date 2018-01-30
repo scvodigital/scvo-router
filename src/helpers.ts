@@ -53,6 +53,37 @@ export class Helpers {
         return json;
     }
 
+    static helper_indexOf(haystack: any[], needle: any): number {
+        if (!Array.isArray(haystack)) {
+            return null;
+        }
+        return haystack.indexOf(needle);
+    }
+
+    static helper_itemAt(haystack: any[], index: number): any {
+        if (!Array.isArray(haystack) || typeof index !== 'number') {
+            return null;
+        }
+        if (index >= haystack.length) {
+            return null;
+        }
+        return haystack[index];
+    }
+
+    static helper_corresponding(source: any[], target: any[], item: any): any {
+        if (!Array.isArray(source) || !Array.isArray(source) || !item) {
+            return null;
+        }
+
+        var srcIndex = source.indexOf(item);
+
+        if (srcIndex === -1 || srcIndex >= target.length) {
+            return null;
+        }
+
+        return target[srcIndex];
+    }
+
     static helper_contains(input: any[]|string, val: any) {
         var found = false;
         if (typeof input == 'string') {
@@ -129,12 +160,18 @@ export class Helpers {
     }
 
     static helper_regexReplace(input: string, expression: string, options: string, replace: string) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = input.replace(regex, replace);
         return output;
     }
 
     static helper_regexMatch(input: string, expression: string, options: string) {
+        if (typeof input !== 'string') {
+            return input;
+        }
         var regex = new RegExp(expression, options);
         var output = regex.test(input);
         return output;
@@ -149,6 +186,14 @@ export class Helpers {
             reversed.push(input.pop());
         }
         return reversed;
+    }
+
+    static helper_stripTrailingSlash(input: string) {
+        if (typeof input === 'string' && input.endsWith('/')) {
+            return input.substr(0, input.length - 1);
+        } else {
+            return input;
+        }
     }
 }
 

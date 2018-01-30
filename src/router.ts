@@ -13,7 +13,7 @@ import * as ua from 'universal-analytics';
 const RouteRecognizer = require('route-recognizer');
 
 // Internal imports
-import { IRoutes, IRouteMatch, IContext, ILinkTag, IMetaTag, INamedPattern } from './interfaces';
+import { IRoutes, IRouteMatch, IContext, INamedPattern, IRouteResponse } from './interfaces';
 import { Route } from './route';
 import { RouteMatch } from './route-match';
 
@@ -34,7 +34,7 @@ export class Router {
         }
         return this._visitor;
     }
-
+    
     /**
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
@@ -81,8 +81,8 @@ export class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    public execute(uriString: string): Promise<IRouteMatch>{
-        return new Promise<IRouteMatch>((resolve, reject) => {
+    public execute(uriString: string): Promise<IRouteResponse>{
+        return new Promise<IRouteResponse>((resolve, reject) => {
             var uri: url.Url = url.parse(uriString);
 
             this.trackRoute(uri.path);
@@ -108,7 +108,7 @@ export class Router {
 
             routeMatch.getResults().then(() => {
                 this.trackDocumentHit(routeMatch.primaryResponse);
-                resolve(routeMatch.toJSON());
+                resolve(routeMatch.response);
             }).catch((err) => {
                 reject(err);
             });
