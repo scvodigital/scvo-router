@@ -1,5 +1,5 @@
 import { SearchResponse } from 'elasticsearch';
-import { IContext } from './interfaces';
+import { IContext, IRouteResponse } from './interfaces';
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export declare class Router {
     private context;
@@ -21,7 +21,7 @@ export declare class Router {
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    execute(uriString: string): Promise<string>;
+    execute(uriString: string): Promise<IRouteResponse>;
     trackRoute(path: string): void;
     trackDocumentHit(results: SearchResponse<any>): void;
 }

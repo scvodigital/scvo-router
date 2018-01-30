@@ -1,5 +1,5 @@
 import { SearchResponse, ConfigOptions } from 'elasticsearch';
-import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext, IMenuItem, IRouteLayouts } from './interfaces';
+import { IRouteMatch, ISearchResponseSet, ISearchQuery, IDocumentResult, IPaging, INamedPattern, IContext, IMenuItem, IRouteLayouts, IRouteResponse } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
 /** Class that handles matched routes and gets results */
@@ -18,7 +18,8 @@ export declare class RouteMatch implements IRouteMatch {
     elasticsearchConfig: ConfigOptions;
     defaultParams: any;
     layouts: IRouteLayouts;
-    rendered: string;
+    layoutName: string;
+    response: IRouteResponse;
     readonly defaultParamsCopy: any;
     private orderMap;
     private _primaryQuery;

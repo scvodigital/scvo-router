@@ -8,7 +8,7 @@ import {
     IRouteMatch, ISearchTemplate, ISearchResponseSet, 
     ISearchQuery, IDocumentResult, IPaging, INamedPattern, 
     INamedTemplate, IContext, IMenus, IMenuItem,
-    IRouteLayouts, IRouteLayout
+    IRouteLayouts, IRouteLayout, IRouteResponse
 } from './interfaces';
 import { Route } from './route';
 import { SearchTemplate, SearchTemplateSet } from './search-template';
@@ -29,7 +29,12 @@ export class RouteMatch implements IRouteMatch {
     elasticsearchConfig: ConfigOptions = null;
     defaultParams: any = {};
     layouts: IRouteLayouts = null;
-    rendered: string;
+    layoutName: string = 'default';
+    response: IRouteResponse = {
+        contentBody: '',
+        contentType: 'text/html',
+        statusCode: 200
+    }
 
     get defaultParamsCopy(): any {
         var copy = {};
@@ -172,11 +177,12 @@ export class RouteMatch implements IRouteMatch {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             layouts: this.layouts,
-            rendered: this.rendered,
+            response: this.response,
             params: this.params,
             paging: this.paging,
             defaultParams: this.defaultParams,
             context: this.context,
+            layoutName: this.layoutName,
         };
     }
 
@@ -196,6 +202,19 @@ export class RouteMatch implements IRouteMatch {
     
         Object.keys(this.context.menus).forEach((name: string) => {
             this.context.menus[name] = this.traverseMenu(this.context.menus[name]);
+        });
+        
+        Object.keys(this.layouts).forEach((name: string) => {
+            if (name === 'default' || this.layoutName !== 'default') return;
+            if (this.context.layouts.hasOwnProperty(name)) {
+                var pattern = this.context.layouts[name].pattern;
+                var regex = new RegExp(pattern, 'ig');
+                if (regex.test(this.params.uri.href)) {
+                    this.layoutName = name;
+                    this.response.contentType = this.context.layouts[name].contentType;
+                } else { 
+                }
+            }
         });
     }
 
@@ -253,59 +272,51 @@ export class RouteMatch implements IRouteMatch {
     }
 
     renderResults() {
-        // Compile our template
-        var layoutName: string = 'default';
+        try {
+            // Compile our template
+            var routeTemplateData: any = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                paging: this.paging,
+                context: this.context,
+            };
+           
+            var sections: IRouteLayout = {};
+            Object.keys(this.layouts[this.layoutName]).forEach((sectionName: string) => {
+                var template = handlebars.compile(this.layouts[this.layoutName][sectionName]);
+                var output = template(routeTemplateData);
+                output = output.replace(this.domainStripper, '');
+                sections[sectionName] = output;
+            });
 
-        Object.keys(this.layouts).forEach((name: string) => {
-            if (name === 'default' || layoutName !== 'default') return;
-            if (this.context.layouts.hasOwnProperty(name)) {
-                var pattern = this.context.layouts[name].pattern;
-                var regex = new RegExp(pattern, 'ig');
-                if (regex.test(this.params.uri.href)) {
-                    layoutName = name;
+            var contextData = {
+                metaData: this.context.metaData,
+                domains: this.context.domains,
+                menus: this.context.menus,
+                routes: this.context.routes,
+                route: this.toJSON(),
+                uaId: this.context.uaId,
+                templatePartials: this.context.templatePartials,
+            };
+           
+            var template = handlebars.compile(this.context.layouts[this.layoutName].template);
+            var output = template(contextData);
+
+            output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
+                if (sections.hasOwnProperty(m2)) {
+                    return sections[m2];
                 } else { 
+                    return match;
                 }
-            }
-        });
+            });
 
-        var routeTemplateData: any = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            paging: this.paging,
-            context: this.context,
-        };
-       
-        var sections: IRouteLayout = {};
-        Object.keys(this.layouts[layoutName]).forEach((sectionName: string) => {
-            var template = handlebars.compile(this.layouts[layoutName][sectionName]);
-            var output = template(routeTemplateData);
-            output = output.replace(this.domainStripper, '');
-            sections[sectionName] = output;
-        });
-
-        var contextData = {
-            metaData: this.context.metaData,
-            domains: this.context.domains,
-            menus: this.context.menus,
-            routes: this.context.routes,
-            route: this.toJSON(),
-            uaId: this.context.uaId,
-            templatePartials: this.context.templatePartials,
-        };
-       
-        var template = handlebars.compile(this.context.layouts[layoutName].template);
-        var output = template(contextData);
-
-        output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, (match, m1, m2, m3) => {
-            if (sections.hasOwnProperty(m2)) {
-                return sections[m2];
-            } else { 
-                return match;
-            }
-        });
-
-        this.rendered = output;
+            this.response.contentBody = output;
+        } catch (err) {
+            this.response.contentBody = JSON.stringify(err);
+            this.response.statusCode = 500;
+            this.response.contentType = 'application/json';  
+        }
     }
 }

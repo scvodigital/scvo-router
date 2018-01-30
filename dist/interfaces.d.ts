@@ -21,6 +21,7 @@ export interface ILayout {
     template: string;
     sections: string[];
     pattern: string;
+    contentType: string;
 }
 export interface IPartials {
     [name: string]: string;
@@ -77,8 +78,9 @@ export interface IRouteMatch extends IRoute {
     params: any;
     primaryResponse: SearchResponse<IDocumentResult>;
     supplimentaryResponses: ISearchResponseSet;
-    rendered: string;
     paging: IPaging;
+    layoutName: string;
+    response: IRouteResponse;
 }
 export interface IElasticsearchConfig {
     username: string;
@@ -186,4 +188,9 @@ export interface IGeoDetails {
         ccg: string;
         nuts: string;
     };
+}
+export interface IRouteResponse {
+    contentType: string;
+    contentBody: string;
+    statusCode: number;
 }

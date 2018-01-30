@@ -28,6 +28,12 @@ var RouteMatch = /** @class */ (function () {
         this.elasticsearchConfig = null;
         this.defaultParams = {};
         this.layouts = null;
+        this.layoutName = 'default';
+        this.response = {
+            contentBody: '',
+            contentType: 'text/html',
+            statusCode: 200
+        };
         // Used to remember which order our supplimentary queries were executed in
         this.orderMap = [];
         this._primaryQuery = null;
@@ -42,6 +48,20 @@ var RouteMatch = /** @class */ (function () {
         });
         Object.keys(this.context.menus).forEach(function (name) {
             _this.context.menus[name] = _this.traverseMenu(_this.context.menus[name]);
+        });
+        Object.keys(this.layouts).forEach(function (name) {
+            if (name === 'default' || _this.layoutName !== 'default')
+                return;
+            if (_this.context.layouts.hasOwnProperty(name)) {
+                var pattern = _this.context.layouts[name].pattern;
+                var regex = new RegExp(pattern, 'ig');
+                if (regex.test(_this.params.uri.href)) {
+                    _this.layoutName = name;
+                    _this.response.contentType = _this.context.layouts[name].contentType;
+                }
+                else {
+                }
+            }
         });
     }
     Object.defineProperty(RouteMatch.prototype, "defaultParamsCopy", {
@@ -180,11 +200,12 @@ var RouteMatch = /** @class */ (function () {
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
             layouts: this.layouts,
-            rendered: this.rendered,
+            response: this.response,
             params: this.params,
             paging: this.paging,
             defaultParams: this.defaultParams,
             context: this.context,
+            layoutName: this.layoutName,
         };
     };
     RouteMatch.prototype.traverseMenu = function (menuItems, level) {
@@ -241,56 +262,49 @@ var RouteMatch = /** @class */ (function () {
     };
     RouteMatch.prototype.renderResults = function () {
         var _this = this;
-        // Compile our template
-        var layoutName = 'default';
-        Object.keys(this.layouts).forEach(function (name) {
-            if (name === 'default' || layoutName !== 'default')
-                return;
-            if (_this.context.layouts.hasOwnProperty(name)) {
-                var pattern = _this.context.layouts[name].pattern;
-                var regex = new RegExp(pattern, 'ig');
-                if (regex.test(_this.params.uri.href)) {
-                    layoutName = name;
+        try {
+            // Compile our template
+            var routeTemplateData = {
+                primaryResponse: this.primaryResponse,
+                supplimentaryResponses: this.supplimentaryResponses,
+                params: this.params,
+                metaData: this.metaData,
+                paging: this.paging,
+                context: this.context,
+            };
+            var sections = {};
+            Object.keys(this.layouts[this.layoutName]).forEach(function (sectionName) {
+                var template = handlebars.compile(_this.layouts[_this.layoutName][sectionName]);
+                var output = template(routeTemplateData);
+                output = output.replace(_this.domainStripper, '');
+                sections[sectionName] = output;
+            });
+            var contextData = {
+                metaData: this.context.metaData,
+                domains: this.context.domains,
+                menus: this.context.menus,
+                routes: this.context.routes,
+                route: this.toJSON(),
+                uaId: this.context.uaId,
+                templatePartials: this.context.templatePartials,
+            };
+            var template = handlebars.compile(this.context.layouts[this.layoutName].template);
+            var output = template(contextData);
+            output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
+                if (sections.hasOwnProperty(m2)) {
+                    return sections[m2];
                 }
                 else {
+                    return match;
                 }
-            }
-        });
-        var routeTemplateData = {
-            primaryResponse: this.primaryResponse,
-            supplimentaryResponses: this.supplimentaryResponses,
-            params: this.params,
-            metaData: this.metaData,
-            paging: this.paging,
-            context: this.context,
-        };
-        var sections = {};
-        Object.keys(this.layouts[layoutName]).forEach(function (sectionName) {
-            var template = handlebars.compile(_this.layouts[layoutName][sectionName]);
-            var output = template(routeTemplateData);
-            output = output.replace(_this.domainStripper, '');
-            sections[sectionName] = output;
-        });
-        var contextData = {
-            metaData: this.context.metaData,
-            domains: this.context.domains,
-            menus: this.context.menus,
-            routes: this.context.routes,
-            route: this.toJSON(),
-            uaId: this.context.uaId,
-            templatePartials: this.context.templatePartials,
-        };
-        var template = handlebars.compile(this.context.layouts[layoutName].template);
-        var output = template(contextData);
-        output = output.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
-            if (sections.hasOwnProperty(m2)) {
-                return sections[m2];
-            }
-            else {
-                return match;
-            }
-        });
-        this.rendered = output;
+            });
+            this.response.contentBody = output;
+        }
+        catch (err) {
+            this.response.contentBody = JSON.stringify(err);
+            this.response.statusCode = 500;
+            this.response.contentType = 'application/json';
+        }
     };
     return RouteMatch;
 }());
