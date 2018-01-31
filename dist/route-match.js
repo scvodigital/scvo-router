@@ -265,6 +265,7 @@ var RouteMatch = /** @class */ (function () {
         try {
             // Compile our template
             var routeTemplateData = {
+                name: this.name,
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponses: this.supplimentaryResponses,
                 params: this.params,

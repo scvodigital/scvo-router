@@ -275,6 +275,7 @@ export class RouteMatch implements IRouteMatch {
         try {
             // Compile our template
             var routeTemplateData: any = {
+                name: this.name,
                 primaryResponse: this.primaryResponse,
                 supplimentaryResponses: this.supplimentaryResponses,
                 params: this.params,
