@@ -127,6 +127,7 @@ export class Router {
     }
 
     trackDocumentHit(results: SearchResponse<any>) {
+        /*
         if(!this.visitor || !results.hits.hits || results.hits.hits.length === 0) return;
         var hitType = results.hits.total > 1 ? 'Multi' : 'Single';
 
@@ -142,5 +143,6 @@ export class Router {
                 }
             });
         });
+        */
     }
 }

@@ -121,23 +121,23 @@ var Router = /** @class */ (function () {
         */
     };
     Router.prototype.trackDocumentHit = function (results) {
-        var _this = this;
-        if (!this.visitor || !results.hits.hits || results.hits.hits.length === 0)
-            return;
+        /*
+        if(!this.visitor || !results.hits.hits || results.hits.hits.length === 0) return;
         var hitType = results.hits.total > 1 ? 'Multi' : 'Single';
-        results.hits.hits.forEach(function (hit) {
+
+        results.hits.hits.forEach((hit) => {
             var documentType = hit._type;
             var documentId = hit._id;
             //console.log('TRACK DOCUMENT HIT:', documentType, documentId);
-            _this.visitor.event('Document Hit', documentType, documentId, function (err) {
-                if (err) {
-                    console.error('[UA ' + _this.uaId + '] Failed to track hit:', documentType, documentId, err);
-                }
-                else {
+            this.visitor.event('Document Hit', documentType, documentId, (err) => {
+                if(err){
+                    console.error('[UA ' + this.uaId + '] Failed to track hit:', documentType, documentId, err);
+                }else{
                     //console.log('TRACKED DOCUMENT HIT:', documentType, documentId);
                 }
             });
         });
+        */
     };
     return Router;
 }());
