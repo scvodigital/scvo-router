@@ -117,11 +117,13 @@ export class Router {
 
     trackRoute(path: string){
         if(!this.visitor) return;
+        /*
         this.visitor.pageview(path, (err) => {
             if(err){
                 console.error('[UA ' + this.uaId + '] Failed to track route:', path, err);
             }
         });
+        */
     }
 
     trackDocumentHit(results: SearchResponse<any>) {

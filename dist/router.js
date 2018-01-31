@@ -110,14 +110,15 @@ var Router = /** @class */ (function () {
         });
     };
     Router.prototype.trackRoute = function (path) {
-        var _this = this;
         if (!this.visitor)
             return;
-        this.visitor.pageview(path, function (err) {
-            if (err) {
-                console.error('[UA ' + _this.uaId + '] Failed to track route:', path, err);
+        /*
+        this.visitor.pageview(path, (err) => {
+            if(err){
+                console.error('[UA ' + this.uaId + '] Failed to track route:', path, err);
             }
         });
+        */
     };
     Router.prototype.trackDocumentHit = function (results) {
         var _this = this;
