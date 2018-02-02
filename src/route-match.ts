@@ -162,7 +162,7 @@ export class RouteMatch implements IRouteMatch {
         return this._domainStripper;
     }
 
-    public toJSON(): IRouteMatch {
+    public toJSON(): any {
         var templates = MapJsonify<ISearchTemplate>(this.supplimentarySearchTemplates);
         var responses = MapJsonify<SearchResponse<IDocumentResult>>(this.supplimentaryResponses);
         return {
@@ -172,7 +172,9 @@ export class RouteMatch implements IRouteMatch {
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            primaryQuery: this.primaryQuery,
             supplimentarySearchTemplates: templates,
+            supplimentaryQueries: this.supplimentaryQueries,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
@@ -181,7 +183,7 @@ export class RouteMatch implements IRouteMatch {
             params: this.params,
             paging: this.paging,
             defaultParams: this.defaultParams,
-            context: this.context,
+            context: null,
             layoutName: this.layoutName,
         };
     }

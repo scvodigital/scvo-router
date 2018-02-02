@@ -56,6 +56,11 @@ var Helpers = /** @class */ (function () {
         json = json.replace(/\{/g, "{{ '{' }}");
         return json;
     };
+    Helpers.helper_jsStringify = function (obj) {
+        var json = JSON.stringify(obj, null, 4);
+        json = json.replace(/(<\/script)/gi, '</scr" + "ipt');
+        return json;
+    };
     Helpers.helper_indexOf = function (haystack, needle) {
         if (!Array.isArray(haystack)) {
             return null;

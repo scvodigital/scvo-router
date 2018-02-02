@@ -53,6 +53,12 @@ export class Helpers {
         return json;
     }
 
+    static helper_jsStringify(obj: any) {
+        var json = JSON.stringify(obj, null, 4);
+        json = json.replace(/(<\/script)/gi, '</scr" + "ipt');
+        return json;
+    }
+
     static helper_indexOf(haystack: any[], needle: any): number {
         if (!Array.isArray(haystack)) {
             return null;

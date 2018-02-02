@@ -31,7 +31,7 @@ export declare class RouteMatch implements IRouteMatch {
     readonly paging: IPaging;
     _domainStripper: RegExp;
     readonly domainStripper: RegExp;
-    toJSON(): IRouteMatch;
+    toJSON(): any;
     /**
      * Create a matched route to get results using parameters
      * @param {Route} route - The route that has been matched

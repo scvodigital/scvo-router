@@ -195,7 +195,9 @@ var RouteMatch = /** @class */ (function () {
             queryDelimiter: this.queryDelimiter,
             queryEquals: this.queryEquals,
             primarySearchTemplate: this.primarySearchTemplate.toJSON(),
+            primaryQuery: this.primaryQuery,
             supplimentarySearchTemplates: templates,
+            supplimentaryQueries: this.supplimentaryQueries,
             primaryResponse: this.primaryResponse,
             supplimentaryResponses: responses,
             elasticsearchConfig: this.elasticsearchConfig,
@@ -204,7 +206,7 @@ var RouteMatch = /** @class */ (function () {
             params: this.params,
             paging: this.paging,
             defaultParams: this.defaultParams,
-            context: this.context,
+            context: null,
             layoutName: this.layoutName,
         };
     };

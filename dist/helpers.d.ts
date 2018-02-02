@@ -7,6 +7,7 @@ export declare class Helpers {
     static helper_slugify(str: string): any;
     static helper_querystringify(obj?: any): string;
     static helper_ngStringify(obj: any): string;
+    static helper_jsStringify(obj: any): string;
     static helper_indexOf(haystack: any[], needle: any): number;
     static helper_itemAt(haystack: any[], index: number): any;
     static helper_corresponding(source: any[], target: any[], item: any): any;
