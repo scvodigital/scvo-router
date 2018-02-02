@@ -187,6 +187,17 @@ var Helpers = /** @class */ (function () {
             return input;
         }
     };
+    Helpers.helper_stripDomains = function (input, domains) {
+        if (typeof input !== 'string' || !Array.isArray(domains)) {
+            return input;
+        }
+        domains = domains.filter(function (domain) { return typeof domain === 'string'; });
+        domains = domains.map(function (domain) { return domain.replace(/\./g, '\\.'); });
+        var domainRegex = '((https?)?:\\/\\/)((' + domains.join(')|(') + '))';
+        var domainStripper = new RegExp(domainRegex, 'ig');
+        var output = input.replace(domainStripper, '');
+        return output;
+    };
     return Helpers;
 }());
 exports.Helpers = Helpers;

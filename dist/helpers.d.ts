@@ -24,6 +24,7 @@ export declare class Helpers {
     static helper_regexMatch(input: string, expression: string, options: string): boolean;
     static helper_reverse(input: any[]): any[];
     static helper_stripTrailingSlash(input: string): string;
+    static helper_stripDomains(input: string, domains: string[]): string;
 }
 export interface IHelperArgs {
     name: string;

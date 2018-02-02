@@ -195,6 +195,18 @@ export class Helpers {
             return input;
         }
     }
+
+    static helper_stripDomains(input: string, domains: string[]) {
+        if (typeof input !== 'string' || !Array.isArray(domains)) {
+            return input;
+        }
+        domains = domains.filter(domain => typeof domain === 'string');
+        domains = domains.map((domain: string) => { return domain.replace(/\./g, '\\.'); });
+        var domainRegex = '((https?)?:\\/\\/)((' + domains.join(')|(') + '))';
+        var domainStripper = new RegExp(domainRegex, 'ig');
+        var output = input.replace(domainStripper, '');
+        return output
+    }
 }
 
 export interface IHelperArgs {
