@@ -288,7 +288,10 @@ export class RouteMatch implements IRouteMatch {
             Object.keys(this.layouts[this.layoutName]).forEach((sectionName: string) => {
                 var template = handlebars.compile(this.layouts[this.layoutName][sectionName]);
                 var output = template(routeTemplateData);
-                output = output.replace(this.domainStripper, '');
+                var doNotStripDomains = this.context.layouts[this.layoutName].doNotStripDomains;
+                if (!doNotStripDomains) {
+                    output = output.replace(this.domainStripper, '');
+                }
                 sections[sectionName] = output;
             });
 

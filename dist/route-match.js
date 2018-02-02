@@ -277,7 +277,10 @@ var RouteMatch = /** @class */ (function () {
             Object.keys(this.layouts[this.layoutName]).forEach(function (sectionName) {
                 var template = handlebars.compile(_this.layouts[_this.layoutName][sectionName]);
                 var output = template(routeTemplateData);
-                output = output.replace(_this.domainStripper, '');
+                var doNotStripDomains = _this.context.layouts[_this.layoutName].doNotStripDomains;
+                if (!doNotStripDomains) {
+                    output = output.replace(_this.domainStripper, '');
+                }
                 sections[sectionName] = output;
             });
             var contextData = {

@@ -22,6 +22,7 @@ export interface ILayout {
     sections: string[];
     pattern: string;
     contentType: string;
+    doNotStripDomains: boolean;
 }
 export interface IPartials {
     [name: string]: string;
