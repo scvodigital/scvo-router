@@ -1,34 +1,32 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "declaration": true,
+    "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
-      "es6"
+      "es5",
+      "ES2015",
+      "dom"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "outDir": "dist",
+    "rootDir": "src",
     "sourceMap": true,
     "target": "es5",
-    "alwaysStrict": true,
     "types": [
       "node"
     ],
     "typeRoots": [
-      "../node_modules/@types"
+      "./node_modules/@types"
     ],
-    "paths": {
-        "handlebars-helpers": [
-            "./assets/handlebars-helpers.js"
-        ]
-    }
+    "allowJs": true
   },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
     "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/old.*.ts"
   ]
 }

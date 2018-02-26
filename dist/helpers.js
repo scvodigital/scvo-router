@@ -132,9 +132,14 @@ var Helpers = /** @class */ (function () {
         }
     };
     Helpers.helper_atob = function (b64) {
-        var buff = Buffer.from(b64, 'base64');
-        var str = buff.toString('ascii');
-        return str;
+        try {
+            var buff = Buffer.from(b64, 'base64');
+            var str = buff.toString('ascii');
+            return str;
+        }
+        catch (err) {
+            return '';
+        }
     };
     Helpers.helper_btoa = function (str) {
         var buff = Buffer.from(str);
@@ -202,6 +207,15 @@ var Helpers = /** @class */ (function () {
         var domainStripper = new RegExp(domainRegex, 'ig');
         var output = input.replace(domainStripper, '');
         return output;
+    };
+    Helpers.helper_length = function (input) {
+        if (typeof input !== 'string' || !Array.isArray(input)) {
+            return -1;
+        }
+        return input.length;
+    };
+    Helpers.helper_log = function (message, obj) {
+        console.log('####', message, '->', obj);
     };
     return Helpers;
 }());

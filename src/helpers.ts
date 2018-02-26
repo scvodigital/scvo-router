@@ -3,6 +3,7 @@ import * as querystring from 'querystring';
 import * as s from 'string';
 import * as moment from 'moment';
 import * as dot from 'dot-object';
+import * as util from 'util';
 
 export class Helpers {
     static register(hbs: any) {
@@ -134,9 +135,13 @@ export class Helpers {
     }
 
     static helper_atob(b64: string) {
-        var buff = Buffer.from(b64, 'base64');
-        var str = buff.toString('ascii');
-        return str;
+        try {
+            var buff = Buffer.from(b64, 'base64');
+            var str = buff.toString('ascii');
+            return str;
+        } catch(err) {
+            return '';
+        }
     }
 
     static helper_btoa(str: string) {
@@ -212,6 +217,17 @@ export class Helpers {
         var domainStripper = new RegExp(domainRegex, 'ig');
         var output = input.replace(domainStripper, '');
         return output
+    }
+
+    static helper_length(input: any[] | string) {
+        if (typeof input !== 'string' || !Array.isArray(input)) {
+            return -1;
+        }
+        return input.length;
+    }
+
+    static helper_log(message: string, obj: any) {
+        console.log('####', message, '->', obj);
     }
 }
 
