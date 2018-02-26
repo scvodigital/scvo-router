@@ -42,7 +42,7 @@ export class RouteMatch implements IRouteMatch {
    
     private async getLayoutName(): Promise<void> {
         try {
-            console.log('#### ROUTEMATCH.getLayoutName() -> Getting layout name');
+            //console.log('#### ROUTEMATCH.getLayoutName() -> Getting layout name');
             Object.keys(this.route.layouts).forEach((name: string) => {
                 if (name === 'default' || this.layoutName !== 'default') return;
                 if (this.context.layouts.hasOwnProperty(name)) {
@@ -54,7 +54,7 @@ export class RouteMatch implements IRouteMatch {
                     }
                 }
             });
-            console.log('#### ROUTEMATCH.getLayoutName() -> Layout name:', this.layoutName);
+            //console.log('#### ROUTEMATCH.getLayoutName() -> Layout name:', this.layoutName);
             return;
         } catch(err) {
             console.error('#### RouteMatch -> Failed to get layout name:', err);
@@ -64,15 +64,15 @@ export class RouteMatch implements IRouteMatch {
 
     private async runTasks(): Promise<void> {
         try {
-            console.log('#### ROUTEMATCH.runTasks() -> Running tasks');
+            //console.log('#### ROUTEMATCH.runTasks() -> Running tasks');
             for (let i = 0; i < this.route.tasks.length; i++) {
                 var task = this.route.tasks[i];
-                console.log('#### ROUTEMATCH.runTasks() -> Running task:', task.name, '| type:', task.taskType);
+                //console.log('#### ROUTEMATCH.runTasks() -> Running task:', task.name, '| type:', task.taskType);
                 var routerTask = this.context.routerTasks[task.taskType];
                 this.data[task.name] = await routerTask.execute(task.config, this);
-                console.log('#### ROUTEMATCH.runTasks() -> Task completed:', task.name);
+                //console.log('#### ROUTEMATCH.runTasks() -> Task completed:', task.name);
             }
-            console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:', this.data);
+            //console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:', this.data);
             return;
         } catch(err) {
             console.error('#### RouteMatch -> Failed to run tasks:', err);
@@ -82,7 +82,7 @@ export class RouteMatch implements IRouteMatch {
 
     private async render(): Promise<void> {
         try {
-            console.log('#### ROUTEMATCH.render() -> Rendering');
+            //console.log('#### ROUTEMATCH.render() -> Rendering');
 
             var sections: IRouteLayout = {};
             Object.keys(this.route.layouts[this.layoutName]).forEach((sectionName: string) => {
@@ -93,8 +93,8 @@ export class RouteMatch implements IRouteMatch {
                 sections[sectionName] = output;
             });
 
-            console.log('#### ROUTEMATCH.render() -> Route templates rendered');
-            console.log('#### ROUTEMATCH.render() -> Rendering  full layout');
+            //console.log('#### ROUTEMATCH.render() -> Route templates rendered');
+            //console.log('#### ROUTEMATCH.render() -> Rendering  full layout');
             
             var layout = this.context.layouts[this.layoutName];
             var template = layout.template;
@@ -107,7 +107,7 @@ export class RouteMatch implements IRouteMatch {
             });
             var compiled = hbs.compile(template);
 
-            console.log('#### ROUTEMATCH.render() -> All rendered');
+            //console.log('#### ROUTEMATCH.render() -> All rendered');
             
             this.response.contentType = layout.contentType || 'text/html';
             this.response.contentBody = compiled(this);

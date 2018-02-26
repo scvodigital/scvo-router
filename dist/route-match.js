@@ -88,7 +88,7 @@ var RouteMatch = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 try {
-                    console.log('#### ROUTEMATCH.getLayoutName() -> Getting layout name');
+                    //console.log('#### ROUTEMATCH.getLayoutName() -> Getting layout name');
                     Object.keys(this.route.layouts).forEach(function (name) {
                         if (name === 'default' || _this.layoutName !== 'default')
                             return;
@@ -102,7 +102,7 @@ var RouteMatch = /** @class */ (function () {
                             }
                         }
                     });
-                    console.log('#### ROUTEMATCH.getLayoutName() -> Layout name:', this.layoutName);
+                    //console.log('#### ROUTEMATCH.getLayoutName() -> Layout name:', this.layoutName);
                     return [2 /*return*/];
                 }
                 catch (err) {
@@ -120,27 +120,24 @@ var RouteMatch = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 5, , 6]);
-                        console.log('#### ROUTEMATCH.runTasks() -> Running tasks');
                         i = 0;
                         _c.label = 1;
                     case 1:
                         if (!(i < this.route.tasks.length)) return [3 /*break*/, 4];
                         task = this.route.tasks[i];
-                        console.log('#### ROUTEMATCH.runTasks() -> Running task:', task.name, '| type:', task.taskType);
                         routerTask = this.context.routerTasks[task.taskType];
                         _a = this.data;
                         _b = task.name;
                         return [4 /*yield*/, routerTask.execute(task.config, this)];
                     case 2:
                         _a[_b] = _c.sent();
-                        console.log('#### ROUTEMATCH.runTasks() -> Task completed:', task.name);
                         _c.label = 3;
                     case 3:
                         i++;
                         return [3 /*break*/, 1];
-                    case 4:
-                        console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:', this.data);
-                        return [2 /*return*/];
+                    case 4: 
+                    //console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:', this.data);
+                    return [2 /*return*/];
                     case 5:
                         err_2 = _c.sent();
                         console.error('#### RouteMatch -> Failed to run tasks:', err_2);
@@ -156,7 +153,6 @@ var RouteMatch = /** @class */ (function () {
             var sections, layout, template, compiled;
             return __generator(this, function (_a) {
                 try {
-                    console.log('#### ROUTEMATCH.render() -> Rendering');
                     sections = {};
                     Object.keys(this.route.layouts[this.layoutName]).forEach(function (sectionName) {
                         var template = _this.route.layouts[_this.layoutName][sectionName];
@@ -165,8 +161,6 @@ var RouteMatch = /** @class */ (function () {
                         var doNotStripDomains = _this.context.layouts[_this.layoutName].doNotStripDomains;
                         sections[sectionName] = output;
                     });
-                    console.log('#### ROUTEMATCH.render() -> Route templates rendered');
-                    console.log('#### ROUTEMATCH.render() -> Rendering  full layout');
                     layout = this.context.layouts[this.layoutName];
                     template = layout.template;
                     template = template.replace(/(<!--{section:)([a-z0-9_-]+)(}-->)/ig, function (match, m1, m2, m3) {
@@ -178,7 +172,7 @@ var RouteMatch = /** @class */ (function () {
                         }
                     });
                     compiled = hbs.compile(template);
-                    console.log('#### ROUTEMATCH.render() -> All rendered');
+                    //console.log('#### ROUTEMATCH.render() -> All rendered');
                     this.response.contentType = layout.contentType || 'text/html';
                     this.response.contentBody = compiled(this);
                     return [2 /*return*/];
