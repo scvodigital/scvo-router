@@ -41,15 +41,15 @@ export class Router implements IContext {
     constructor(private context: IContext, routerTasks: IRouterTask[]){
         Object.assign(this, context);
 
-        console.log('#### ROUTER.constructor() -> Registering router tasks', routerTasks);
+        //console.log('#### ROUTER.constructor() -> Registering router tasks', routerTasks);
 
         routerTasks.forEach((routerTask: IRouterTask) => {
             this.routerTasks[routerTask.name] = routerTask;
         });
 
-        console.log('#### ROUTER.constructor() -> Router Tasks:', util.inspect(this.routerTasks, false, null, true));
+        //console.log('#### ROUTER.constructor() -> Router Tasks:', util.inspect(this.routerTasks, false, null, true));
 
-        console.log('#### ROUTER.constructor() -> Same old router setup');
+        //console.log('#### ROUTER.constructor() -> Same old router setup');
 
         // Setup our route recognizer
         this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
@@ -94,7 +94,7 @@ export class Router implements IContext {
      */
     public async execute(uriString: string): Promise<IRouteResponse>{
         try {
-            console.log('#### ROUTER.execute() -> Matching router:', uriString);
+            //console.log('#### ROUTER.execute() -> Matching router:', uriString);
 
             var routeMatch = await this.matchRoute(uriString);
 
@@ -102,7 +102,7 @@ export class Router implements IContext {
 
             await routeMatch.execute();
            
-            console.log('#### ROUTER.execute() -> All done. returning response');
+            //console.log('#### ROUTER.execute() -> All done. returning response');
 
             return routeMatch.response;
         } catch(err) {

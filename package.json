@@ -1,5 +1,5 @@
 {
-  "name": "scvo-router",
+  "name": "@scvo/router",
   "version": "1.1.0",
   "description": "A moderately oppinionated web application framework based around mapping routes to tasks and then rendering with handlebars",
   "main": "./dist/index.js",
