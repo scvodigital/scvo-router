@@ -9,7 +9,7 @@
     "build": "npm run cleanup;tsc",
     "docs": "rm -rf ./doc;node_modules/.bin/typedoc --out ./doc/ --theme markdown",
     "prepublishOnly": "npm run build",
-    "local": "npm run build; npm link; cd ../router-task-elasticsearch; npm link scvo-router; npm run build; npm link; cd ../router"
+    "local": "npm run build; npm link; cd ../router-task-elasticsearch; npm link @scvo/router; npm run build; npm link; cd ../router"
   },
   "repository": {
     "type": "git",
