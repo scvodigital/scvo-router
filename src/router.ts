@@ -13,8 +13,9 @@ const RouteRecognizer = require('route-recognizer');
 // Internal imports
 import { 
     IRoutes, IRoute,  IContext, INamedPattern, 
-    IRouteResponse, IRouterTask, IRouterTasks, 
-    IMenus, IPartials, ILayouts
+    IRouterResponse, IRouterTask, IRouterTasks, 
+    IMenus, IRouterRequest, IRouterDestination, 
+    IRouterDestinations
 } from './interfaces';
 import { RouteMatch } from './route-match';
 
@@ -27,9 +28,8 @@ export class Router implements IContext {
     routes: IRoutes;
     template: string;
     uaId: string;
-    templatePartials: IPartials;
-    layouts: ILayouts;
     routerTasks: IRouterTasks = {};
+    routerDestinations: IRouterDestinations = {};
 
     private routeRecognizer: any;
     private defaultResult: Result;
@@ -38,13 +38,17 @@ export class Router implements IContext {
      * Create a Router for matching routes and rendering responses
      * @param {IRoutes} routes The routes and their configurations we are matching against
      */
-    constructor(private context: IContext, routerTasks: IRouterTask[]){
+    constructor(private context: IContext, routerTasks: IRouterTask[], routerDestinations: IRouterDestination[]){
         Object.assign(this, context);
 
         //console.log('#### ROUTER.constructor() -> Registering router tasks', routerTasks);
 
         routerTasks.forEach((routerTask: IRouterTask) => {
             this.routerTasks[routerTask.name] = routerTask;
+        });
+
+        routerDestinations.forEach((routerDestination: IRouterDestination) => {
+            this.routerDestinations[routerDestination.name] = routerDestination;
         });
 
         //console.log('#### ROUTER.constructor() -> Router Tasks:', util.inspect(this.routerTasks, false, null, true));
@@ -58,6 +62,7 @@ export class Router implements IContext {
             // Create a new Route object
             var route: IRoute = this.routes[routeName];
             route.name = routeName;
+            route.acceptedVerbs = !route.acceptedVerbs || route.acceptedVerbs.length === 0 ? '*' : route.acceptedVerbs;
             if(routeName === '_default'){
                 // Treat routes called `_default` as the default handler
                 this.defaultResult = { handler: route, isDynamic: true, params: {} };
@@ -82,23 +87,18 @@ export class Router implements IContext {
         });
     }
 
-    public generateUrl(routeName: string, params: any) {
-        var url = this.routeRecognizer.generate(routeName, params);
-        return url;
-    }
-
     /**
      * Execute the route against a URI to get a matched route and rendered responses
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
-    public async execute(uriString: string): Promise<IRouteResponse>{
+    public async execute(request: IRouterRequest): Promise<IRouterResponse>{
         try {
             //console.log('#### ROUTER.execute() -> Matching router:', uriString);
 
-            var routeMatch = await this.matchRoute(uriString);
+            var routeMatch = await this.matchRoute(request);
 
-            console.log('[ROUTER], \n\tURL:', uriString, '\n\tMatch:', routeMatch.route.name, '\n\tParams:', routeMatch.params);
+            console.log('[ROUTER], \n\tRequest:', routeMatch.request, '\n\tMatch:', routeMatch.route.name);
 
             await routeMatch.execute();
            
@@ -110,11 +110,24 @@ export class Router implements IContext {
         }
     }
 
-    private async matchRoute(uriString: string): Promise<RouteMatch> {
-        var uri: url.Url = url.parse(uriString);
+    private async matchRoute(request: IRouterRequest): Promise<RouteMatch> {
+        var uri: url.Url = request.url;
 
-        var recognizedRoutes: Results = this.routeRecognizer.recognize(uri.path) || [this.defaultResult];
-        var firstResult: Result = recognizedRoutes[0] || this.defaultResult;
+        var recognizedRoutes: Results = this.routeRecognizer.recognize(request.url.path) || [this.defaultResult];
+        var validResults: Result[] = [];
+
+        Array.from(recognizedRoutes).forEach((result: Result) => {
+            var route: IRoute = <IRoute>result.handler;
+            if (route.acceptedVerbs === '*') {
+                validResults.push(result);
+            } else {
+                if (route.acceptedVerbs.indexOf(request.verb) > -1) {
+                    validResults.push(result);
+                }
+            }
+        });
+
+        var firstResult: Result = validResults[0] || this.defaultResult;
         var handler: IRoute = <IRoute>firstResult.handler;
 
         var params = {};
@@ -128,8 +141,10 @@ export class Router implements IContext {
         }
         deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
 
+        request.params = params;
+
         //console.log('#### ROUTER.matchRoute() -> Matched route:', handler, params);
-        var routeMatch: RouteMatch = new RouteMatch(handler, params, this);
+        var routeMatch: RouteMatch = new RouteMatch(handler, request, this);
         return routeMatch;
     }
 }

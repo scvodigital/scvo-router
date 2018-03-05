@@ -1,3 +1,5 @@
+import * as Url from 'url';
+
 // Module imports
 export interface IContext {
     name: string;
@@ -6,27 +8,8 @@ export interface IContext {
     menus: IMenus;
     routes: IRoutes;
     template: string;
-    uaId: string;
-    templatePartials: IPartials;
-    layouts: ILayouts;
     routerTasks: IRouterTasks;
-}
-
-export interface ILayouts {
-    default: ILayout;
-    [name: string]: ILayout;
-}
-
-export interface ILayout {
-    template: string;
-    sections: string[];
-    pattern: string;
-    contentType: string;
-    doNotStripDomains: boolean;
-}
-
-export interface IPartials {
-    [name: string]: string;
+    routerDestinations: IRouterDestinations;
 }
 
 export interface IMenus {
@@ -59,11 +42,12 @@ export interface IRoute {
     name: string;
     metaData: any;
     pattern: string|INamedPattern;
+    acceptedVerbs: HttpVerb[] | '*'; 
     queryDelimiter: string;
     queryEquals: string;
     tasks: IRouteTask[];
+    destination: IRouteDestination;
     defaultParams: any;
-    layouts: IRouteLayouts;
 }
 
 export interface IRouteTask {
@@ -72,13 +56,9 @@ export interface IRouteTask {
     config: any;
 }
 
-export interface IRouteLayouts {
-    default: IRouteLayout;
-    [name: string]: IRouteLayout;
-}
-
-export interface IRouteLayout {
-    [section: string]: string;
+export interface IRouteDestination {
+    destinationType: string;
+    config: any;
 }
 
 export interface INamedTemplate {
@@ -91,13 +71,25 @@ export interface INamedPattern {
 
 export interface IRouteMatch {
     route: IRoute;
-    params: any;
+    request: IRouterRequest;
     data: any;
-    response: IRouteResponse;
+    response: IRouterResponse;
     context: IContext;
 }
 
-export interface IRouteResponse {
+export type HttpVerb = 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE' | 'OPTIONS' | 'CONNECT';
+
+export interface IRouterRequest {
+    verb: HttpVerb;
+    params: any;
+    url: Url.Url;
+    body: any;
+    cookies: any;
+    headers: any;
+    fullUrl: string;
+}
+
+export interface IRouterResponse {
     contentType: string;
     contentBody: string;
     statusCode: number;
@@ -109,6 +101,16 @@ export interface IRouterTasks {
 
 export interface IRouterTask {
     name: string;
-    execute: (config: any, routeMatch: IRouteMatch) => Promise<any>; 
+    execute: (routeMatch: IRouteMatch, config: any) => Promise<any>; 
+    new: (...args: any[]) => void;
+}
+
+export interface IRouterDestinations {
+    [name: string]: IRouterDestination;
+}
+
+export interface IRouterDestination {
+    name: string;
+    execute: (routeMatch: IRouteMatch) => Promise<IRouterResponse>;
     new: (...args: any[]) => void;
 }
