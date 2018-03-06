@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var util = require("util");
 var RouteMatch = /** @class */ (function () {
     function RouteMatch(route, request, context) {
         this.route = route;
@@ -43,11 +44,14 @@ var RouteMatch = /** @class */ (function () {
         this.data = {};
         this.response = {
             contentType: 'application/json',
-            contentBody: '{}',
-            statusCode: 200
+            body: '{}',
+            statusCode: 200,
+            headers: {},
+            cookies: {},
         };
         this.layoutName = 'default';
         this.route.tasks = this.route.tasks || [];
+        this.response.cookies = request.cookies;
     }
     RouteMatch.prototype.execute = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -67,7 +71,7 @@ var RouteMatch = /** @class */ (function () {
                         err_1 = _a.sent();
                         this.response.statusCode = 500;
                         this.response.contentType = 'application/json';
-                        this.response.contentBody = JSON.stringify(err_1, null, 4);
+                        this.response.body = JSON.stringify(err_1, null, 4);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -110,20 +114,21 @@ var RouteMatch = /** @class */ (function () {
     };
     RouteMatch.prototype.runDestination = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var routerDestination, _a, err_3;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var routerDestination, response, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        console.log('#### RouteMatch -> Route:', this.route);
+                        _a.trys.push([0, 2, , 3]);
+                        console.log('#### RouteMatch.runDestination ->', util.inspect(this, false, null, true));
                         routerDestination = this.context.routerDestinations[this.route.destination.destinationType];
-                        _a = this;
                         return [4 /*yield*/, routerDestination.execute(this)];
                     case 1:
-                        _a.response = _b.sent();
+                        response = _a.sent();
+                        Object.assign(this.response, response);
+                        this.response.cookies = response.cookies; // Overwriting these in case cookies are cleared in the response
                         return [3 /*break*/, 3];
                     case 2:
-                        err_3 = _b.sent();
+                        err_3 = _a.sent();
                         console.error('#### RouteMatch -> Failed to run destination:', err_3);
                         throw err_3;
                     case 3: return [2 /*return*/];
