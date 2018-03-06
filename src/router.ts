@@ -98,7 +98,7 @@ export class Router implements IContext {
 
             var routeMatch = await this.matchRoute(request);
 
-            console.log('[ROUTER], \n\tRequest:', routeMatch.request, '\n\tMatch:', routeMatch.route.name);
+            console.log('[ROUTER], Request:', routeMatch.request.fullUrl, '| Match:', routeMatch.route.name);
 
             await routeMatch.execute();
            

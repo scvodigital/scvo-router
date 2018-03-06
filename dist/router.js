@@ -109,7 +109,7 @@ var Router = /** @class */ (function () {
                         return [4 /*yield*/, this.matchRoute(request)];
                     case 1:
                         routeMatch = _a.sent();
-                        console.log('[ROUTER], \n\tRequest:', routeMatch.request, '\n\tMatch:', routeMatch.route.name);
+                        console.log('[ROUTER], Request:', routeMatch.request.fullUrl, '| Match:', routeMatch.route.name);
                         return [4 /*yield*/, routeMatch.execute()];
                     case 2:
                         _a.sent();

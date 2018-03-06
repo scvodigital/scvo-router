@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var util = require("util");
 var RouteMatch = /** @class */ (function () {
     function RouteMatch(route, request, context) {
         this.route = route;
@@ -119,11 +118,11 @@ var RouteMatch = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        console.log('#### RouteMatch.runDestination ->', util.inspect(this, false, null, true));
                         routerDestination = this.context.routerDestinations[this.route.destination.destinationType];
                         return [4 /*yield*/, routerDestination.execute(this)];
                     case 1:
                         response = _a.sent();
+                        //console.log('#### ROUTEMATCH.runDestination() -> Destination completed:');
                         Object.assign(this.response, response);
                         this.response.cookies = response.cookies; // Overwriting these in case cookies are cleared in the response
                         return [3 /*break*/, 3];

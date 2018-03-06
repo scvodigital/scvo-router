@@ -55,7 +55,9 @@ export class RouteMatch implements IRouteMatch {
     private async runDestination(): Promise<void> {
         try {
             var routerDestination = this.context.routerDestinations[this.route.destination.destinationType];
+            //console.log('#### ROUTEMATCH.runDestination() -> Running destination:', routerDestination.name);
             var response = await routerDestination.execute(this);
+            //console.log('#### ROUTEMATCH.runDestination() -> Destination completed:');
             Object.assign(this.response, response);
             this.response.cookies = response.cookies; // Overwriting these in case cookies are cleared in the response
         } catch(err) {
