@@ -91,8 +91,10 @@ export interface IRouterRequest {
 
 export interface IRouterResponse {
     contentType: string;
-    contentBody: string;
     statusCode: number;
+    body: string;
+    cookies: { [key: string]: string };
+    headers: { [key: string]: string };
 }
 
 export interface IRouterTasks {

@@ -10,13 +10,16 @@ export class RouteMatch implements IRouteMatch {
     data: any = {};
     response: IRouterResponse = {
         contentType: 'application/json',
-        contentBody: '{}',
-        statusCode: 200
+        body: '{}',
+        statusCode: 200,
+        headers: {},
+        cookies: {},
     };
     layoutName: string = 'default';
 
     constructor(public route: IRoute, public request: IRouterRequest, public context: IContext) { 
         this.route.tasks = this.route.tasks || [];
+        this.response.cookies = request.cookies;
     }
 
     public async execute(): Promise<void> {
@@ -26,7 +29,7 @@ export class RouteMatch implements IRouteMatch {
         } catch(err) {
             this.response.statusCode = 500;
             this.response.contentType = 'application/json';
-            this.response.contentBody = JSON.stringify(err, null, 4);
+            this.response.body = JSON.stringify(err, null, 4);
         }
         return;
     }
@@ -53,7 +56,9 @@ export class RouteMatch implements IRouteMatch {
         try {
             console.log('#### RouteMatch -> Route:', this.route);
             var routerDestination = this.context.routerDestinations[this.route.destination.destinationType];
-            this.response = await routerDestination.execute(this);
+            var response = await routerDestination.execute(this);
+            Object.assign(this.response, response);
+            this.response.cookies = response.cookies; // Overwriting these in case cookies are cleared in the response
         } catch(err) {
             console.error('#### RouteMatch -> Failed to run destination:', err);
             throw err;
