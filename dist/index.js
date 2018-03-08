@@ -6,4 +6,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./router"));
 __export(require("./route-match"));
 __export(require("./helpers"));
+__export(require("./route-errors"));
 //# sourceMappingURL=index.js.map

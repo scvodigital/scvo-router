@@ -1,4 +1,5 @@
 import * as Url from 'url';
+import { RouteError } from './route-errors';
 
 // Module imports
 export interface IContext {
@@ -7,7 +8,6 @@ export interface IContext {
     metaData: any;
     menus: IMenus;
     routes: IRoutes;
-    template: string;
     routerTasks: IRouterTasks;
     routerDestinations: IRouterDestinations;
 }
@@ -45,15 +45,17 @@ export interface IRoute {
     acceptedVerbs: HttpVerb[] | '*'; 
     queryDelimiter: string;
     queryEquals: string;
-    tasks: IRouteTask[];
+    tasks: IRouteTask<any>[];
     destination: IRouteDestination;
     defaultParams: any;
+    errorRoute?: string; 
 }
 
-export interface IRouteTask {
+export interface IRouteTask<T> {
     name: string;
     taskType: string;
-    config: any;
+    config: T;
+    errorRoute?: string;
 }
 
 export interface IRouteDestination {
@@ -75,6 +77,13 @@ export interface IRouteMatch {
     data: any;
     response: IRouterResponse;
     context: IContext;
+    errors: RouteError[];
+}
+
+export interface IRouteRedirect {
+    sourceRoute: string;
+    destinationRoute: string;
+    data: any;
 }
 
 export type HttpVerb = 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE' | 'OPTIONS' | 'CONNECT';
@@ -103,7 +112,7 @@ export interface IRouterTasks {
 
 export interface IRouterTask {
     name: string;
-    execute: (routeMatch: IRouteMatch, config: any) => Promise<any>; 
+    execute: (routeMatch: IRouteMatch, task: IRouteTask<any>) => Promise<any>; 
     new: (...args: any[]) => void;
 }
 

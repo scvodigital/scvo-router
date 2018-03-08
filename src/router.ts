@@ -18,6 +18,10 @@ import {
     IRouterDestinations
 } from './interfaces';
 import { RouteMatch } from './route-match';
+import { 
+    RouteError, RouteTaskError, 
+    RouteDestinationError
+} from './route-errors';
 
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 export class Router implements IContext {
@@ -26,7 +30,6 @@ export class Router implements IContext {
     metaData: any;
     menus: IMenus;
     routes: IRoutes;
-    template: string;
     uaId: string;
     routerTasks: IRouterTasks = {};
     routerDestinations: IRouterDestinations = {};
@@ -100,11 +103,9 @@ export class Router implements IContext {
 
             console.log('[ROUTER], Request:', routeMatch.request.fullUrl, '| Match:', routeMatch.route.name);
 
-            await routeMatch.execute();
+            var response: IRouterResponse = await this.executeRoute(routeMatch);
            
-            //console.log('#### ROUTER.execute() -> All done. returning response');
-
-            return routeMatch.response;
+            return response;
         } catch(err) {
             throw err;
         }
@@ -146,5 +147,36 @@ export class Router implements IContext {
         //console.log('#### ROUTER.matchRoute() -> Matched route:', handler, params);
         var routeMatch: RouteMatch = new RouteMatch(handler, request, this);
         return routeMatch;
+    }
+
+    private async executeRoute(routeMatch: RouteMatch): Promise<IRouterResponse> {
+        try {
+            var response = await routeMatch.execute();
+            return response;
+        } catch(err) {
+            if (!(err instanceof RouteError)) {
+                err = new RouteError(err, {
+                    statusCode:  500, 
+                    sourceRoute: routeMatch, 
+                    redirectTo: routeMatch.route.errorRoute,
+                    data: {}
+                });
+            }
+            
+            if (!this.routes.hasOwnProperty(err.redirectTo)) {
+                console.log('#### ROUTER.executeRoute() -> Error thrown in route "', routeMatch.route.name ,'" but no where to redirect');
+                throw err;
+            }
+
+            var newRoute = this.routes[err.redirectTo];
+            if (routeMatch.route.name === newRoute.name) {
+                console.log('#### ROUTER.executeRoute() -> Recursion detected! "', routeMatch.route.name, '" is redirecting to "', newRoute.name, '"');
+                throw err;
+            }
+            
+            routeMatch.route = newRoute;
+            console.log('#### ROUTER.executeRoute() -> About to redirect:', routeMatch.route.name);
+            return await this.executeRoute(routeMatch);
+        }
     }
 }

@@ -40,6 +40,7 @@ var deepExtend = require("deep-extend");
 // Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
 var RouteRecognizer = require('route-recognizer');
 var route_match_1 = require("./route-match");
+var route_errors_1 = require("./route-errors");
 /** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
 var Router = /** @class */ (function () {
     /**
@@ -101,7 +102,7 @@ var Router = /** @class */ (function () {
      */
     Router.prototype.execute = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var routeMatch, err_1;
+            var routeMatch, response, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -110,11 +111,10 @@ var Router = /** @class */ (function () {
                     case 1:
                         routeMatch = _a.sent();
                         console.log('[ROUTER], Request:', routeMatch.request.fullUrl, '| Match:', routeMatch.route.name);
-                        return [4 /*yield*/, routeMatch.execute()];
+                        return [4 /*yield*/, this.executeRoute(routeMatch)];
                     case 2:
-                        _a.sent();
-                        //console.log('#### ROUTER.execute() -> All done. returning response');
-                        return [2 /*return*/, routeMatch.response];
+                        response = _a.sent();
+                        return [2 /*return*/, response];
                     case 3:
                         err_1 = _a.sent();
                         throw err_1;
@@ -155,6 +155,45 @@ var Router = /** @class */ (function () {
                 request.params = params;
                 routeMatch = new route_match_1.RouteMatch(handler, request, this);
                 return [2 /*return*/, routeMatch];
+            });
+        });
+    };
+    Router.prototype.executeRoute = function (routeMatch) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, err_2, newRoute;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 4]);
+                        return [4 /*yield*/, routeMatch.execute()];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response];
+                    case 2:
+                        err_2 = _a.sent();
+                        if (!(err_2 instanceof route_errors_1.RouteError)) {
+                            err_2 = new route_errors_1.RouteError(err_2, {
+                                statusCode: 500,
+                                sourceRoute: routeMatch,
+                                redirectTo: routeMatch.route.errorRoute,
+                                data: {}
+                            });
+                        }
+                        if (!this.routes.hasOwnProperty(err_2.redirectTo)) {
+                            console.log('#### ROUTER.executeRoute() -> Error thrown in route "', routeMatch.route.name, '" but no where to redirect');
+                            throw err_2;
+                        }
+                        newRoute = this.routes[err_2.redirectTo];
+                        if (routeMatch.route.name === newRoute.name) {
+                            console.log('#### ROUTER.executeRoute() -> Recursion detected! "', routeMatch.route.name, '" is redirecting to "', newRoute.name, '"');
+                            throw err_2;
+                        }
+                        routeMatch.route = newRoute;
+                        console.log('#### ROUTER.executeRoute() -> About to redirect:', routeMatch.route.name);
+                        return [4 /*yield*/, this.executeRoute(routeMatch)];
+                    case 3: return [2 /*return*/, _a.sent()];
+                    case 4: return [2 /*return*/];
+                }
             });
         });
     };
