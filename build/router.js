@@ -35,17 +35,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var querystring = require("querystring");
+// System imports
 var deepExtend = require("deep-extend");
-// Sillyness. See: https://github.com/tildeio/route-recognizer/issues/136
-var RouteRecognizer = require('route-recognizer');
-var route_match_1 = require("./route-match");
+var querystring = require("querystring");
+var routeRecognizer = require('route-recognizer');
 var route_errors_1 = require("./route-errors");
-/** Class for managing incoming requests, routing them to Elasticsearch queries, and rendering output */
+var route_match_1 = require("./route-match");
+/**
+ * Class for managing incoming requests, routing them to Elasticsearch queries,
+ * and rendering output
+ */
 var Router = /** @class */ (function () {
     /**
      * Create a Router for matching routes and rendering responses
-     * @param {IRoutes} routes The routes and their configurations we are matching against
+     * @param {RouteMap} routes The routes and their configurations we are matching against
      */
     function Router(context, routerTasks, routerDestinations) {
         var _this = this;
@@ -53,23 +56,28 @@ var Router = /** @class */ (function () {
         this.routerTasks = {};
         this.routerDestinations = {};
         Object.assign(this, context);
-        //console.log('#### ROUTER.constructor() -> Registering router tasks', routerTasks);
+        // console.log('#### ROUTER.constructor() -> Registering router tasks',
+        // routerTasks);
         routerTasks.forEach(function (routerTask) {
             _this.routerTasks[routerTask.name] = routerTask;
         });
         routerDestinations.forEach(function (routerDestination) {
             _this.routerDestinations[routerDestination.name] = routerDestination;
         });
-        //console.log('#### ROUTER.constructor() -> Router Tasks:', util.inspect(this.routerTasks, false, null, true));
-        //console.log('#### ROUTER.constructor() -> Same old router setup');
+        // console.log('#### ROUTER.constructor() -> Router Tasks:',
+        // util.inspect(this.routerTasks, false, null, true));
+        // console.log('#### ROUTER.constructor() -> Same old router setup');
         // Setup our route recognizer
-        this.routeRecognizer = RouteRecognizer.default ? new RouteRecognizer.default() : new RouteRecognizer();
+        this.routeRecognizer = new routeRecognizer();
         // Loop through each route in the current context
         Object.keys(this.routes).forEach(function (routeName) {
             // Create a new Route object
             var route = _this.routes[routeName];
             route.name = routeName;
-            route.acceptedVerbs = !route.acceptedVerbs || route.acceptedVerbs.length === 0 ? '*' : route.acceptedVerbs;
+            route.acceptedVerbs =
+                !route.acceptedVerbs || route.acceptedVerbs.length === 0 ?
+                    '*' :
+                    route.acceptedVerbs;
             if (routeName === '_default') {
                 // Treat routes called `_default` as the default handler
                 _this.defaultResult = { handler: route, isDynamic: true, params: {} };
@@ -77,10 +85,7 @@ var Router = /** @class */ (function () {
             else {
                 // Any other route needs to be added to our RouteRecognizer
                 if (typeof route.pattern === 'string') {
-                    var routeDef = {
-                        path: route.pattern,
-                        handler: route
-                    };
+                    var routeDef = { path: route.pattern, handler: route };
                     _this.routeRecognizer.add([routeDef], { as: routeName });
                 }
                 else {
@@ -96,7 +101,8 @@ var Router = /** @class */ (function () {
         });
     }
     /**
-     * Execute the route against a URI to get a matched route and rendered responses
+     * Execute the route against a URI to get a matched route and rendered
+     * responses
      * @param {string} uriString - The URI to be matched
      * @return {RouteMatch} The matched route with rendered results
      */
@@ -128,26 +134,28 @@ var Router = /** @class */ (function () {
             var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, routeMatch;
             return __generator(this, function (_a) {
                 uri = request.url;
-                recognizedRoutes = this.routeRecognizer.recognize(request.url.path) || [this.defaultResult];
+                recognizedRoutes = this.routeRecognizer.recognize(request.url.path || '') || null;
                 validResults = [];
-                Array.from(recognizedRoutes).forEach(function (result) {
-                    var route = result.handler;
-                    if (route.acceptedVerbs === '*') {
-                        validResults.push(result);
-                    }
-                    else {
-                        if (route.acceptedVerbs.indexOf(request.verb) > -1) {
+                if (recognizedRoutes) {
+                    recognizedRoutes.slice(0).forEach(function (result) {
+                        var route = result.handler;
+                        if (route.acceptedVerbs === '*') {
                             validResults.push(result);
                         }
-                    }
-                });
+                        else {
+                            if (route.acceptedVerbs.indexOf(request.verb) > -1) {
+                                validResults.push(result);
+                            }
+                        }
+                    });
+                }
                 firstResult = validResults[0] || this.defaultResult;
                 handler = firstResult.handler;
                 params = {};
                 Object.assign(params, handler.defaultParams);
                 Object.assign(params, firstResult.params);
                 query = querystring.parse(uri.query, handler.queryDelimiter, handler.queryEquals);
-                idFriendlyPath = uri.pathname.replace(/\//g, '_');
+                idFriendlyPath = (uri.pathname || '').replace(/\//g, '_');
                 if (idFriendlyPath.startsWith('_')) {
                     idFriendlyPath = idFriendlyPath.substr(1);
                 }

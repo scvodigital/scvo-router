@@ -1,18 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var dot = require("dot-object");
+var moment = require("moment");
 var querystring = require("querystring");
 var s = require("string");
-var moment = require("moment");
-var dot = require("dot-object");
 var Helpers = /** @class */ (function () {
     function Helpers() {
     }
     Helpers.register = function (hbs) {
         var _this = this;
         Object.getOwnPropertyNames(this).forEach(function (prop) {
-            if (prop.indexOf('helper_') === 0 && typeof _this[prop] === 'function') {
-                var name = prop.replace(/helper_/, '');
-                hbs.registerHelper(name, _this[prop]);
+            if (prop.indexOf('helper_') === 0) {
+                if (typeof _this[prop] === 'function') {
+                    var name = prop.replace(/helper_/, '');
+                    hbs.registerHelper(name, _this[prop]);
+                }
             }
         });
     };
@@ -53,7 +55,7 @@ var Helpers = /** @class */ (function () {
     };
     Helpers.helper_ngStringify = function (obj) {
         var json = JSON.stringify(obj, null, 4);
-        json = json.replace(/\{/g, "{{ '{' }}");
+        json = json.replace(/\{/g, '{{ \'{\' }}');
         return json;
     };
     Helpers.helper_jsStringify = function (obj) {
@@ -88,8 +90,8 @@ var Helpers = /** @class */ (function () {
     };
     Helpers.helper_contains = function (input, val) {
         var found = false;
-        if (typeof input == 'string') {
-            if (typeof val == 'string') {
+        if (typeof input === 'string') {
+            if (typeof val === 'string') {
                 found = input.indexOf(val.toString()) > -1;
             }
         }
@@ -111,7 +113,7 @@ var Helpers = /** @class */ (function () {
     };
     Helpers.helper_moment = function (date, format) {
         if (date === void 0) { date = null; }
-        if (format === void 0) { format = null; }
+        if (format === void 0) { format = ''; }
         if (!date) {
             return moment();
         }
@@ -123,7 +125,7 @@ var Helpers = /** @class */ (function () {
         }
     };
     Helpers.helper_momentFormat = function (date, format) {
-        if (format === void 0) { format = null; }
+        if (format === void 0) { format = ''; }
         if (!format) {
             return date.format();
         }
@@ -214,10 +216,22 @@ var Helpers = /** @class */ (function () {
         }
         return input.length;
     };
+    Helpers.helper_pluck = function (items, path) {
+        if (typeof path !== 'string' || !Array.isArray(items)) {
+            return null;
+        }
+        var output = [];
+        items.forEach(function (item) {
+            var val = dot.pick(path, item);
+            output.push(val);
+        });
+        return output;
+    };
     Helpers.helper_log = function (message, obj) {
         console.log('####', message, '->', obj);
     };
     return Helpers;
 }());
 exports.Helpers = Helpers;
+/* tslint:enable */
 //# sourceMappingURL=helpers.js.map

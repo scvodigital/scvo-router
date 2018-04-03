@@ -41,6 +41,7 @@ var RouteMatch = /** @class */ (function () {
         this.route = route;
         this.request = request;
         this.context = context;
+        /* tslint:disable */
         this.data = {};
         this.response = {
             contentType: 'application/json',
@@ -49,6 +50,7 @@ var RouteMatch = /** @class */ (function () {
             headers: {},
             cookies: {},
         };
+        /* tslint:enable */
         this.layoutName = 'default';
         this.errors = [];
         this.route.tasks = this.route.tasks || [];
@@ -97,6 +99,7 @@ var RouteMatch = /** @class */ (function () {
                     case 1:
                         if (!(i < this.route.tasks.length)) return [3 /*break*/, 6];
                         task = this.route.tasks[i];
+                        routerTask = void 0;
                         _c.label = 2;
                     case 2:
                         _c.trys.push([2, 4, , 5]);
@@ -119,7 +122,8 @@ var RouteMatch = /** @class */ (function () {
                             });
                         }
                         else {
-                            err_2.redirectTo = err_2.redirectTo || task.errorRoute || this.route.errorRoute || null;
+                            err_2.redirectTo = err_2.redirectTo || task.errorRoute ||
+                                this.route.errorRoute || null;
                         }
                         if (err_2.redirectTo) {
                             throw err_2;
@@ -132,7 +136,8 @@ var RouteMatch = /** @class */ (function () {
                         i++;
                         return [3 /*break*/, 1];
                     case 6: 
-                    //console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:', this.data);
+                    // console.log('#### ROUTEMATCH.runTasks() -> Tasks run. Date:',
+                    // this.data);
                     return [2 /*return*/];
                     case 7:
                         err_3 = _c.sent();
@@ -161,7 +166,16 @@ var RouteMatch = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
-                        routerDestination = this.context.routerDestinations[this.route.destination.destinationType];
+                        routerDestination =
+                            this.context
+                                .routerDestinations[this.route.destination.destinationType];
+                        response = {
+                            body: this.response.body,
+                            contentType: this.response.contentType,
+                            cookies: this.response.cookies,
+                            headers: this.response.headers,
+                            statusCode: this.response.statusCode
+                        };
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
@@ -185,9 +199,10 @@ var RouteMatch = /** @class */ (function () {
                         }
                         throw err_4;
                     case 4:
-                        //console.log('#### ROUTEMATCH.runDestination() -> Destination completed:');
+                        // console.log('#### ROUTEMATCH.runDestination() -> Destination
+                        // completed:');
                         Object.assign(this.response, response);
-                        this.response.cookies = response.cookies; // Overwriting these in case cookies are cleared in the response
+                        this.response.cookies = response.cookies; // Overwriting these in case
                         return [3 /*break*/, 6];
                     case 5:
                         err_5 = _a.sent();

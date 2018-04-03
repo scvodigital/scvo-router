@@ -1,15 +1,26 @@
 {
   "name": "@scvo/router",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "description": "A moderately oppinionated web application framework based around mapping routes to tasks and then rendering with handlebars",
-  "main": "./dist/index.js",
+  "main": "./build/index",
+  "typings": "./build/index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cleanup": "rm -rf ./dist",
     "build": "npm run cleanup;tsc",
     "docs": "rm -rf ./doc;node_modules/.bin/typedoc --out ./doc/ --theme markdown",
     "prepublishOnly": "npm run build",
-    "local": "npm run build; npm link; cd ../router-task-elasticsearch; npm run local; cd ../router-destination-handlebars; npm run local; cd ../router"
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run check",
+    "local": "npm run compile && npm link && npm run l-elastic && npm run l-handlebars && npm run l-redirect",
+    "l-elastic": "cd ../router-task-elasticsearch && npm run local && cd ../router",
+    "l-handlebars": "cd ../router-destination-handlebars && npm run local && cd ../router",
+    "l-redirect": "cd ../router-destination-redirect && npm run local && cd ../router"
   },
   "repository": {
     "type": "git",
@@ -30,22 +41,26 @@
   },
   "homepage": "https://github.com/scvodigital/scvo-router#readme",
   "devDependencies": {
+    "@types/deep-extend": "^0.4.31",
+    "@types/dot-object": "^1.5.0",
     "@types/handlebars": "^4.0.36",
     "@types/moment": "^2.13.0",
     "@types/node": "^8.0.24",
     "@types/route-recognizer": "^0.3.0",
+    "@types/string": "^0.0.29",
     "eslint": "^4.18.1",
+    "gts": "^0.5.4",
     "mocha": "^4.0.0",
     "typedoc": "^0.10.0",
     "typedoc-plugin-markdown": "^1.0.10",
-    "typescript": "^2.4.2"
+    "typescript": "~2.6.1"
   },
   "dependencies": {
     "clayhandlebars": "^4.0.0",
     "deep-extend": "^0.5.0",
     "dot-object": "^1.7.0",
     "handlebars": "^4.0.11",
-    "moment": "^2.19.3",
+    "moment": "^2.20.1",
     "route-recognizer": "^0.3.3",
     "string": "^3.3.3"
   }

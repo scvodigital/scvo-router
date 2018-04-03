@@ -7,4 +7,6 @@ __export(require("./router"));
 __export(require("./route-match"));
 __export(require("./helpers"));
 __export(require("./route-errors"));
+__export(require("./router-destination"));
+__export(require("./router-task"));
 //# sourceMappingURL=index.js.map
