@@ -1,4 +1,3 @@
-/// <reference types="moment" />
 import * as moment from 'moment';
 export interface Handlebars {
     registerHelper: (...args: any[]) => void;

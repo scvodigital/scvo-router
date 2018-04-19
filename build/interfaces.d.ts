@@ -1,4 +1,4 @@
-/// <reference types="node" />
+/// <reference types="@types/node" />
 import * as Url from 'url';
 import { RouterDestination } from './router-destination';
 import { RouterTask } from './router-task';
