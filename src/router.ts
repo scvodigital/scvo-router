@@ -20,12 +20,12 @@ import {RouterTask} from './router-task';
  * and rendering output
  */
 export class Router implements RouterConfiguration {
-  name: string;
-  domains: string[];
-  metaData: {};
-  menus: MenuDictionary;
-  routes: RouteMap;
-  uaId: string;
+  name: string = '';
+  domains: string[] = [];
+  metaData: {} = {};
+  menus: MenuDictionary = {};
+  routes: RouteMap = {};
+  uaId: string = '';
   routerTasks: RouterTaskMap = {};
   routerDestinations: RouterDestinationMap = {};
 
@@ -33,7 +33,7 @@ export class Router implements RouterConfiguration {
   private routeRecognizer: any;
   /* tslint:enable:no-any */
 
-  private defaultResult: Result;
+  private defaultResult: Result | null = null;
 
   /**
    * Create a Router for matching routes and rendering responses
@@ -145,12 +145,23 @@ export class Router implements RouterConfiguration {
     Object.assign(params, handler.defaultParams);
     Object.assign(params, firstResult.params);
 
-    const query = querystring.parse(
+    let query = querystring.parse(
         uri.query, handler.queryDelimiter, handler.queryEquals);
     let idFriendlyPath = (uri.pathname || '').replace(/\//g, '_');
     if (idFriendlyPath.startsWith('_')) {
       idFriendlyPath = idFriendlyPath.substr(1);
     }
+
+    // Fix annoying "[]" in array property names in query string
+    var queryParams = Object.keys(query);
+    queryParams.forEach((param: string) => {
+      if (param.indexOf('[]') === param.length - 2) {
+        var newParam = param.substr(0, param.length - 2);
+        query[newParam] = query[param];
+        delete query[param];
+      }      
+    });
+
     deepExtend(params, {query, path: idFriendlyPath, uri});
 
     request.params = params;

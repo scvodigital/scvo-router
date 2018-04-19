@@ -53,8 +53,16 @@ var Router = /** @class */ (function () {
     function Router(context, routerTasks, routerDestinations) {
         var _this = this;
         this.context = context;
+        this.name = '';
+        this.domains = [];
+        this.metaData = {};
+        this.menus = {};
+        this.routes = {};
+        this.uaId = '';
         this.routerTasks = {};
         this.routerDestinations = {};
+        /* tslint:enable:no-any */
+        this.defaultResult = null;
         Object.assign(this, context);
         // console.log('#### ROUTER.constructor() -> Registering router tasks',
         // routerTasks);
@@ -131,7 +139,7 @@ var Router = /** @class */ (function () {
     };
     Router.prototype.matchRoute = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, routeMatch;
+            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, queryParams, routeMatch;
             return __generator(this, function (_a) {
                 uri = request.url;
                 recognizedRoutes = this.routeRecognizer.recognize(request.url.path || '') || null;
@@ -159,6 +167,14 @@ var Router = /** @class */ (function () {
                 if (idFriendlyPath.startsWith('_')) {
                     idFriendlyPath = idFriendlyPath.substr(1);
                 }
+                queryParams = Object.keys(query);
+                queryParams.forEach(function (param) {
+                    if (param.indexOf('[]') === param.length - 2) {
+                        var newParam = param.substr(0, param.length - 2);
+                        query[newParam] = query[param];
+                        delete query[param];
+                    }
+                });
                 deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
                 request.params = params;
                 routeMatch = new route_match_1.RouteMatch(handler, request, this);
