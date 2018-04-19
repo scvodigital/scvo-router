@@ -171,7 +171,13 @@ var Router = /** @class */ (function () {
                 queryParams.forEach(function (param) {
                     if (param.indexOf('[]') === param.length - 2) {
                         var newParam = param.substr(0, param.length - 2);
-                        query[newParam] = query[param];
+                        var value = query[param];
+                        if (!Array.isArray) {
+                            query[newParam] = [value];
+                        }
+                        else {
+                            query[newParam] = value;
+                        }
                         delete query[param];
                     }
                 });
