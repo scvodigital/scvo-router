@@ -158,7 +158,7 @@ export class Router implements RouterConfiguration {
       if (param.indexOf('[]') === param.length - 2) {
         var newParam = param.substr(0, param.length - 2);
         var value = query[param];
-        if (!query.hasOwnProperty(newParam)) {
+        if (typeof query[newParam] === 'undefined' || query[newParam] === null) {
           query[newParam] = [value];
         } else if (!Array.isArray(query[newParam])) {
           query[newParam] = [query[newParam], value];

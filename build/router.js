@@ -172,11 +172,11 @@ var Router = /** @class */ (function () {
                     if (param.indexOf('[]') === param.length - 2) {
                         var newParam = param.substr(0, param.length - 2);
                         var value = query[param];
-                        if (!Array.isArray) {
+                        if (!query.hasOwnProperty(newParam)) {
                             query[newParam] = [value];
                         }
-                        else {
-                            query[newParam] = value;
+                        else if (!Array.isArray(query[newParam])) {
+                            query[newParam] = [query[newParam], value];
                         }
                         delete query[param];
                     }
