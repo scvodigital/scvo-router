@@ -20,6 +20,7 @@
     "local": "npm run compile && npm link && npm run l-elastic && npm run l-handlebars && npm run l-redirect",
     "l-elastic": "cd ../router-task-elasticsearch && npm run local && cd ../router",
     "l-handlebars": "cd ../router-destination-handlebars && npm run local && cd ../router",
+    "l-firebase": "cd ../router-task-firebase && npm run local && cd ../router",
     "l-redirect": "cd ../router-destination-redirect && npm run local && cd ../router"
   },
   "repository": {

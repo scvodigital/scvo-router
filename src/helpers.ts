@@ -253,7 +253,7 @@ export class Helpers {
   }
 
   static helper_component(partialName: string, options: any) {
-    console.log('Arguments:', util.inspect(arguments, false, null));
+    console.log('Arguments:', util.inspect(options, false, null));
     const partial = Helpers.handlebars.partials[partialName];
     const template = Helpers.handlebars.compile(partial)
     const html = template(options.hash)
