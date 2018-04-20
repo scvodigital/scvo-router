@@ -230,10 +230,11 @@ var Helpers = /** @class */ (function () {
         return output;
     };
     Helpers.helper_component = function (partialName, options) {
+        options = options.hasOwnProperty('hash') ? options.hash : options;
         console.log('Arguments:', util.inspect(options, false, null));
         var partial = Helpers.handlebars.partials[partialName];
         var template = Helpers.handlebars.compile(partial);
-        var html = template(options.hash);
+        var html = template(options);
         return new Helpers.handlebars.SafeString(html);
     };
     Helpers.helper_log = function (message, obj) {
