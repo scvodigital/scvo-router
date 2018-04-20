@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "A moderately oppinionated web application framework based around mapping routes to tasks and then rendering with handlebars",
   "main": "./build/index",
   "typings": "./build/index",

@@ -253,10 +253,11 @@ export class Helpers {
   }
 
   static helper_component(partialName: string, options: any) {
+    options = options.hasOwnProperty('hash') ? options.hash : options;
     console.log('Arguments:', util.inspect(options, false, null));
     const partial = Helpers.handlebars.partials[partialName];
-    const template = Helpers.handlebars.compile(partial)
-    const html = template(options.hash)
+    const template = Helpers.handlebars.compile(partial);
+    const html = template(options);
     return new Helpers.handlebars.SafeString(html)  
   }
 
