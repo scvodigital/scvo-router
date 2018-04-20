@@ -28,6 +28,13 @@ export class Helpers {
     return parts;
   }
 
+  static helper_arrayify(input: any) {
+    if (Array.isArray(input)) {
+      return input;
+    }
+    return [input];
+  }
+
   static helper_firstItem(arr: any[]) {
     if (!arr) return null;
     if (!Array.isArray(arr)) return null;
