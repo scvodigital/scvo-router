@@ -230,7 +230,6 @@ var Helpers = /** @class */ (function () {
         return output;
     };
     Helpers.helper_component = function (partialName, options) {
-        options = options.hasOwnProperty('hash') ? options.hash : options;
         console.log('Arguments:', util.inspect(options, false, 3));
         var partial = Helpers.handlebars.partials[partialName];
         var template = Helpers.handlebars.compile(partial);

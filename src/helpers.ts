@@ -253,7 +253,9 @@ export class Helpers {
   }
 
   static helper_component(partialName: string, options: any) {
-    console.log('Arguments:', util.inspect(options, false, 3));
+    if (typeof partialName !== 'string' || !Helpers.handlebars.partials.hasOwnProperty(partialName)) {
+      return null;
+    }
     const partial = Helpers.handlebars.partials[partialName];
     const template = Helpers.handlebars.compile(partial);
     const html = template(options);
