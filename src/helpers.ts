@@ -12,7 +12,7 @@ export class Helpers {
   static handlebars: any;
 
   static register(hbs: Handlebars) {
-    this.handlebars = hbs;
+    Helpers.handlebars = hbs;
     Object.getOwnPropertyNames(this).forEach((prop: string) => {
       if (prop.indexOf('helper_') === 0) {
         if (typeof (this as any)[prop] === 'function') {
@@ -253,10 +253,10 @@ export class Helpers {
   }
 
   static helper_component(partialName: string, options: any) {
-    const partial = this.handlebars.partials[partialName];
-    const template = this.handlebars.compile(partial)
+    const partial = Helpers.handlebars.partials[partialName];
+    const template = Helpers.handlebars.compile(partial)
     const html = template(options.hash)
-    return new this.handlebars.SafeString(html)  
+    return new Helpers.handlebars.SafeString(html)  
   }
 
   static helper_log(message: string, obj: any) {

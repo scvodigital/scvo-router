@@ -9,7 +9,7 @@ var Helpers = /** @class */ (function () {
     }
     Helpers.register = function (hbs) {
         var _this = this;
-        this.handlebars = hbs;
+        Helpers.handlebars = hbs;
         Object.getOwnPropertyNames(this).forEach(function (prop) {
             if (prop.indexOf('helper_') === 0) {
                 if (typeof _this[prop] === 'function') {
@@ -229,10 +229,10 @@ var Helpers = /** @class */ (function () {
         return output;
     };
     Helpers.helper_component = function (partialName, options) {
-        var partial = this.handlebars.partials[partialName];
-        var template = this.handlebars.compile(partial);
+        var partial = Helpers.handlebars.partials[partialName];
+        var template = Helpers.handlebars.compile(partial);
         var html = template(options.hash);
-        return new this.handlebars.SafeString(html);
+        return new Helpers.handlebars.SafeString(html);
     };
     Helpers.helper_log = function (message, obj) {
         console.log('####', message, '->', obj);
