@@ -3,6 +3,7 @@ export interface Handlebars {
     registerHelper: (...args: any[]) => void;
 }
 export declare class Helpers {
+    static handlebars: any;
     static register(hbs: Handlebars): void;
     static helper_split(str: string, delimiter: string): string[];
     static helper_firstItem(arr: any[]): any;
@@ -34,6 +35,7 @@ export declare class Helpers {
     static helper_stripDomains(input: string, domains: string[]): string;
     static helper_length(input: any[] | string): number;
     static helper_pluck(items: any[], path: string): any[] | null;
+    static helper_component(partialName: string, options: any): any;
     static helper_log(message: string, obj: any): void;
 }
 export interface IHelperArgs {
