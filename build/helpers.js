@@ -4,6 +4,7 @@ var dot = require("dot-object");
 var moment = require("moment");
 var querystring = require("querystring");
 var s = require("string");
+var util = require("util");
 var Helpers = /** @class */ (function () {
     function Helpers() {
     }
@@ -229,6 +230,7 @@ var Helpers = /** @class */ (function () {
         return output;
     };
     Helpers.helper_component = function (partialName, options) {
+        console.log('Arguments:', util.inspect(arguments, false, null));
         var partial = Helpers.handlebars.partials[partialName];
         var template = Helpers.handlebars.compile(partial);
         var html = template(options.hash);
