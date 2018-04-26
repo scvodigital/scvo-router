@@ -23,6 +23,12 @@ var Helpers = /** @class */ (function () {
         var parts = !str ? [] : str.split(delimiter);
         return parts;
     };
+    Helpers.helper_arrayify = function (input) {
+        if (Array.isArray(input)) {
+            return input;
+        }
+        return [input];
+    };
     Helpers.helper_firstItem = function (arr) {
         if (!arr)
             return null;

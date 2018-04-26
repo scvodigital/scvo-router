@@ -6,6 +6,7 @@ export declare class Helpers {
     static handlebars: any;
     static register(hbs: Handlebars): void;
     static helper_split(str: string, delimiter: string): string[];
+    static helper_arrayify(input: any): any[];
     static helper_firstItem(arr: any[]): any;
     static helper_lastItem(arr: any[]): any;
     static helper_slugify(str: string): string;

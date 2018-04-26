@@ -153,6 +153,7 @@ export class Router implements RouterConfiguration {
     }
 
     // Fix annoying "[]" in array property names in query string
+    /*
     var queryParams = Object.keys(query);
     queryParams.forEach((param: string) => {
       if (param.indexOf('[]') === param.length - 2) {
@@ -168,7 +169,7 @@ export class Router implements RouterConfiguration {
         delete query[param];
       }      
     });
-
+    */
     deepExtend(params, {query, path: idFriendlyPath, uri});
 
     request.params = params;

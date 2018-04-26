@@ -139,7 +139,7 @@ var Router = /** @class */ (function () {
     };
     Router.prototype.matchRoute = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, queryParams, routeMatch;
+            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, routeMatch;
             return __generator(this, function (_a) {
                 uri = request.url;
                 recognizedRoutes = this.routeRecognizer.recognize(request.url.path || '') || null;
@@ -167,23 +167,24 @@ var Router = /** @class */ (function () {
                 if (idFriendlyPath.startsWith('_')) {
                     idFriendlyPath = idFriendlyPath.substr(1);
                 }
-                queryParams = Object.keys(query);
-                queryParams.forEach(function (param) {
-                    if (param.indexOf('[]') === param.length - 2) {
-                        var newParam = param.substr(0, param.length - 2);
-                        var value = query[param];
-                        if (typeof query[newParam] === 'undefined' || query[newParam] === null) {
-                            query[newParam] = value;
-                        }
-                        else if (!Array.isArray(query[newParam])) {
-                            query[newParam] = value.push(query[newParam]);
-                        }
-                        else {
-                            query[newParam] = query[newParam].concat(value);
-                        }
-                        delete query[param];
+                // Fix annoying "[]" in array property names in query string
+                /*
+                var queryParams = Object.keys(query);
+                queryParams.forEach((param: string) => {
+                  if (param.indexOf('[]') === param.length - 2) {
+                    var newParam = param.substr(0, param.length - 2);
+                    var value = query[param];
+                    if (typeof query[newParam] === 'undefined' || query[newParam] === null) {
+                      query[newParam] = value;
+                    } else if (!Array.isArray(query[newParam])) {
+                      query[newParam] = value.push(query[newParam]);
+                    } else {
+                      query[newParam] = query[newParam].concat(value);
                     }
+                    delete query[param];
+                  }
                 });
+                */
                 deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
                 request.params = params;
                 routeMatch = new route_match_1.RouteMatch(handler, request, this);
