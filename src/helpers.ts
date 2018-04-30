@@ -182,11 +182,12 @@ export class Helpers {
     return val;
   }
 
-  static helper_dot(path: string) {
+  static helper_dot(path: string, options: any) {
     if (typeof path !== 'string') {
       return null;
     }
-    console.log('DOT ARGUMENTS', arguments);
+    console.log('DOT OPTIONS', options);
+    console.log('DOT OPTIONS DATA ROOT', options.data.root);
     return '';
   }
 
