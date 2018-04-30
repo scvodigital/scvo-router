@@ -155,7 +155,7 @@ export class Router implements RouterConfiguration {
     // Fix annoying "[]" in array property names in query string
     const queryParams = Object.keys(query);
     queryParams.forEach((param: string) => {
-      if (param.indexOf('[]') === param.length - 2) {
+      if (param.length > 2 && param.indexOf('[]') === param.length - 2) {
         const newParam = param.substr(0, param.length - 2);
         const value = this.arrayify(query[param]);
         let newValue = this.arrayify(query[newParam]);    
