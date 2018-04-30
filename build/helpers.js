@@ -166,6 +166,13 @@ var Helpers = /** @class */ (function () {
         var val = dot.pick(path, obj);
         return val;
     };
+    Helpers.helper_dot = function (path) {
+        if (typeof path !== 'string') {
+            return null;
+        }
+        console.log('DOT ARGUMENTS', arguments);
+        return '';
+    };
     Helpers.helper_getType = function (obj) {
         if (Array.isArray(obj)) {
             return 'array';
