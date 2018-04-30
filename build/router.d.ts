@@ -30,5 +30,6 @@ export declare class Router implements RouterConfiguration {
      */
     execute(request: RouterRequest): Promise<RouterResponse>;
     private matchRoute(request);
+    private arrayify(val);
     private executeRoute(routeMatch);
 }

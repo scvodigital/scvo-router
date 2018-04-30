@@ -139,7 +139,8 @@ var Router = /** @class */ (function () {
     };
     Router.prototype.matchRoute = function (request) {
         return __awaiter(this, void 0, void 0, function () {
-            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, routeMatch;
+            var _this = this;
+            var uri, recognizedRoutes, validResults, firstResult, handler, params, query, idFriendlyPath, queryParams, routeMatch;
             return __generator(this, function (_a) {
                 uri = request.url;
                 recognizedRoutes = this.routeRecognizer.recognize(request.url.path || '') || null;
@@ -167,24 +168,17 @@ var Router = /** @class */ (function () {
                 if (idFriendlyPath.startsWith('_')) {
                     idFriendlyPath = idFriendlyPath.substr(1);
                 }
-                // Fix annoying "[]" in array property names in query string
-                /*
-                var queryParams = Object.keys(query);
-                queryParams.forEach((param: string) => {
-                  if (param.indexOf('[]') === param.length - 2) {
-                    var newParam = param.substr(0, param.length - 2);
-                    var value = query[param];
-                    if (typeof query[newParam] === 'undefined' || query[newParam] === null) {
-                      query[newParam] = value;
-                    } else if (!Array.isArray(query[newParam])) {
-                      query[newParam] = value.push(query[newParam]);
-                    } else {
-                      query[newParam] = query[newParam].concat(value);
+                queryParams = Object.keys(query);
+                queryParams.forEach(function (param) {
+                    if (param.indexOf('[]') === param.length - 2) {
+                        var newParam = param.substr(0, param.length - 2);
+                        var value = _this.arrayify(query[param]);
+                        var newValue = _this.arrayify(query[newParam]);
+                        newValue = newValue.concat(value);
+                        query[newParam] = newValue;
+                        delete query[param];
                     }
-                    delete query[param];
-                  }
                 });
-                */
                 deepExtend(params, { query: query, path: idFriendlyPath, uri: uri });
                 request.params = params;
                 routeMatch = new route_match_1.RouteMatch(handler, request, this);
@@ -192,6 +186,17 @@ var Router = /** @class */ (function () {
             });
         });
     };
+    /* tslint:disable:no-any */
+    Router.prototype.arrayify = function (val) {
+        if (typeof val === 'undefined' || val === null) {
+            return [];
+        }
+        if (Array.isArray(val)) {
+            return val;
+        }
+        return [val];
+    };
+    /* tslint:enable:no-any */
     Router.prototype.executeRoute = function (routeMatch) {
         return __awaiter(this, void 0, void 0, function () {
             var response, err_2, newRoute;

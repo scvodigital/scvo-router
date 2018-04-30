@@ -170,9 +170,8 @@ var Helpers = /** @class */ (function () {
         if (typeof path !== 'string') {
             return null;
         }
-        console.log('DOT OPTIONS', options);
-        console.log('DOT OPTIONS DATA ROOT', options.data.root);
-        return '';
+        var val = dot.pick(path, options.data.root);
+        return val;
     };
     Helpers.helper_getType = function (obj) {
         if (Array.isArray(obj)) {

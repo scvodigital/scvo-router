@@ -153,23 +153,17 @@ export class Router implements RouterConfiguration {
     }
 
     // Fix annoying "[]" in array property names in query string
-    /*
-    var queryParams = Object.keys(query);
+    const queryParams = Object.keys(query);
     queryParams.forEach((param: string) => {
       if (param.indexOf('[]') === param.length - 2) {
-        var newParam = param.substr(0, param.length - 2);
-        var value = query[param];
-        if (typeof query[newParam] === 'undefined' || query[newParam] === null) {
-          query[newParam] = value;
-        } else if (!Array.isArray(query[newParam])) {
-          query[newParam] = value.push(query[newParam]);
-        } else {
-          query[newParam] = query[newParam].concat(value);
-        }
+        const newParam = param.substr(0, param.length - 2);
+        const value = this.arrayify(query[param]);
+        let newValue = this.arrayify(query[newParam]);    
+        newValue = newValue.concat(value);
+        query[newParam] = newValue;
         delete query[param];
       }      
     });
-    */
     deepExtend(params, {query, path: idFriendlyPath, uri});
 
     request.params = params;
@@ -179,6 +173,18 @@ export class Router implements RouterConfiguration {
     const routeMatch: RouteMatch = new RouteMatch(handler, request, this);
     return routeMatch;
   }
+
+  /* tslint:disable:no-any */
+  private arrayify(val: any) {
+    if (typeof val === 'undefined' || val === null) {
+      return [];
+    }
+    if (Array.isArray(val)) {
+      return val;
+    }
+    return [val];
+  }
+  /* tslint:enable:no-any */
 
   private async executeRoute(routeMatch: RouteMatch): Promise<RouterResponse> {
     try {
