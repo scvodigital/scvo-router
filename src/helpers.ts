@@ -186,9 +186,8 @@ export class Helpers {
     if (typeof path !== 'string') {
       return null;
     }
-    console.log('DOT OPTIONS', options);
-    console.log('DOT OPTIONS DATA ROOT', options.data.root);
-    return '';
+    const val = dot.pick(path, options.data.root);
+    return val;
   }
 
   static helper_getType(obj: any) {

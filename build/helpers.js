@@ -166,11 +166,12 @@ var Helpers = /** @class */ (function () {
         var val = dot.pick(path, obj);
         return val;
     };
-    Helpers.helper_dot = function (path) {
+    Helpers.helper_dot = function (path, options) {
         if (typeof path !== 'string') {
             return null;
         }
-        console.log('DOT ARGUMENTS', arguments);
+        console.log('DOT OPTIONS', options);
+        console.log('DOT OPTIONS DATA ROOT', options.data.root);
         return '';
     };
     Helpers.helper_getType = function (obj) {
