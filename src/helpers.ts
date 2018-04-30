@@ -182,6 +182,14 @@ export class Helpers {
     return val;
   }
 
+  static helper_dot(path: string) {
+    if (typeof path !== 'string') {
+      return null;
+    }
+    console.log('DOT ARGUMENTS', arguments);
+    return '';
+  }
+
   static helper_getType(obj: any) {
     if (Array.isArray(obj)) {
       return 'array';
