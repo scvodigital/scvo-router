@@ -170,7 +170,7 @@ var Router = /** @class */ (function () {
                 }
                 queryParams = Object.keys(query);
                 queryParams.forEach(function (param) {
-                    if (param.indexOf('[]') === param.length - 2) {
+                    if (param.length > 2 && param.indexOf('[]') === param.length - 2) {
                         var newParam = param.substr(0, param.length - 2);
                         var value = _this.arrayify(query[param]);
                         var newValue = _this.arrayify(query[newParam]);

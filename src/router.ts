@@ -20,12 +20,12 @@ import {RouterTask} from './router-task';
  * and rendering output
  */
 export class Router implements RouterConfiguration {
-  name: string = '';
+  name = '';
   domains: string[] = [];
   metaData: {} = {};
   menus: MenuDictionary = {};
   routes: RouteMap = {};
-  uaId: string = '';
+  uaId = '';
   routerTasks: RouterTaskMap = {};
   routerDestinations: RouterDestinationMap = {};
 
