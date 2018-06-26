@@ -47,6 +47,7 @@ class TaskRenderLayout extends task_base_1.TaskBase {
             routeMatch.layoutParts = layoutPartOutputs;
             const layoutOutput = yield renderer.render(layoutTemplate, routeMatch);
             delete routeMatch.layoutParts;
+            routeMatch.response.contentType = layout.contentType || 'text/html';
             if (config.output === 'data') {
                 routeMatch.data[routeTaskConfig.name] = layoutOutput;
             }

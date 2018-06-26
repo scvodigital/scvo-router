@@ -18,6 +18,7 @@ export interface LayoutMap {
 export interface LayoutConfiguration {
     parts: LayoutPartMap;
     layout: string;
+    contentType?: string;
 }
 export interface LayoutPartMap {
     [name: string]: string;
