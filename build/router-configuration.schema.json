@@ -1,0 +1,132 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "definitions": {
+        "NamedPattern": {
+            "additionalProperties": {
+                "type": "string"
+            },
+            "type": "object"
+        },
+        "RouteConfiguration": {
+            "properties": {
+                "acceptedVerbs": {
+                    "items": {
+                        "enum": [
+                            "CONNECT",
+                            "DELETE",
+                            "GET",
+                            "HEAD",
+                            "OPTIONS",
+                            "POST",
+                            "PUT"
+                        ],
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "defaultParams": {
+                },
+                "errorRoute": {
+                    "type": "string"
+                },
+                "metaData": {
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pattern": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/NamedPattern"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "queryDelimiter": {
+                    "type": "string"
+                },
+                "queryEquals": {
+                    "type": "string"
+                },
+                "tasks": {
+                    "items": {
+                        "$ref": "#/definitions/RouteTaskConfiguration<any>"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "RouteTaskConfiguration<any>": {
+            "properties": {
+                "config": {
+                },
+                "errorRoute": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "renderer": {
+                    "type": "string"
+                },
+                "taskModule": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "RouterResponse": {
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "contentType": {
+                    "type": "string"
+                },
+                "cookies": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                },
+                "headers": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "type": "object"
+                },
+                "statusCode": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "properties": {
+        "disasterResponse": {
+            "$ref": "#/definitions/RouterResponse"
+        },
+        "domains": {
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "metaData": {
+        },
+        "name": {
+            "type": "string"
+        },
+        "routes": {
+            "items": {
+                "$ref": "#/definitions/RouteConfiguration"
+            },
+            "type": "array"
+        }
+    },
+    "type": "object"
+}
+

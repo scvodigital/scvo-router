@@ -1,34 +1,15 @@
 {
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es6"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "sourceMap": true,
-    "target": "es5",
-    "alwaysStrict": true,
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "../node_modules/@types"
-    ],
-    "paths": {
-        "handlebars-helpers": [
-            "./assets/handlebars-helpers.js"
-        ]
-    }
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "src",
+    "outDir": "build"
   },
   "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/**/old.*.ts"
+    "src/*.ts",
+    "src/**/*.ts",
+    "test/*.ts",
+    "test/**/*.ts"
   ]
 }
