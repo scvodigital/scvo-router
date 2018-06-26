@@ -6,7 +6,6 @@ class RegisteredRoute {
         this.config = config;
         this.parsers = [];
         if (typeof this.config.pattern === 'string') {
-            console.log(this.dp, 'Registering parser for pattern:', this.config.pattern);
             const parser = new Route(this.config.pattern);
             this.parsers.push(parser);
         }
@@ -14,7 +13,6 @@ class RegisteredRoute {
             const keys = Object.keys(this.config.pattern);
             keys.forEach((key) => {
                 const pattern = this.config.pattern[key];
-                console.log(this.dp, 'Registering parser for pattern:', pattern);
                 const parser = new Route(pattern);
                 this.parsers.push(parser);
             });
@@ -26,15 +24,12 @@ class RegisteredRoute {
     test(request) {
         if (this.config.acceptedVerbs &&
             this.config.acceptedVerbs.indexOf(request.verb) === -1) {
-            console.log(this.dp, 'Requested verb', request.verb, 'does not match any in [', this.config.acceptedVerbs.join(', '), ']');
             return null;
         }
         let params = null;
         for (let i = 0; i < this.parsers.length; ++i) {
             const parser = this.parsers[i];
-            console.log(this.dp, 'Testing url', request.url.path, 'against parser', i);
             params = parser.match(request.url.path || '');
-            console.log(this.dp, 'Params:', params);
             if (!!params)
                 break;
         }

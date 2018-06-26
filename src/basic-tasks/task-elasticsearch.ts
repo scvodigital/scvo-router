@@ -1,3 +1,4 @@
+import dot = require('dot-object');
 import {Client, ConfigOptions, MSearchParams, MSearchResponse, SearchResponse} from 'elasticsearch';
 
 import {RouteTaskConfiguration} from '../configuration-interfaces';
@@ -18,7 +19,7 @@ export class TaskElasticsearch extends TaskBase {
     const config = routeTaskConfig.config;
 
     const connectionString =
-        renderer.render(config.connectionStringTemplate, routeMatch);
+        await renderer.render(config.connectionStringTemplate, routeMatch);
     const configOptions:
         ConfigOptions = {host: connectionString, apiVersion: '5.6'};
     Object.assign(configOptions, config.elasticsearchConfig || {});
@@ -53,7 +54,8 @@ export class TaskElasticsearch extends TaskBase {
       routeMatch: RouteMatch,
       renderer: RendererBase): Promise<RouterSearchResponse<any>> {
     const queryTemplate = (config.queryTemplates as ElasticsearchQueryTemplate);
-    const queryJson = await renderer.render(queryTemplate.template, routeMatch);
+    const template = this.getTemplate(queryTemplate.template, routeMatch);
+    const queryJson = await renderer.render(template, routeMatch);
     const query = JSON.parse(queryJson);
 
     const payload = {
@@ -88,8 +90,8 @@ export class TaskElasticsearch extends TaskBase {
 
     for (let t = 0; t < queryTemplates.length; ++t) {
       const queryTemplate = queryTemplates[t];
-      const queryJson =
-          await renderer.render(queryTemplate.template, routeMatch);
+      const template = this.getTemplate(queryTemplate.template, routeMatch);
+      const queryJson = await renderer.render(template, routeMatch);
       const query = JSON.parse(queryJson);
 
       const head = {index: queryTemplate.index, type: queryTemplate.type};
@@ -179,6 +181,17 @@ export class TaskElasticsearch extends TaskBase {
     };
 
     return pagination;
+  }
+
+  private getTemplate(pathOrTemplate: string, routeMatch: RouteMatch): string {
+    if (pathOrTemplate.indexOf('>') === 0 &&
+        pathOrTemplate.indexOf('\n') === -1) {
+      const path = pathOrTemplate.substr(1);
+      const template = dot.pick(path, routeMatch);
+      return (template as string);
+    } else {
+      return pathOrTemplate;
+    }
   }
 }
 

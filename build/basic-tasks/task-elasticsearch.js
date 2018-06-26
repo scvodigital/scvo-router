@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dot = require("dot-object");
 const elasticsearch_1 = require("elasticsearch");
 const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
@@ -18,7 +19,7 @@ class TaskElasticsearch extends task_base_1.TaskBase {
                 throw Error('No renderer specified');
             }
             const config = routeTaskConfig.config;
-            const connectionString = renderer.render(config.connectionStringTemplate, routeMatch);
+            const connectionString = yield renderer.render(config.connectionStringTemplate, routeMatch);
             const configOptions = { host: connectionString, apiVersion: '5.6' };
             Object.assign(configOptions, config.elasticsearchConfig || {});
             const client = new elasticsearch_1.Client(configOptions);
@@ -47,7 +48,8 @@ class TaskElasticsearch extends task_base_1.TaskBase {
     singleQuery(client, config, routeMatch, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
             const queryTemplate = config.queryTemplates;
-            const queryJson = yield renderer.render(queryTemplate.template, routeMatch);
+            const template = this.getTemplate(queryTemplate.template, routeMatch);
+            const queryJson = yield renderer.render(template, routeMatch);
             const query = JSON.parse(queryJson);
             const payload = {
                 index: queryTemplate.index,
@@ -71,7 +73,8 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             const bulk = [];
             for (let t = 0; t < queryTemplates.length; ++t) {
                 const queryTemplate = queryTemplates[t];
-                const queryJson = yield renderer.render(queryTemplate.template, routeMatch);
+                const template = this.getTemplate(queryTemplate.template, routeMatch);
+                const queryJson = yield renderer.render(template, routeMatch);
                 const query = JSON.parse(queryJson);
                 const head = { index: queryTemplate.index, type: queryTemplate.type };
                 const paginationDetails = { from: query.from || 0, size: query.size || 10 };
@@ -137,6 +140,17 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             pageRange: pages
         };
         return pagination;
+    }
+    getTemplate(pathOrTemplate, routeMatch) {
+        if (pathOrTemplate.indexOf('>') === 0 &&
+            pathOrTemplate.indexOf('\n') === -1) {
+            const path = pathOrTemplate.substr(1);
+            const template = dot.pick(path, routeMatch);
+            return template;
+        }
+        else {
+            return pathOrTemplate;
+        }
     }
 }
 exports.TaskElasticsearch = TaskElasticsearch;
