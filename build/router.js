@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Ajv = require("ajv");
+const dot = require("dot-object");
 const registered_route_1 = require("./registered-route");
 const renderer_manager_1 = require("./renderer-manager");
 const route_match_1 = require("./route-match");
@@ -92,7 +93,10 @@ class Router {
                 });
             }
             const taskNames = [];
-            route.tasks.forEach((task) => {
+            route.tasks.forEach((taskVal) => {
+                const task = typeof taskVal === 'string' ?
+                    dot.pick(taskVal, this.context) :
+                    taskVal;
                 if (taskNames.indexOf(task.name) > -1) {
                     this.checkResponses.push({
                         source: RouterConfigurationCheckResponseSource.ROUTE_CONFIGURATION,

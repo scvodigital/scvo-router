@@ -22,7 +22,7 @@ export interface RouteConfiguration {
   acceptedVerbs?: HttpVerb[];
   queryDelimiter: string;
   queryEquals: string;
-  tasks: Array<RouteTaskConfiguration<any>>;
+  tasks: Array<RouteTaskConfiguration<any>|string>;
   defaultParams: any;
   errorRoute?: string;
 }

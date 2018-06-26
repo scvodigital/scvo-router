@@ -52,7 +52,14 @@
                 },
                 "tasks": {
                     "items": {
-                        "$ref": "#/definitions/RouteTaskConfiguration<any>"
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/RouteTaskConfiguration<any>"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
                     },
                     "type": "array"
                 }

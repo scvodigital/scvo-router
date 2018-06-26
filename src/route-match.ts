@@ -1,5 +1,6 @@
 import * as querystring from 'querystring';
 import deepExtend = require('deep-extend');
+import dot = require('dot-object');
 
 import {RouteConfiguration, RouterConfiguration, RouterRequest, RouterResponse, RouteTaskConfiguration} from './configuration-interfaces';
 import {MatchedRoute} from './registered-route';
@@ -45,7 +46,15 @@ export class RouteMatch {
          this.currentTaskIndex < this.route.tasks.length;
          ++this.currentTaskIndex) {
       try {
-        this.currentTask = this.route.tasks[this.currentTaskIndex];
+        const taskConfig = this.route.tasks[this.currentTaskIndex];
+        if (typeof taskConfig === 'string') {
+          this.currentTask =
+              dot.pick(taskConfig, context) as RouteTaskConfiguration<any>;
+        } else {
+          this.currentTask = this.route.tasks[this.currentTaskIndex] as
+              RouteTaskConfiguration<any>;
+        }
+
         console.log(this.dp, 'Current task index:', this.currentTaskIndex);
         const taskModule =
             this.taskModuleManager.getTaskModule(this.currentTask.taskModule);

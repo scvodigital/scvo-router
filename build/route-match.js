@@ -17,6 +17,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const querystring = __importStar(require("querystring"));
 const deepExtend = require("deep-extend");
+const dot = require("dot-object");
 const task_base_1 = require("./task-base");
 /* tslint:disable:no-any */
 class RouteMatch {
@@ -50,7 +51,14 @@ class RouteMatch {
         return __awaiter(this, void 0, void 0, function* () {
             for (this.currentTaskIndex = 0; this.currentTaskIndex < this.route.tasks.length; ++this.currentTaskIndex) {
                 try {
-                    this.currentTask = this.route.tasks[this.currentTaskIndex];
+                    const taskConfig = this.route.tasks[this.currentTaskIndex];
+                    if (typeof taskConfig === 'string') {
+                        this.currentTask =
+                            dot.pick(taskConfig, context);
+                    }
+                    else {
+                        this.currentTask = this.route.tasks[this.currentTaskIndex];
+                    }
                     console.log(this.dp, 'Current task index:', this.currentTaskIndex);
                     const taskModule = this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
                     let renderer;

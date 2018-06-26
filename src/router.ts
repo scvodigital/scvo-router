@@ -1,6 +1,7 @@
 import Ajv = require('ajv');
+import dot = require('dot-object');
 
-import {RouteConfiguration, RouteMap, RouterConfiguration, RouterRequest, RouterResponse} from './configuration-interfaces';
+import {RouteConfiguration, RouteMap, RouterConfiguration, RouterRequest, RouterResponse, RouteTaskConfiguration} from './configuration-interfaces';
 import {MatchedRoute, RegisteredRoute} from './registered-route';
 import {RendererManager, RendererMap} from './renderer-manager';
 import {RouteMatch} from './route-match';
@@ -100,7 +101,11 @@ export class Router {
       }
 
       const taskNames: string[] = [];
-      route.tasks.forEach((task) => {
+      route.tasks.forEach((taskVal) => {
+        const task: RouteTaskConfiguration<any> = typeof taskVal === 'string' ?
+            dot.pick(taskVal, this.context) as RouteTaskConfiguration<any>:
+            taskVal as RouteTaskConfiguration<any>;
+
         if (taskNames.indexOf(task.name) > -1) {
           this.checkResponses.push({
             source: RouterConfigurationCheckResponseSource.ROUTE_CONFIGURATION,
