@@ -4,7 +4,8 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./router"));
-// export * from './basic-tasks/task-elasticsearch';
+__export(require("./basic-tasks/task-elasticsearch"));
+__export(require("./basic-tasks/task-mysql"));
 __export(require("./basic-tasks/task-redirect"));
 __export(require("./basic-tasks/task-render-layout"));
 __export(require("./basic-tasks/task-render"));

@@ -1,5 +1,7 @@
 export * from './configuration-interfaces';
 export * from './router';
+export * from './basic-tasks/task-elasticsearch';
+export * from './basic-tasks/task-mysql';
 export * from './basic-tasks/task-redirect';
 export * from './basic-tasks/task-render-layout';
 export * from './basic-tasks/task-render';
