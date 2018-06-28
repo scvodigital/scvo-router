@@ -5,7 +5,6 @@ import { TaskBase, TaskResult } from '../task-base';
 export declare class TaskRenderLayout extends TaskBase {
     constructor(jsonLogicOperations?: JsonLogicOperationsMap);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskRenderLayoutConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    private getTemplate(pathOrTemplate, routeMatch);
 }
 export interface TaskRenderLayoutConfiguration {
     logic: any;

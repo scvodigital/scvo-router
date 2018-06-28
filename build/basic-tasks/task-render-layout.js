@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonLogic = require("json-logic-js");
-const dot = require("dot-object");
 const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
 class TaskRenderLayout extends task_base_1.TaskBase {
@@ -39,11 +38,11 @@ class TaskRenderLayout extends task_base_1.TaskBase {
             for (let p = 0; p < partNames.length; ++p) {
                 const partName = partNames[p];
                 const partPathOrTemplate = layout.parts[partName];
-                const partTemplate = this.getTemplate(partPathOrTemplate, routeMatch);
+                const partTemplate = routeMatch.getString(partPathOrTemplate);
                 const partOutput = yield renderer.render(partTemplate, routeMatch);
                 layoutPartOutputs[partName] = partOutput;
             }
-            const layoutTemplate = this.getTemplate(layout.layout, routeMatch);
+            const layoutTemplate = routeMatch.getString(layout.layout);
             routeMatch.layoutParts = layoutPartOutputs;
             const layoutOutput = yield renderer.render(layoutTemplate, routeMatch);
             delete routeMatch.layoutParts;
@@ -59,17 +58,6 @@ class TaskRenderLayout extends task_base_1.TaskBase {
             }
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
-    }
-    getTemplate(pathOrTemplate, routeMatch) {
-        if (pathOrTemplate.indexOf('>') === 0 &&
-            pathOrTemplate.indexOf('\n') === -1) {
-            const path = pathOrTemplate.substr(1);
-            const template = dot.pick(path, routeMatch);
-            return template;
-        }
-        else {
-            return pathOrTemplate;
-        }
     }
 }
 exports.TaskRenderLayout = TaskRenderLayout;

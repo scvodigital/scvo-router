@@ -127,6 +127,16 @@ class RouteMatch {
         deepExtend(params, { query, path: idFriendlyPath, uri });
         this.request.params = params;
     }
+    getString(pathOrVal) {
+        if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
+            const path = pathOrVal.substr(1);
+            const val = dot.pick(path, this);
+            return val;
+        }
+        else {
+            return pathOrVal;
+        }
+    }
 }
 exports.RouteMatch = RouteMatch;
 /* tslint:enable:no-any */

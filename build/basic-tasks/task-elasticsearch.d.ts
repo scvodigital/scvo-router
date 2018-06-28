@@ -8,7 +8,6 @@ export declare class TaskElasticsearch extends TaskBase {
     singleQuery(client: Client, config: TaskElasticsearchConfiguration, routeMatch: RouteMatch, renderer: RendererBase): Promise<RouterSearchResponse<any>>;
     multiQuery(client: Client, config: TaskElasticsearchConfiguration, routeMatch: RouteMatch, renderer: RendererBase): Promise<RouterSearchResponseMap<any>>;
     getPagination(from?: number, size?: number, totalResults?: number): Pagination;
-    private getTemplate(pathOrTemplate, routeMatch);
 }
 export interface TaskElasticsearchConfiguration {
     connectionStringTemplate: string;

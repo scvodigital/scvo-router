@@ -131,6 +131,16 @@ export class RouteMatch {
 
     this.request.params = params;
   }
+
+  getString(pathOrVal: string): string {
+    if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
+      const path = pathOrVal.substr(1);
+      const val = dot.pick(path, this);
+      return (val as string);
+    } else {
+      return pathOrVal;
+    }
+  }
 }
 
 export interface TaskModuleMap {

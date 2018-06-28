@@ -54,7 +54,7 @@ export class TaskElasticsearch extends TaskBase {
       routeMatch: RouteMatch,
       renderer: RendererBase): Promise<RouterSearchResponse<any>> {
     const queryTemplate = (config.queryTemplates as ElasticsearchQueryTemplate);
-    const template = this.getTemplate(queryTemplate.template, routeMatch);
+    const template = routeMatch.getString(queryTemplate.template);
     const queryJson = await renderer.render(template, routeMatch);
     const query = JSON.parse(queryJson);
 
@@ -90,7 +90,7 @@ export class TaskElasticsearch extends TaskBase {
 
     for (let t = 0; t < queryTemplates.length; ++t) {
       const queryTemplate = queryTemplates[t];
-      const template = this.getTemplate(queryTemplate.template, routeMatch);
+      const template = routeMatch.getString(queryTemplate.template);
       const queryJson = await renderer.render(template, routeMatch);
       const query = JSON.parse(queryJson);
 
@@ -181,17 +181,6 @@ export class TaskElasticsearch extends TaskBase {
     };
 
     return pagination;
-  }
-
-  private getTemplate(pathOrTemplate: string, routeMatch: RouteMatch): string {
-    if (pathOrTemplate.indexOf('>') === 0 &&
-        pathOrTemplate.indexOf('\n') === -1) {
-      const path = pathOrTemplate.substr(1);
-      const template = dot.pick(path, routeMatch);
-      return (template as string);
-    } else {
-      return pathOrTemplate;
-    }
   }
 }
 

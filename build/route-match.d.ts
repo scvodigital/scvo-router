@@ -20,6 +20,7 @@ export declare class RouteMatch {
     execute(): Promise<RouterResponse>;
     private reroute(routeName);
     private mergeParams(matchedParams);
+    getString(pathOrVal: string): string;
 }
 export interface TaskModuleMap {
     [name: string]: TaskBase;

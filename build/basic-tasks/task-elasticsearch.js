@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dot = require("dot-object");
 const elasticsearch_1 = require("elasticsearch");
 const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
@@ -48,7 +47,7 @@ class TaskElasticsearch extends task_base_1.TaskBase {
     singleQuery(client, config, routeMatch, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
             const queryTemplate = config.queryTemplates;
-            const template = this.getTemplate(queryTemplate.template, routeMatch);
+            const template = routeMatch.getString(queryTemplate.template);
             const queryJson = yield renderer.render(template, routeMatch);
             const query = JSON.parse(queryJson);
             const payload = {
@@ -73,7 +72,7 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             const bulk = [];
             for (let t = 0; t < queryTemplates.length; ++t) {
                 const queryTemplate = queryTemplates[t];
-                const template = this.getTemplate(queryTemplate.template, routeMatch);
+                const template = routeMatch.getString(queryTemplate.template);
                 const queryJson = yield renderer.render(template, routeMatch);
                 const query = JSON.parse(queryJson);
                 const head = { index: queryTemplate.index, type: queryTemplate.type };
@@ -140,17 +139,6 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             pageRange: pages
         };
         return pagination;
-    }
-    getTemplate(pathOrTemplate, routeMatch) {
-        if (pathOrTemplate.indexOf('>') === 0 &&
-            pathOrTemplate.indexOf('\n') === -1) {
-            const path = pathOrTemplate.substr(1);
-            const template = dot.pick(path, routeMatch);
-            return template;
-        }
-        else {
-            return pathOrTemplate;
-        }
     }
 }
 exports.TaskElasticsearch = TaskElasticsearch;

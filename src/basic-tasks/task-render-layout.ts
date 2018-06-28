@@ -41,12 +41,12 @@ export class TaskRenderLayout extends TaskBase {
     for (let p = 0; p < partNames.length; ++p) {
       const partName = partNames[p];
       const partPathOrTemplate = layout.parts[partName];
-      const partTemplate = this.getTemplate(partPathOrTemplate, routeMatch);
+      const partTemplate = routeMatch.getString(partPathOrTemplate);
       const partOutput = await renderer.render(partTemplate, routeMatch);
       layoutPartOutputs[partName] = partOutput;
     }
 
-    const layoutTemplate = this.getTemplate(layout.layout, routeMatch);
+    const layoutTemplate = routeMatch.getString(layout.layout);
     (routeMatch as any).layoutParts = layoutPartOutputs;
     const layoutOutput = await renderer.render(layoutTemplate, routeMatch);
     delete (routeMatch as any).layoutParts;
@@ -61,17 +61,6 @@ export class TaskRenderLayout extends TaskBase {
       throw new Error('No output specified');
     }
     return {command: TaskResultCommand.CONTINUE};
-  }
-
-  private getTemplate(pathOrTemplate: string, routeMatch: RouteMatch): string {
-    if (pathOrTemplate.indexOf('>') === 0 &&
-        pathOrTemplate.indexOf('\n') === -1) {
-      const path = pathOrTemplate.substr(1);
-      const template = dot.pick(path, routeMatch);
-      return (template as string);
-    } else {
-      return pathOrTemplate;
-    }
   }
 }
 
