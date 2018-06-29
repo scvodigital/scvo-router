@@ -42,13 +42,25 @@ export class TaskRenderLayout extends TaskBase {
       const partName = partNames[p];
       const partPathOrTemplate = layout.parts[partName];
       const partTemplate = routeMatch.getString(partPathOrTemplate);
-      const partOutput = await renderer.render(partTemplate, routeMatch);
+      let partOutput = '';
+      try {
+        partOutput = await renderer.render(partTemplate, routeMatch);
+      } catch (err) {
+        console.error('Failed to render part:', partName);
+        throw err;
+      }
       layoutPartOutputs[partName] = partOutput;
     }
 
     const layoutTemplate = routeMatch.getString(layout.layout);
     (routeMatch as any).layoutParts = layoutPartOutputs;
-    const layoutOutput = await renderer.render(layoutTemplate, routeMatch);
+    let layoutOutput = '';
+    try {
+      layoutOutput = await renderer.render(layoutTemplate, routeMatch);
+    } catch (err) {
+      console.error('Failed to render layout:', layoutName, err);
+      throw err;
+    }
     delete (routeMatch as any).layoutParts;
 
     routeMatch.response.contentType = layout.contentType || 'text/html';
