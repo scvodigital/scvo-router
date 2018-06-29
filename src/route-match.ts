@@ -136,6 +136,9 @@ export class RouteMatch {
     if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
       const path = pathOrVal.substr(1);
       const val = dot.pick(path, this);
+      if (!val) {
+        console.log(this.dp, 'No value found at:', path);
+      }
       return (val as string);
     } else {
       return pathOrVal;
