@@ -49,6 +49,7 @@ export class TaskMySQL extends TaskBase {
       routeMatch: RouteMatch, connection: mysql.Connection,
       queryTemplate: string, renderer: RendererBase): Promise<any> {
     return new Promise<any>((resolve, reject) => {
+      queryTemplate = routeMatch.getString(queryTemplate);
       renderer.render(queryTemplate, routeMatch).then((query) => {
         console.log('About to execute query:', query);
         connection.query(query, (error, results, fields) => {
