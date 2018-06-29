@@ -56,7 +56,7 @@ class TaskRenderLayout extends task_base_1.TaskBase {
                 layoutOutput = yield renderer.render(layoutTemplate, routeMatch);
             }
             catch (err) {
-                console.error('Failed to render layout:', layoutName, err);
+                console.error('Failed to render layout:', layoutName);
                 throw err;
             }
             delete routeMatch.layoutParts;

@@ -118,8 +118,11 @@ class RouteMatch {
         Object.assign(params, matchedParams);
         let qs = uri.search || '?';
         qs = qs.substr(1);
+        console.log('Query String Before:', qs);
         qs = qs.replace(/[\[\]]/ig, '');
+        console.log('Query String After:', qs);
         const query = querystring.parse(qs, this.route.queryDelimiter, this.route.queryEquals);
+        console.log('Query String Parsed:', query);
         let idFriendlyPath = (uri.pathname || '').replace(/\//g, '_');
         if (idFriendlyPath.startsWith('_')) {
             idFriendlyPath = idFriendlyPath.substr(1);

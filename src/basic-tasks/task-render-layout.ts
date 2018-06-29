@@ -58,7 +58,7 @@ export class TaskRenderLayout extends TaskBase {
     try {
       layoutOutput = await renderer.render(layoutTemplate, routeMatch);
     } catch (err) {
-      console.error('Failed to render layout:', layoutName, err);
+      console.error('Failed to render layout:', layoutName);
       throw err;
     }
     delete (routeMatch as any).layoutParts;
