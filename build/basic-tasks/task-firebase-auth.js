@@ -25,6 +25,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             }
             const idToken = dot.pick(config.tokenPath, routeMatch);
             if (!idToken && config.noTokenRoute) {
+                console.log('Not token, redirecting to:', config.noTokenRoute);
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.noTokenRoute
@@ -36,6 +37,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             const app = this.apps[appName];
             const decodedToken = yield app.auth().verifyIdToken(idToken);
             if (!decodedToken && config.notAuthenticatedRoute) {
+                console.log('Not authenticated, redirecting to:', config.notAuthenticatedRoute);
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.notAuthenticatedRoute
