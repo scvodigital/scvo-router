@@ -54,7 +54,7 @@ class RouteMatch {
                     const taskConfig = this.route.tasks[this.currentTaskIndex];
                     if (typeof taskConfig === 'string') {
                         this.currentTask =
-                            dot.pick(taskConfig, context);
+                            dot.pick(taskConfig, this.context);
                     }
                     else {
                         this.currentTask = this.route.tasks[this.currentTaskIndex];
