@@ -1951,7 +1951,7 @@ lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
 
-lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.5, lodash@^4.3.0:
+lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
@@ -2213,6 +2213,12 @@ node-forge@0.7.4:
 node-forge@^0.7.4:
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.5.tgz#6c152c345ce11c52f465c2abd957e8639cd674df"
+
+node-json-transform@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/node-json-transform/-/node-json-transform-1.0.16.tgz#c0844159d6e765d34833fdd33bc192b3c5e2e871"
+  dependencies:
+    lodash "^4.17.4"
 
 node-pre-gyp@^0.10.0:
   version "0.10.2"
