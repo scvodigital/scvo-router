@@ -54,7 +54,7 @@ export class TaskRenderLayout extends TaskBase {
 
     const layoutTemplate = routeMatch.getString(layout.layout);
     (routeMatch as any).layoutParts = layoutPartOutputs;
-    let layoutOutput = '';
+    let layoutOutput: any = '';
     try {
       layoutOutput = await renderer.render(layoutTemplate, routeMatch);
     } catch (err) {
@@ -63,11 +63,14 @@ export class TaskRenderLayout extends TaskBase {
     }
     delete (routeMatch as any).layoutParts;
 
-    routeMatch.response.contentType = layout.contentType || 'text/html';
+    if (layout.contentType && layout.contentType.indexOf('json') > -1) {
+      layoutOutput = JSON.parse(layoutOutput);
+    }
 
     if (config.output === 'data') {
       routeMatch.data[routeTaskConfig.name] = layoutOutput;
     } else if (config.output === 'body') {
+      routeMatch.response.contentType = layout.contentType || 'text/html';
       routeMatch.response.body = layoutOutput;
     } else {
       throw new Error('No output specified');

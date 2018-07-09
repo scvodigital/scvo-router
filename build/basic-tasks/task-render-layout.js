@@ -60,11 +60,14 @@ class TaskRenderLayout extends task_base_1.TaskBase {
                 throw err;
             }
             delete routeMatch.layoutParts;
-            routeMatch.response.contentType = layout.contentType || 'text/html';
+            if (layout.contentType && layout.contentType.indexOf('json') > -1) {
+                layoutOutput = JSON.parse(layoutOutput);
+            }
             if (config.output === 'data') {
                 routeMatch.data[routeTaskConfig.name] = layoutOutput;
             }
             else if (config.output === 'body') {
+                routeMatch.response.contentType = layout.contentType || 'text/html';
                 routeMatch.response.body = layoutOutput;
             }
             else {
