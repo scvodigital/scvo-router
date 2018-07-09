@@ -7,6 +7,11 @@ import {RouteTaskConfiguration} from '../configuration-interfaces';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
+const parsers = {
+  querystring: require('querystring'),
+  url: require('url')
+};
+
 export class TaskTransform extends TaskBase {
   async execute(
       routeMatch: RouteMatch,

@@ -10,6 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const DataTransform = require("node-json-transform");
 const task_base_1 = require("../task-base");
+const parsers = {
+    querystring: require('querystring'),
+    url: require('url')
+};
 class TaskTransform extends task_base_1.TaskBase {
     execute(routeMatch, routeTaskConfig) {
         return __awaiter(this, void 0, void 0, function* () {
