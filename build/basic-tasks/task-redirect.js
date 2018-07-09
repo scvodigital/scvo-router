@@ -13,7 +13,8 @@ class TaskRedirect extends task_base_1.TaskBase {
     execute(routeMatch, routeTaskConfig) {
         return __awaiter(this, void 0, void 0, function* () {
             const config = routeTaskConfig.config;
-            routeMatch.response.headers.location = config.location;
+            const location = routeMatch.getString(config.location);
+            routeMatch.response.headers.location = location;
             routeMatch.response.statusCode = config.statusCode || 301;
             return { command: task_base_1.TaskResultCommand.HALT };
         });

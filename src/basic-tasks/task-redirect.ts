@@ -8,7 +8,8 @@ export class TaskRedirect extends TaskBase {
       routeTaskConfig: RouteTaskConfiguration<TaskRedirectConfiguration>):
       Promise<TaskResult> {
     const config = routeTaskConfig.config;
-    routeMatch.response.headers.location = config.location;
+    const location = routeMatch.getString(config.location);
+    routeMatch.response.headers.location = location;
     routeMatch.response.statusCode = config.statusCode || 301;
     return {command: TaskResultCommand.HALT};
   }
