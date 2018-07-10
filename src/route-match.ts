@@ -38,6 +38,7 @@ export class RouteMatch {
     this.route = matchedRoute.config;
     this.route.tasks = this.route.tasks || [];
     this.response.cookies = request.cookies;
+    this.response.statusCode = matchedRoute.config.defaultStatusCode || 200;
     this.mergeParams(matchedRoute.params);
   }
 
@@ -102,7 +103,8 @@ export class RouteMatch {
       }
     }
     if (redirectRoute) {
-      this.currentTaskIndex = 0;
+      this.currentTaskIndex = -1;
+      this.response.statusCode = redirectRoute.defaultStatusCode || 200;
       this.route = redirectRoute;
     } else {
       throw new Error('Redirect route not found. Route name: ' + routeName);

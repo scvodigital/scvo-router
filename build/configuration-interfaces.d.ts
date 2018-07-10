@@ -21,6 +21,7 @@ export interface RouteConfiguration {
     tasks: Array<RouteTaskConfiguration<any> | string>;
     defaultParams: any;
     errorRoute?: string;
+    defaultStatusCode?: number;
 }
 export interface RouteTaskConfiguration<T> {
     name: string;

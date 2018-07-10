@@ -26,6 +26,9 @@
                 },
                 "defaultParams": {
                 },
+                "defaultStatusCode": {
+                    "type": "number"
+                },
                 "errorRoute": {
                     "type": "string"
                 },
