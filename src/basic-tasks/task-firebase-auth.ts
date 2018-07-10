@@ -46,8 +46,6 @@ export class TaskFirebaseAuth extends TaskBase {
       return {command: TaskResultCommand.CONTINUE};
     }
 
-    console.log('Decoded token:', decodedToken);
-
     const user = await app.auth().getUser(decodedToken.uid);
 
     if (!user) {

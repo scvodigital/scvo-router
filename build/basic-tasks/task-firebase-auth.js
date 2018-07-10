@@ -44,7 +44,6 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             else if (!decodedToken) {
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
-            console.log('Decoded token:', decodedToken);
             const user = yield app.auth().getUser(decodedToken.uid);
             if (!user) {
                 throw new Error('Failed to get user with ID "' + decodedToken.uid + '"');
