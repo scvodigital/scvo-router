@@ -11,9 +11,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DataTransform = require("node-json-transform");
 const task_base_1 = require("../task-base");
 class TaskTransform extends task_base_1.TaskBase {
-    constructor() {
-        super(...arguments);
-        this.parsers = { querystring: require('querystring'), url: require('url') };
+    constructor(parsers) {
+        super();
+        this.parsers = parsers;
     }
     execute(routeMatch, routeTaskConfig) {
         return __awaiter(this, void 0, void 0, function* () {

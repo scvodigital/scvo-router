@@ -8,7 +8,9 @@ import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
 export class TaskTransform extends TaskBase {
-  parsers = {querystring: require('querystring'), url: require('url')};
+  constructor(private parsers: any) {
+    super();
+  }
 
   async execute(
       routeMatch: RouteMatch,
