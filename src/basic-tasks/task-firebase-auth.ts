@@ -35,7 +35,11 @@ export class TaskFirebaseAuth extends TaskBase {
     }
 
     const app = this.apps[appName];
-    const decodedToken = await app.auth().verifyIdToken(idToken);
+    let decodedToken: undefined|firebase.auth.DecodedIdToken;
+    try {
+      decodedToken = await app.auth().verifyIdToken(idToken);
+    } catch (err) {
+    }
 
     if (!decodedToken && config.notAuthenticatedRoute) {
       return {

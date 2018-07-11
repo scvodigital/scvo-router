@@ -34,7 +34,12 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             const app = this.apps[appName];
-            const decodedToken = yield app.auth().verifyIdToken(idToken);
+            let decodedToken;
+            try {
+                decodedToken = yield app.auth().verifyIdToken(idToken);
+            }
+            catch (err) {
+            }
             if (!decodedToken && config.notAuthenticatedRoute) {
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,

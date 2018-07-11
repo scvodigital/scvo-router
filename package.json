@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "./build/index",
   "typings": "./build/index",
@@ -8,7 +8,8 @@
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "check": "gts check",
     "clean": "gts clean",
-    "compile": "npm run schema-gen; tsc -p .",
+    "compile": "npm run gts; npm run schema-gen; tsc -p .",
+    "link": "npm run compile; npm link",
     "gts": "gts fix; gts check",
     "fix": "gts fix",
     "prepare": "npm run compile",
