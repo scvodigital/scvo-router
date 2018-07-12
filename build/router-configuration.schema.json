@@ -24,6 +24,9 @@
                     },
                     "type": "array"
                 },
+                "debug": {
+                    "type": "boolean"
+                },
                 "defaultParams": {
                 },
                 "defaultStatusCode": {

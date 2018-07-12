@@ -26,6 +26,7 @@ export interface RouteConfiguration {
   defaultParams: any;
   errorRoute?: string;
   defaultStatusCode?: number;
+  debug?: boolean;
 }
 
 export interface RouteTaskConfiguration<T> {

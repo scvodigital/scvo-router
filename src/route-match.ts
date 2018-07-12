@@ -25,7 +25,7 @@ export class RouteMatch {
   currentTaskIndex = 0;
   reroutes: RouteConfiguration[] = [];
 
-  private get dp(): string {
+  get dp(): string {
     return '[' + this.route.name +
         (this.currentTask ? ' -> ' + this.currentTask.name : '') + ']';
   }

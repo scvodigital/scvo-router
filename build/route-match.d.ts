@@ -15,7 +15,7 @@ export declare class RouteMatch {
     currentTask: RouteTaskConfiguration<any> | null;
     currentTaskIndex: number;
     reroutes: RouteConfiguration[];
-    private readonly dp;
+    readonly dp: string;
     constructor(matchedRoute: MatchedRoute, request: RouterRequest, context: RouterConfiguration, taskModuleManager: TaskModuleManager, rendererManager: RendererManager);
     execute(): Promise<RouterResponse>;
     private reroute(routeName);

@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dot = require("dot-object");
 const task_base_1 = require("../task-base");
 class TaskRender extends task_base_1.TaskBase {
+    /* tslint:disable:no-any */
     execute(routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!renderer) {
@@ -18,7 +19,23 @@ class TaskRender extends task_base_1.TaskBase {
             }
             const config = routeTaskConfig.config;
             const template = this.getTemplate(config.template, routeMatch);
-            const rendered = yield renderer.render(template, routeMatch);
+            let rendered;
+            try {
+                rendered = yield renderer.render(template, routeMatch);
+            }
+            catch (err) {
+                console.error('Failed to render template', err);
+                throw err;
+            }
+            if (config.parseJson) {
+                try {
+                    rendered = JSON.parse(rendered);
+                }
+                catch (err) {
+                    console.error('Failed to parse JSON', err, rendered);
+                    throw err;
+                }
+            }
             if (config.output === 'data') {
                 routeMatch.data[routeTaskConfig.name] = rendered;
             }
@@ -28,9 +45,13 @@ class TaskRender extends task_base_1.TaskBase {
             else {
                 throw new Error('No output specified');
             }
+            if (routeMatch.route.debug) {
+                console.log(routeMatch.dp, rendered);
+            }
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
+    /* tslint:enable:no-any */
     getTemplate(pathOrTemplate, routeMatch) {
         if (pathOrTemplate.indexOf('>') === 0 &&
             pathOrTemplate.indexOf('\n') === -1) {

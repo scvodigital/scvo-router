@@ -6,6 +6,7 @@ import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
 export class TaskRender extends TaskBase {
+  /* tslint:disable:no-any */
   async execute(
       routeMatch: RouteMatch,
       routeTaskConfig: RouteTaskConfiguration<TaskRenderConfiguration>,
@@ -15,8 +16,24 @@ export class TaskRender extends TaskBase {
     }
     const config = routeTaskConfig.config;
     const template = this.getTemplate(config.template, routeMatch);
-    const rendered =
-        await (renderer as RendererBase).render(template, routeMatch);
+
+    let rendered: any;
+    try {
+      rendered = await (renderer as RendererBase).render(template, routeMatch);
+    } catch (err) {
+      console.error('Failed to render template', err);
+      throw err;
+    }
+
+    if (config.parseJson) {
+      try {
+        rendered = JSON.parse(rendered);
+      } catch (err) {
+        console.error('Failed to parse JSON', err, rendered);
+        throw err;
+      }
+    }
+
     if (config.output === 'data') {
       routeMatch.data[routeTaskConfig.name] = rendered;
     } else if (config.output === 'body') {
@@ -24,8 +41,14 @@ export class TaskRender extends TaskBase {
     } else {
       throw new Error('No output specified');
     }
+
+    if (routeMatch.route.debug) {
+      console.log(routeMatch.dp, rendered);
+    }
+
     return {command: TaskResultCommand.CONTINUE};
   }
+  /* tslint:enable:no-any */
 
   private getTemplate(pathOrTemplate: string, routeMatch: RouteMatch): string {
     if (pathOrTemplate.indexOf('>') === 0 &&
@@ -42,4 +65,5 @@ export class TaskRender extends TaskBase {
 export interface TaskRenderConfiguration {
   template: string;
   output: 'data'|'body';
+  parseJson?: boolean;
 }

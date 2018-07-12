@@ -9,4 +9,5 @@ export declare class TaskRender extends TaskBase {
 export interface TaskRenderConfiguration {
     template: string;
     output: 'data' | 'body';
+    parseJson?: boolean;
 }
