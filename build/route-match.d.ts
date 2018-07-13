@@ -15,12 +15,13 @@ export declare class RouteMatch {
     currentTask: RouteTaskConfiguration<any> | null;
     currentTaskIndex: number;
     reroutes: RouteConfiguration[];
-    readonly dp: string;
+    private readonly dp;
     constructor(matchedRoute: MatchedRoute, request: RouterRequest, context: RouterConfiguration, taskModuleManager: TaskModuleManager, rendererManager: RendererManager);
     execute(): Promise<RouterResponse>;
     private reroute(routeName);
     private mergeParams(matchedParams);
     getString(pathOrVal: string): string;
+    log(...args: any[]): void;
 }
 export interface TaskModuleMap {
     [name: string]: TaskBase;

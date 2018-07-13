@@ -46,7 +46,7 @@ class TaskRender extends task_base_1.TaskBase {
                 throw new Error('No output specified');
             }
             if (routeMatch.route.debug) {
-                console.log(routeMatch.dp, rendered);
+                routeMatch.log(rendered);
             }
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });

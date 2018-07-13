@@ -43,7 +43,7 @@ export class TaskRender extends TaskBase {
     }
 
     if (routeMatch.route.debug) {
-      console.log(routeMatch.dp, rendered);
+      routeMatch.log(rendered);
     }
 
     return {command: TaskResultCommand.CONTINUE};

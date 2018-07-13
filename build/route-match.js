@@ -142,6 +142,11 @@ class RouteMatch {
             return pathOrVal;
         }
     }
+    log(...args) {
+        if (this.route.debug) {
+            console.log(this.dp, ...args);
+        }
+    }
 }
 exports.RouteMatch = RouteMatch;
 /* tslint:enable:no-any */
