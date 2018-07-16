@@ -23,7 +23,7 @@ export class TaskFirebaseAuth extends TaskBase {
       throw new Error('No Firebase app named "' + appName + '" registered');
     }
 
-    let cookie = dot.pick(config.cookiePath, routeMatch);
+    let cookie = routeMatch.request.cookies[config.cookieName];
     const idToken = dot.pick(config.tokenPath, routeMatch);
 
     if (!idToken && !cookie && config.noTokenRoute) {
@@ -56,8 +56,8 @@ export class TaskFirebaseAuth extends TaskBase {
               idToken, {expiresIn: 1209600000});
           routeMatch.log(
               'Got the Cookie!:', cookie,
-              '\nStoring it here:', config.cookiePath);
-          dot.set(config.cookiePath, cookie, routeMatch);
+              '\nStoring it here:', config.cookieName);
+          routeMatch.response.cookies[config.cookieName] = cookie;
         }
       } catch (err) {
       }
@@ -86,7 +86,7 @@ export class TaskFirebaseAuth extends TaskBase {
 
 export interface TaskFirebaseAuthConfiguration {
   tokenPath: string;
-  cookiePath: string;
+  cookieName: string;
   appName: string;
   noTokenRoute?: string;
   notAuthenticatedRoute?: string;
