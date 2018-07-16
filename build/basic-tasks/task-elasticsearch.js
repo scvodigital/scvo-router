@@ -49,6 +49,7 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             const queryTemplate = config.queryTemplates;
             const template = routeMatch.getString(queryTemplate.template);
             const queryJson = yield renderer.render(template, routeMatch);
+            routeMatch.log('Parsing JSON for single query', queryJson);
             const query = JSON.parse(queryJson);
             const payload = {
                 index: queryTemplate.index,
@@ -74,6 +75,7 @@ class TaskElasticsearch extends task_base_1.TaskBase {
                 const queryTemplate = queryTemplates[t];
                 const template = routeMatch.getString(queryTemplate.template);
                 const queryJson = yield renderer.render(template, routeMatch);
+                routeMatch.log('Parsing JSON for multi query', queryJson);
                 const query = JSON.parse(queryJson);
                 const head = { index: queryTemplate.index, type: queryTemplate.type };
                 const paginationDetails = { from: query.from || 0, size: query.size || 10 };
