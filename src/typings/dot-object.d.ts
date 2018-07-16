@@ -111,6 +111,18 @@ declare namespace DotObject {
         pick(path: string, obj: any, remove?: boolean): any;
         /**
          *
+         * Set a value of an object using dot notation
+         *
+         * Optionally merge value with target
+         *
+         * @param {String} path
+         * @param {Object} val
+         * @param {Object} obj
+         * @param {Boolean} merge
+         */
+        set(path: string, val: any, obj: any, merge?: boolean): any;
+        /**
+         *
          * Remove value from an object using dot notation.
          *
          * @param {String} path

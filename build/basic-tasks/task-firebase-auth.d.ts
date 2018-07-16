@@ -12,6 +12,7 @@ export declare class TaskFirebaseAuth extends TaskBase {
 }
 export interface TaskFirebaseAuthConfiguration {
     tokenPath: string;
+    cookiePath: string;
     appName: string;
     noTokenRoute?: string;
     notAuthenticatedRoute?: string;

@@ -23,9 +23,10 @@ export class TaskFirebaseAuth extends TaskBase {
       throw new Error('No Firebase app named "' + appName + '" registered');
     }
 
+    let cookie = dot.pick(config.cookiePath, routeMatch);
     const idToken = dot.pick(config.tokenPath, routeMatch);
 
-    if (!idToken && config.noTokenRoute) {
+    if (!idToken && !cookie && config.noTokenRoute) {
       return {
         command: TaskResultCommand.REROUTE,
         routeName: config.noTokenRoute
@@ -35,17 +36,31 @@ export class TaskFirebaseAuth extends TaskBase {
     }
 
     const app = this.apps[appName];
-
-    routeMatch.log('ID TOKEN -> Length:', idToken.length, '\nToken:', idToken);
-    const cookie =
-        await app.auth().createSessionCookie(idToken, {expiresIn: 1209600000});
-    routeMatch.log(
-        'SESSION COOKIE-> Length:', cookie.length, '\nToken:', cookie);
-
     let decodedToken: undefined|firebase.auth.DecodedIdToken;
-    try {
-      decodedToken = await app.auth().verifyIdToken(idToken);
-    } catch (err) {
+
+    if (cookie) {
+      try {
+        routeMatch.log('Got Cookie:', cookie);
+        decodedToken = await app.auth().verifySessionCookie(cookie);
+        routeMatch.log('Decoded Cookie:', decodedToken);
+      } catch (err) {
+      }
+    } else {
+      try {
+        routeMatch.log('Got Token but no Cookie:', idToken);
+        decodedToken = await app.auth().verifyIdToken(idToken);
+        routeMatch.log('Decoded Token:', decodedToken);
+        if (decodedToken) {
+          routeMatch.log('Exchangin token for 2 week cookie');
+          cookie = await app.auth().createSessionCookie(
+              idToken, {expiresIn: 1209600000});
+          routeMatch.log(
+              'Got the Cookie!:', cookie,
+              '\nStoring it here:', config.cookiePath);
+          dot.set(config.cookiePath, cookie, routeMatch);
+        }
+      } catch (err) {
+      }
     }
 
     if (!decodedToken && config.notAuthenticatedRoute) {
@@ -71,6 +86,7 @@ export class TaskFirebaseAuth extends TaskBase {
 
 export interface TaskFirebaseAuthConfiguration {
   tokenPath: string;
+  cookiePath: string;
   appName: string;
   noTokenRoute?: string;
   notAuthenticatedRoute?: string;

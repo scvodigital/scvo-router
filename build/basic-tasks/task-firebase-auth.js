@@ -23,8 +23,9 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             if (!this.apps.hasOwnProperty(appName)) {
                 throw new Error('No Firebase app named "' + appName + '" registered');
             }
+            let cookie = dot.pick(config.cookiePath, routeMatch);
             const idToken = dot.pick(config.tokenPath, routeMatch);
-            if (!idToken && config.noTokenRoute) {
+            if (!idToken && !cookie && config.noTokenRoute) {
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.noTokenRoute
@@ -34,14 +35,30 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             const app = this.apps[appName];
-            routeMatch.log('ID TOKEN -> Length:', idToken.length, '\nToken:', idToken);
-            const cookie = yield app.auth().createSessionCookie(idToken, { expiresIn: 1209600000 });
-            routeMatch.log('SESSION COOKIE-> Length:', cookie.length, '\nToken:', cookie);
             let decodedToken;
-            try {
-                decodedToken = yield app.auth().verifyIdToken(idToken);
+            if (cookie) {
+                try {
+                    routeMatch.log('Got Cookie:', cookie);
+                    decodedToken = yield app.auth().verifySessionCookie(cookie);
+                    routeMatch.log('Decoded Cookie:', decodedToken);
+                }
+                catch (err) {
+                }
             }
-            catch (err) {
+            else {
+                try {
+                    routeMatch.log('Got Token but no Cookie:', idToken);
+                    decodedToken = yield app.auth().verifyIdToken(idToken);
+                    routeMatch.log('Decoded Token:', decodedToken);
+                    if (decodedToken) {
+                        routeMatch.log('Exchangin token for 2 week cookie');
+                        cookie = yield app.auth().createSessionCookie(idToken, { expiresIn: 1209600000 });
+                        routeMatch.log('Got the Cookie!:', cookie, '\nStoring it here:', config.cookiePath);
+                        dot.set(config.cookiePath, cookie, routeMatch);
+                    }
+                }
+                catch (err) {
+                }
             }
             if (!decodedToken && config.notAuthenticatedRoute) {
                 return {
