@@ -35,6 +35,13 @@ export class TaskFirebaseAuth extends TaskBase {
     }
 
     const app = this.apps[appName];
+
+    routeMatch.log('ID TOKEN -> Length:', idToken.length, '\nToken:', idToken);
+    const cookie =
+        await app.auth().createSessionCookie(idToken, {expiresIn: 20160});
+    routeMatch.log(
+        'SESSION COOKIE-> Length:', cookie.length, '\nToken:', cookie);
+
     let decodedToken: undefined|firebase.auth.DecodedIdToken;
     try {
       decodedToken = await app.auth().verifyIdToken(idToken);

@@ -34,6 +34,9 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             const app = this.apps[appName];
+            routeMatch.log('ID TOKEN -> Length:', idToken.length, '\nToken:', idToken);
+            const cookie = yield app.auth().createSessionCookie(idToken, { expiresIn: 20160 });
+            routeMatch.log('SESSION COOKIE-> Length:', cookie.length, '\nToken:', cookie);
             let decodedToken;
             try {
                 decodedToken = yield app.auth().verifyIdToken(idToken);
