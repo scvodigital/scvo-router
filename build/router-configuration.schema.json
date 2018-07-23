@@ -1,6 +1,71 @@
 {
     "$schema": "http://json-schema.org/draft-06/schema#",
     "definitions": {
+        "Cookie": {
+            "properties": {
+                "options": {
+                    "$ref": "#/definitions/CookieOptions"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "CookieMap": {
+            "additionalProperties": {
+                "$ref": "#/definitions/Cookie"
+            },
+            "type": "object"
+        },
+        "CookieOptions": {
+            "properties": {
+                "domain": {
+                    "type": "string"
+                },
+                "encode": {
+                    "type": "object"
+                },
+                "expires": {
+                    "anyOf": [
+                        {
+                            "description": "Enables basic storage and retrieval of dates and times.",
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                },
+                "httpOnly": {
+                    "type": "boolean"
+                },
+                "maxAge": {
+                    "type": "number"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "sameSite": {
+                    "type": [
+                        "string",
+                        "boolean"
+                    ]
+                },
+                "secure": {
+                    "enum": [
+                        "auto",
+                        false,
+                        true
+                    ]
+                },
+                "signed": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
         "NamedPattern": {
             "additionalProperties": {
                 "type": "string"
@@ -96,14 +161,14 @@
                 "body": {
                     "type": "string"
                 },
+                "clearCookies": {
+                    "$ref": "#/definitions/CookieMap"
+                },
                 "contentType": {
                     "type": "string"
                 },
                 "cookies": {
-                    "additionalProperties": {
-                        "type": "string"
-                    },
-                    "type": "object"
+                    "$ref": "#/definitions/CookieMap"
                 },
                 "headers": {
                     "additionalProperties": {

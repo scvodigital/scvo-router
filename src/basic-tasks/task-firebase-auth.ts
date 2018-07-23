@@ -1,7 +1,7 @@
 import * as firebase from 'firebase-admin';
 import dot = require('dot-object');
 
-import {RouteTaskConfiguration} from '../configuration-interfaces';
+import {RouteTaskConfiguration, Cookie, CookieOptions} from '../configuration-interfaces';
 import {RendererBase} from '../renderer-base';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
@@ -44,6 +44,7 @@ export class TaskFirebaseAuth extends TaskBase {
         decodedToken = await app.auth().verifySessionCookie(cookie);
         routeMatch.log('Decoded Cookie:', decodedToken);
       } catch (err) {
+        console.error('Failed to verify session cookie:', err);
       }
     } else {
       try {
@@ -57,7 +58,9 @@ export class TaskFirebaseAuth extends TaskBase {
           routeMatch.log(
               'Got the Cookie!:', cookie,
               '\nStoring it here:', config.cookieName);
-          routeMatch.response.cookies[config.cookieName] = cookie;
+          const cookieObj:
+              Cookie = {value: cookie, options: config.cookieOptions};
+          routeMatch.response.cookies[config.cookieName] = cookieObj;
         }
       } catch (err) {
       }
@@ -87,6 +90,7 @@ export class TaskFirebaseAuth extends TaskBase {
 export interface TaskFirebaseAuthConfiguration {
   tokenPath: string;
   cookieName: string;
+  cookieOptions?: CookieOptions;
   appName: string;
   noTokenRoute?: string;
   notAuthenticatedRoute?: string;

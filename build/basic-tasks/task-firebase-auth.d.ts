@@ -1,5 +1,5 @@
 import * as firebase from 'firebase-admin';
-import { RouteTaskConfiguration } from '../configuration-interfaces';
+import { RouteTaskConfiguration, CookieOptions } from '../configuration-interfaces';
 import { RendererBase } from '../renderer-base';
 import { RouteMatch } from '../route-match';
 import { TaskBase, TaskResult } from '../task-base';
@@ -13,6 +13,7 @@ export declare class TaskFirebaseAuth extends TaskBase {
 export interface TaskFirebaseAuthConfiguration {
     tokenPath: string;
     cookieName: string;
+    cookieOptions?: CookieOptions;
     appName: string;
     noTokenRoute?: string;
     notAuthenticatedRoute?: string;

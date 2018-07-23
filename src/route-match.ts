@@ -19,6 +19,7 @@ export class RouteMatch {
     statusCode: 200,
     headers: {},
     cookies: {},
+    clearCookies: {}
   };
   errors: Error[] = [];
   currentTask: RouteTaskConfiguration<any>|null = null;
@@ -37,7 +38,6 @@ export class RouteMatch {
       private rendererManager: RendererManager) {
     this.route = matchedRoute.config;
     this.route.tasks = this.route.tasks || [];
-    this.response.cookies = request.cookies;
     this.response.statusCode = matchedRoute.config.defaultStatusCode || 200;
     this.mergeParams(matchedRoute.params);
   }

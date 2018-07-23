@@ -43,6 +43,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                     routeMatch.log('Decoded Cookie:', decodedToken);
                 }
                 catch (err) {
+                    console.error('Failed to verify session cookie:', err);
                 }
             }
             else {
@@ -54,7 +55,8 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                         routeMatch.log('Exchangin token for 2 week cookie');
                         cookie = yield app.auth().createSessionCookie(idToken, { expiresIn: 1209600000 });
                         routeMatch.log('Got the Cookie!:', cookie, '\nStoring it here:', config.cookieName);
-                        routeMatch.response.cookies[config.cookieName] = cookie;
+                        const cookieObj = { value: cookie, options: config.cookieOptions };
+                        routeMatch.response.cookies[config.cookieName] = cookieObj;
                     }
                 }
                 catch (err) {
