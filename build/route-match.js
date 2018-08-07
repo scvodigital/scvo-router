@@ -60,7 +60,9 @@ class RouteMatch {
                     else {
                         this.currentTask = this.route.tasks[this.currentTaskIndex];
                     }
-                    console.log(this.dp, 'Current task index:', this.currentTaskIndex);
+                    if (this.route.debug) {
+                        console.log(this.dp, 'Current task index:', this.currentTaskIndex);
+                    }
                     const taskModule = this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
                     let renderer;
                     if (this.currentTask.renderer) {
@@ -77,7 +79,7 @@ class RouteMatch {
                     }
                 }
                 catch (err) {
-                    console.error(this.dp, 'Problem with task:', err);
+                    this.error(err);
                     const errorRoute = err.errorRoute ||
                         this.currentTask.errorRoute ||
                         this.route.errorRoute || null;
@@ -146,6 +148,22 @@ class RouteMatch {
         if (this.route.debug) {
             console.log(this.dp, ...args);
         }
+    }
+    error(error) {
+        if (this.currentTask === null) {
+            console.error('This should not have happened! Task error with no task! Here\'s the error anyway:', error);
+            return;
+        }
+        if (this.route.debug) {
+            console.error(this.dp, error);
+        }
+        const taskError = {
+            routeName: this.route.name,
+            taskName: this.currentTask.name,
+            taskIndex: this.currentTaskIndex,
+            error
+        };
+        this.errors.push(taskError);
     }
 }
 exports.RouteMatch = RouteMatch;

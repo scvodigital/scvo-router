@@ -11,7 +11,7 @@ export declare class RouteMatch {
     route: RouteConfiguration;
     data: any;
     response: RouterResponse;
-    errors: Error[];
+    errors: TaskError[];
     currentTask: RouteTaskConfiguration<any> | null;
     currentTaskIndex: number;
     reroutes: RouteConfiguration[];
@@ -22,7 +22,14 @@ export declare class RouteMatch {
     private mergeParams(matchedParams);
     getString(pathOrVal: string): string;
     log(...args: any[]): void;
+    error(error: Error): void;
 }
 export interface TaskModuleMap {
     [name: string]: TaskBase;
+}
+export interface TaskError {
+    routeName: string;
+    taskName: string;
+    taskIndex: number;
+    error: Error;
 }
