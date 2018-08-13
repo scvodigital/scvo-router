@@ -21,8 +21,7 @@ class TaskFirebaseRtbSet extends task_base_1.TaskBase {
                 throw new Error('No renderer specified');
             }
             const config = routeTaskConfig.config;
-            if (config.setOrUpdate !== 'set' ||
-                config.setOrUpdate !== 'update') {
+            if (config.setOrUpdate !== 'set' && config.setOrUpdate !== 'update') {
                 throw new Error('No "setOrUpdate" property given');
             }
             const appName = routeMatch.getString(config.appName);

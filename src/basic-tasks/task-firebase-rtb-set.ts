@@ -22,8 +22,7 @@ export class TaskFirebaseRtbSet extends TaskBase {
 
     const config = routeTaskConfig.config;
 
-    if ((config.setOrUpdate as string) !== 'set' ||
-        (config.setOrUpdate as string) !== 'update') {
+    if (config.setOrUpdate !== 'set' && config.setOrUpdate !== 'update') {
       throw new Error('No "setOrUpdate" property given');
     }
 
