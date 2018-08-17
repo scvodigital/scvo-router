@@ -16,6 +16,7 @@ export class TaskRender extends TaskBase {
     }
     const config = routeTaskConfig.config;
     const template = this.getTemplate(config.template, routeMatch);
+    routeMatch.log('Loaded  template:', template);
 
     let rendered: any;
     try {
@@ -24,6 +25,7 @@ export class TaskRender extends TaskBase {
       console.error('Failed to render template', err);
       throw err;
     }
+    routeMatch.log('Rendered template output:', rendered);
 
     if (config.parseJson) {
       try {

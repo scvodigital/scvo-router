@@ -48,9 +48,11 @@ class TaskElasticsearch extends task_base_1.TaskBase {
         return __awaiter(this, void 0, void 0, function* () {
             const queryTemplate = config.queryTemplates;
             const template = routeMatch.getString(queryTemplate.template);
+            routeMatch.templateMetaData = queryTemplate.metaData || {};
             const queryJson = yield renderer.render(template, routeMatch);
             routeMatch.log('Parsing JSON for single query', queryJson);
             const query = JSON.parse(queryJson);
+            delete routeMatch.templateMetaData;
             const payload = {
                 index: queryTemplate.index,
                 type: queryTemplate.type,
@@ -74,9 +76,11 @@ class TaskElasticsearch extends task_base_1.TaskBase {
             for (let t = 0; t < queryTemplates.length; ++t) {
                 const queryTemplate = queryTemplates[t];
                 const template = routeMatch.getString(queryTemplate.template);
+                routeMatch.templateMetaData = queryTemplate.metaData || {};
                 const queryJson = yield renderer.render(template, routeMatch);
                 routeMatch.log('Parsing JSON for multi query', queryJson);
                 const query = JSON.parse(queryJson);
+                delete routeMatch.templateMetaData;
                 const head = { index: queryTemplate.index, type: queryTemplate.type };
                 const paginationDetails = { from: query.from || 0, size: query.size || 10 };
                 bulk.push(head);

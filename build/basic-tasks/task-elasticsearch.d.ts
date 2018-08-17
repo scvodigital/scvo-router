@@ -21,6 +21,7 @@ export interface ElasticsearchQueryTemplate {
     template: string;
     paginationDetails?: PaginationDetails;
     noResultsRoute?: string;
+    metaData?: any;
 }
 export interface HandlebarsHelpers {
     [name: string]: (...args: any[]) => any;

@@ -55,9 +55,14 @@ export class TaskElasticsearch extends TaskBase {
       renderer: RendererBase): Promise<RouterSearchResponse<any>> {
     const queryTemplate = (config.queryTemplates as ElasticsearchQueryTemplate);
     const template = routeMatch.getString(queryTemplate.template);
+
+    (routeMatch as any).templateMetaData = queryTemplate.metaData || {};
+
     const queryJson = await renderer.render(template, routeMatch);
     routeMatch.log('Parsing JSON for single query', queryJson);
     const query = JSON.parse(queryJson);
+
+    delete (routeMatch as any).templateMetaData;
 
     const payload = {
       index: queryTemplate.index,
@@ -92,9 +97,14 @@ export class TaskElasticsearch extends TaskBase {
     for (let t = 0; t < queryTemplates.length; ++t) {
       const queryTemplate = queryTemplates[t];
       const template = routeMatch.getString(queryTemplate.template);
+
+      (routeMatch as any).templateMetaData = queryTemplate.metaData || {};
+
       const queryJson = await renderer.render(template, routeMatch);
       routeMatch.log('Parsing JSON for multi query', queryJson);
       const query = JSON.parse(queryJson);
+
+      delete (routeMatch as any).templateMetaData;
 
       const head = {index: queryTemplate.index, type: queryTemplate.type};
       const paginationDetails:
@@ -199,6 +209,7 @@ export interface ElasticsearchQueryTemplate {
   template: string;
   paginationDetails?: PaginationDetails;
   noResultsRoute?: string;
+  metaData?: any;
 }
 
 export interface HandlebarsHelpers {
