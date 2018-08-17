@@ -50,7 +50,7 @@ export class RouteMatch {
         const taskConfig = this.route.tasks[this.currentTaskIndex];
         if (typeof taskConfig === 'string') {
           this.currentTask =
-              dot.pick(taskConfig, this.context) as RouteTaskConfiguration<any>;
+              dot.pick(taskConfig, this) as RouteTaskConfiguration<any>;
         } else {
           this.currentTask = this.route.tasks[this.currentTaskIndex] as
               RouteTaskConfiguration<any>;
