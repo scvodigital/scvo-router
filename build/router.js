@@ -94,9 +94,18 @@ class Router {
             }
             const taskNames = [];
             route.tasks.forEach((taskVal) => {
-                const task = typeof taskVal === 'string' ?
-                    dot.pick(taskVal, this.context) :
-                    taskVal;
+                let task;
+                if (typeof taskVal === 'string') {
+                    if (taskVal.indexOf('context.') === 0) {
+                        const newTaskPath = taskVal.replace(/^context\./, '');
+                        task = dot.pick(newTaskPath, this.context);
+                    }
+                }
+                else {
+                    task = taskVal;
+                }
+                if (!task)
+                    return;
                 if (taskNames.indexOf(task.name) > -1) {
                     this.checkResponses.push({
                         source: RouterConfigurationCheckResponseSource.ROUTE_CONFIGURATION,

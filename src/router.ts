@@ -102,9 +102,18 @@ export class Router {
 
       const taskNames: string[] = [];
       route.tasks.forEach((taskVal) => {
-        const task: RouteTaskConfiguration<any> = typeof taskVal === 'string' ?
-            dot.pick(taskVal, this.context) as RouteTaskConfiguration<any>:
-            taskVal as RouteTaskConfiguration<any>;
+        let task: RouteTaskConfiguration<any>|undefined;
+        if (typeof taskVal === 'string') {
+          if (taskVal.indexOf('context.') === 0) {
+            const newTaskPath = taskVal.replace(/^context\./, '');
+            task = dot.pick(newTaskPath, this.context) as
+                RouteTaskConfiguration<any>;
+          }
+        } else {
+          task = taskVal as RouteTaskConfiguration<any>;
+        }
+
+        if (!task) return;
 
         if (taskNames.indexOf(task.name) > -1) {
           this.checkResponses.push({
