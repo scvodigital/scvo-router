@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Mailgun = require("mailgun-js");
 const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
-class TaskRender extends task_base_1.TaskBase {
+class TaskMailgun extends task_base_1.TaskBase {
     constructor(connectionConfigs) {
         super();
         this.connectionConfigs = connectionConfigs;
@@ -56,5 +56,5 @@ class TaskRender extends task_base_1.TaskBase {
         });
     }
 }
-exports.TaskRender = TaskRender;
+exports.TaskMailgun = TaskMailgun;
 //# sourceMappingURL=task-mailgun.js.map

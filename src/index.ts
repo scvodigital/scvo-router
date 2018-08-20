@@ -10,6 +10,7 @@ export * from './basic-tasks/task-firebase-auth';
 export * from './basic-tasks/task-firebase-rtb-get';
 export * from './basic-tasks/task-firebase-rtb-set';
 export * from './basic-tasks/task-transform';
+export * from './basic-tasks/task-mailgun';
 export * from './route-match';
 export * from './registered-route';
 export * from './renderer-base';

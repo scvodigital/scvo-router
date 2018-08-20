@@ -6,8 +6,8 @@ import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
 /* tslint:disable:no-any */
-export class TaskRender extends TaskBase {
-  constructor(private connectionConfigs: ConnectionMap) {
+export class TaskMailgun extends TaskBase {
+  constructor(private connectionConfigs: MailgunConnectionMap) {
     super();
   }
 
@@ -68,7 +68,7 @@ export interface TaskMailgunConfiguration {
   connectionName: string;
 }
 
-export interface ConnectionMap {
+export interface MailgunConnectionMap {
   [name: string]: Mailgun.ConstructorParams;
 }
 
