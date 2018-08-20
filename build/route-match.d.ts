@@ -21,6 +21,7 @@ export declare class RouteMatch {
     private reroute(routeName);
     private mergeParams(matchedParams);
     getString(pathOrVal: string): string;
+    setData(data: any): void;
     log(...args: any[]): void;
     error(error: Error): void;
 }

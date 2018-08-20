@@ -150,6 +150,16 @@ export class RouteMatch {
     }
   }
 
+  setData(data: any) {
+    if (this.currentTask === null) {
+      console.error(
+          'This should not have happened! Setting task data when there is no task');
+      return;
+    }
+    const taskName = this.currentTask.name;
+    this.data[taskName] = data;
+  }
+
   log(...args: any[]) {
     if (this.route.debug) {
       console.log(this.dp, ...args);
