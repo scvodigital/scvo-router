@@ -69,8 +69,8 @@ export interface MailgunConnectionMap {
 }
 
 export interface ReportItem {
-  data: Mailgun.messages.SendData;
-  response: Mailgun.messages.SendResponse|Error;
+  data: SendData;
+  response: SendResponse|Error;
 }
 
 export interface ConstructorParams {
