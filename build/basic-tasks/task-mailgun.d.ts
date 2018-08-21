@@ -17,8 +17,8 @@ export interface MailgunConnectionMap {
     [name: string]: ConstructorParams;
 }
 export interface ReportItem {
-    data: Mailgun.messages.SendData;
-    response: Mailgun.messages.SendResponse | Error;
+    data: SendData;
+    response: SendResponse | Error;
 }
 export interface ConstructorParams {
     apiKey: string;
@@ -32,6 +32,16 @@ export interface ConstructorParams {
     port?: number;
     retry?: number;
     proxy?: string;
+}
+export interface SendData {
+    from: string;
+    to: string | string[];
+    cc?: string;
+    bcc?: string;
+    subject: string;
+    text?: string;
+    html?: string;
+    attachment?: string | Buffer | NodeJS.ReadWriteStream | Attachment;
 }
 export interface SendResponse {
     message: string;

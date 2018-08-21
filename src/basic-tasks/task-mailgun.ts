@@ -87,7 +87,7 @@ export interface ConstructorParams {
   proxy?: string;
 }
 
-interface SendData {
+export interface SendData {
   from: string;
   to: string|string[];
   cc?: string;
