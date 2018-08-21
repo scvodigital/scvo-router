@@ -22,10 +22,8 @@ export class TaskMailgun extends TaskBase {
 
     const template = routeMatch.getString(config.template);
     const dataJson = await renderer.render(template, routeMatch);
-    const dataParsed =
-        (JSON.parse(dataJson) as Mailgun.messages.SendData |
-         Mailgun.messages.SendData[]);
-    const dataArray: Mailgun.messages.SendData[] =
+    const dataParsed = (JSON.parse(dataJson) as SendData | SendData[]);
+    const dataArray: SendData[] =
         Array.isArray(dataParsed) ? dataParsed : [dataParsed];
 
     const connectionConfig = this.connectionConfigs[config.connectionName];
@@ -36,8 +34,7 @@ export class TaskMailgun extends TaskBase {
     for (let i = 0; i < dataArray.length; ++i) {
       const data = dataArray[i];
       try {
-        const response: Mailgun.messages.SendResponse =
-            await this.sendEmail(mailer, data);
+        const response: SendResponse = await this.sendEmail(mailer, data);
         routeMatch.log('Send email call successful', data.to, response);
         report.push({data, response});
       } catch (err) {
@@ -61,7 +58,6 @@ export class TaskMailgun extends TaskBase {
     });
   }
 }
-/* tslint:enable:no-any */
 
 export interface TaskMailgunConfiguration {
   template: string;
@@ -69,10 +65,57 @@ export interface TaskMailgunConfiguration {
 }
 
 export interface MailgunConnectionMap {
-  [name: string]: Mailgun.ConstructorParams;
+  [name: string]: ConstructorParams;
 }
 
 export interface ReportItem {
   data: Mailgun.messages.SendData;
   response: Mailgun.messages.SendResponse|Error;
 }
+
+export interface ConstructorParams {
+  apiKey: string;
+  publicApiKey?: string;
+  domain: string;
+  mute?: boolean;
+  timeout?: number;
+  host?: string;
+  endpoint?: string;
+  protocol?: string;
+  port?: number;
+  retry?: number;
+  proxy?: string;
+}
+
+interface SendData {
+  from: string;
+  to: string|string[];
+  cc?: string;
+  bcc?: string;
+  subject: string;
+  text?: string;
+  html?: string;
+  attachment?: string|Buffer|NodeJS.ReadWriteStream|Attachment;
+}
+
+export interface SendResponse {
+  message: string;
+  id: string;
+}
+
+export interface Attachment {
+  new(params: AttachmentParams): void;
+  data: string|Buffer|NodeJS.ReadWriteStream;
+  filename?: string;
+  knownLength?: number;
+  contentType?: string;
+  getType(): string;
+}
+
+export interface AttachmentParams {
+  data: string|Buffer|NodeJS.ReadWriteStream;
+  filename?: string;
+  knownLength?: number;
+  contentType?: string;
+}
+/* tslint:enable:no-any */

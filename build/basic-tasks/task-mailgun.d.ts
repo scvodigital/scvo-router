@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { RouteTaskConfiguration } from '../configuration-interfaces';
 import { RendererBase } from '../renderer-base';
 import { RouteMatch } from '../route-match';
@@ -13,9 +14,40 @@ export interface TaskMailgunConfiguration {
     connectionName: string;
 }
 export interface MailgunConnectionMap {
-    [name: string]: Mailgun.ConstructorParams;
+    [name: string]: ConstructorParams;
 }
 export interface ReportItem {
     data: Mailgun.messages.SendData;
     response: Mailgun.messages.SendResponse | Error;
+}
+export interface ConstructorParams {
+    apiKey: string;
+    publicApiKey?: string;
+    domain: string;
+    mute?: boolean;
+    timeout?: number;
+    host?: string;
+    endpoint?: string;
+    protocol?: string;
+    port?: number;
+    retry?: number;
+    proxy?: string;
+}
+export interface SendResponse {
+    message: string;
+    id: string;
+}
+export interface Attachment {
+    new (params: AttachmentParams): void;
+    data: string | Buffer | NodeJS.ReadWriteStream;
+    filename?: string;
+    knownLength?: number;
+    contentType?: string;
+    getType(): string;
+}
+export interface AttachmentParams {
+    data: string | Buffer | NodeJS.ReadWriteStream;
+    filename?: string;
+    knownLength?: number;
+    contentType?: string;
 }

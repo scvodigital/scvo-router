@@ -57,4 +57,5 @@ class TaskMailgun extends task_base_1.TaskBase {
     }
 }
 exports.TaskMailgun = TaskMailgun;
+/* tslint:enable:no-any */
 //# sourceMappingURL=task-mailgun.js.map
