@@ -4,17 +4,19 @@ import { RendererBase } from '../renderer-base';
 import { RouteMatch } from '../route-match';
 import { TaskBase, TaskResult } from '../task-base';
 export declare class TaskMailgun extends TaskBase {
-    private connectionConfigs;
-    constructor(connectionConfigs: MailgunConnectionMap);
+    connections: MailgunConnectionMap;
+    constructor(connectionConfigs: MailgunConnectionConfigMap);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskMailgunConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    sendEmail(mailer: any, data: any): Promise<any>;
+    sendEmail(data: SendData): Promise<SendResponse>;
 }
 export interface TaskMailgunConfiguration {
     template: string;
-    connectionName: string;
+}
+export interface MailgunConnectionConfigMap {
+    [name: string]: ConstructorParams;
 }
 export interface MailgunConnectionMap {
-    [name: string]: ConstructorParams;
+    [name: string]: any;
 }
 export interface ReportItem {
     data: SendData;
@@ -42,6 +44,7 @@ export interface SendData {
     text?: string;
     html?: string;
     attachment?: string | Buffer | NodeJS.ReadWriteStream | Attachment;
+    connectionName: string;
 }
 export interface SendResponse {
     message: string;

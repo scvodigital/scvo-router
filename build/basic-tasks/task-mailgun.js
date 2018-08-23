@@ -14,7 +14,12 @@ const task_base_1 = require("../task-base");
 class TaskMailgun extends task_base_1.TaskBase {
     constructor(connectionConfigs) {
         super();
-        this.connectionConfigs = connectionConfigs;
+        this.connections = {};
+        const connectionNames = Object.keys(connectionConfigs);
+        connectionNames.forEach((connectionName) => {
+            const connectionConfig = connectionConfigs[connectionName];
+            this.connections[connectionName] = new Mailgun(connectionConfig);
+        });
     }
     execute(routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -26,13 +31,13 @@ class TaskMailgun extends task_base_1.TaskBase {
             const dataJson = yield renderer.render(template, routeMatch);
             const dataParsed = JSON.parse(dataJson);
             const dataArray = Array.isArray(dataParsed) ? dataParsed : [dataParsed];
-            const connectionConfig = this.connectionConfigs[config.connectionName];
-            const mailer = new Mailgun(connectionConfig);
             const report = [];
             for (let i = 0; i < dataArray.length; ++i) {
                 const data = dataArray[i];
+                if (!data)
+                    continue;
                 try {
-                    const response = yield this.sendEmail(mailer, data);
+                    const response = yield this.sendEmail(data);
                     routeMatch.log('Send email call successful', data.to, response);
                     report.push({ data, response });
                 }
@@ -46,9 +51,10 @@ class TaskMailgun extends task_base_1.TaskBase {
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
-    sendEmail(mailer, data) {
+    sendEmail(data) {
         return new Promise((resolve, reject) => {
-            mailer.messages().send(data, (err, body) => {
+            const emailer = this.connections[data.connectionName];
+            emailer.messages().send(data, (err, body) => {
                 if (err)
                     return reject(err);
                 return resolve(body);

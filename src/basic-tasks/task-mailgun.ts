@@ -7,8 +7,15 @@ import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
 /* tslint:disable:no-any */
 export class TaskMailgun extends TaskBase {
-  constructor(private connectionConfigs: MailgunConnectionMap) {
+  connections: MailgunConnectionMap = {};
+
+  constructor(connectionConfigs: MailgunConnectionConfigMap) {
     super();
+    const connectionNames = Object.keys(connectionConfigs);
+    connectionNames.forEach((connectionName: string) => {
+      const connectionConfig = connectionConfigs[connectionName];
+      this.connections[connectionName] = new Mailgun(connectionConfig);
+    });
   }
 
   async execute(
@@ -26,15 +33,13 @@ export class TaskMailgun extends TaskBase {
     const dataArray: SendData[] =
         Array.isArray(dataParsed) ? dataParsed : [dataParsed];
 
-    const connectionConfig = this.connectionConfigs[config.connectionName];
-    const mailer = new Mailgun(connectionConfig);
-
     const report: ReportItem[] = [];
 
     for (let i = 0; i < dataArray.length; ++i) {
       const data = dataArray[i];
+      if (!data) continue;
       try {
-        const response: SendResponse = await this.sendEmail(mailer, data);
+        const response: SendResponse = await this.sendEmail(data);
         routeMatch.log('Send email call successful', data.to, response);
         report.push({data, response});
       } catch (err) {
@@ -49,9 +54,10 @@ export class TaskMailgun extends TaskBase {
     return {command: TaskResultCommand.CONTINUE};
   }
 
-  sendEmail(mailer: any, data: any): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      mailer.messages().send(data, (err: any, body: any) => {
+  sendEmail(data: SendData): Promise<SendResponse> {
+    return new Promise<SendResponse>((resolve, reject) => {
+      const emailer = this.connections[data.connectionName];
+      emailer.messages().send(data, (err: any, body: SendResponse) => {
         if (err) return reject(err);
         return resolve(body);
       });
@@ -61,11 +67,14 @@ export class TaskMailgun extends TaskBase {
 
 export interface TaskMailgunConfiguration {
   template: string;
-  connectionName: string;
+}
+
+export interface MailgunConnectionConfigMap {
+  [name: string]: ConstructorParams;
 }
 
 export interface MailgunConnectionMap {
-  [name: string]: ConstructorParams;
+  [name: string]: any;
 }
 
 export interface ReportItem {
@@ -96,6 +105,7 @@ export interface SendData {
   text?: string;
   html?: string;
   attachment?: string|Buffer|NodeJS.ReadWriteStream|Attachment;
+  connectionName: string;
 }
 
 export interface SendResponse {
