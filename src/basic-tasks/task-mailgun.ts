@@ -41,6 +41,12 @@ export class TaskMailgun extends TaskBase {
       try {
         const response: SendResponse = await this.sendEmail(data);
         routeMatch.log('Send email call successful', data.to, response);
+        if (data.html) {
+          data.html = data.html.substr(0, 255);
+        }
+        if (data.text) {
+          data.text = data.text.substr(0, 255);
+        }
         report.push({data, response});
       } catch (err) {
         console.error('Failed to sent:', data, err);

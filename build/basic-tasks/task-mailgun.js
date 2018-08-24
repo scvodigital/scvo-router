@@ -39,6 +39,12 @@ class TaskMailgun extends task_base_1.TaskBase {
                 try {
                     const response = yield this.sendEmail(data);
                     routeMatch.log('Send email call successful', data.to, response);
+                    if (data.html) {
+                        data.html = data.html.substr(0, 255);
+                    }
+                    if (data.text) {
+                        data.text = data.text.substr(0, 255);
+                    }
                     report.push({ data, response });
                 }
                 catch (err) {
