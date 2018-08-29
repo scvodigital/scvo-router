@@ -26,19 +26,21 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             let cookie = routeMatch.request.cookies[config.cookieName];
             const idToken = dot.pick(config.tokenPath, routeMatch);
             if (!idToken && !cookie && config.noTokenRoute) {
+                routeMatch.log('No ID Token or Cookie and a "noTokenRoute" has been provided. Returning REROUTE command:', config.noTokenRoute);
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.noTokenRoute
                 };
             }
             else if (!idToken) {
+                routeMatch.log('No ID Token. Returning CONTINUE command');
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             const app = this.apps[appName];
             let decodedToken;
             if (cookie) {
                 try {
-                    routeMatch.log('Got Cookie:', cookie);
+                    routeMatch.log('Got Cookie:', cookie, 'Verifying...');
                     decodedToken = yield app.auth().verifySessionCookie(cookie);
                     routeMatch.log('Decoded Cookie:', decodedToken);
                 }
@@ -48,7 +50,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             }
             else {
                 try {
-                    routeMatch.log('Got Token but no Cookie:', idToken);
+                    routeMatch.log('Got Token but no Cookie:', idToken, 'Verifying...');
                     decodedToken = yield app.auth().verifyIdToken(idToken);
                     routeMatch.log('Decoded Token:', decodedToken);
                     if (decodedToken) {
@@ -60,15 +62,18 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                     }
                 }
                 catch (err) {
+                    routeMatch.error(err);
                 }
             }
             if (!decodedToken && config.notAuthenticatedRoute) {
+                routeMatch.log('No decoded token so assuming not authenticated. "notAuthenticatedRoute" provided. Returning REROUTE command:', config.notAuthenticatedRoute);
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.notAuthenticatedRoute
                 };
             }
             else if (!decodedToken) {
+                routeMatch.log('No decoded token so assuming not authenticated. No "notAuthenticatedRoute" provided. Returning CONTINUE command');
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             const user = yield app.auth().getUser(decodedToken.uid);
@@ -76,6 +81,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 throw new Error('Failed to get user with ID "' + decodedToken.uid + '"');
             }
             routeMatch.data[routeTaskConfig.name] = user;
+            routeMatch.log('Got user:', user, '. Returning CONTINUE command');
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }

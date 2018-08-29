@@ -18,6 +18,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const querystring = __importStar(require("querystring"));
 const deepExtend = require("deep-extend");
 const dot = require("dot-object");
+const date_fns_1 = require("date-fns");
+const stringify = require("json-stringify-safe");
 const task_base_1 = require("./task-base");
 /* tslint:disable:no-any */
 class RouteMatch {
@@ -36,6 +38,7 @@ class RouteMatch {
             clearCookies: {}
         };
         this.errors = [];
+        this.logs = [];
         this.currentTask = null;
         this.currentTaskIndex = 0;
         this.reroutes = [];
@@ -45,11 +48,15 @@ class RouteMatch {
         this.mergeParams(matchedRoute.params);
     }
     get dp() {
+        const currentTaskLabel = this.currentTask ?
+            '(' + this.currentTaskIndex + ') ' + this.currentTask.name :
+            '';
         return '[' + this.route.name +
-            (this.currentTask ? ' -> ' + this.currentTask.name : '') + ']';
+            (this.currentTask ? ' -> ' + currentTaskLabel : '') + ']';
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
+            this.log('Started executing route');
             for (this.currentTaskIndex = 0; this.currentTaskIndex < this.route.tasks.length; ++this.currentTaskIndex) {
                 try {
                     const taskConfig = this.route.tasks[this.currentTaskIndex];
@@ -60,9 +67,7 @@ class RouteMatch {
                     else {
                         this.currentTask = this.route.tasks[this.currentTaskIndex];
                     }
-                    if (this.route.debug) {
-                        console.log(this.dp, 'Current task index:', this.currentTaskIndex);
-                    }
+                    this.log('Current task index:', this.currentTaskIndex);
                     const taskModule = this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
                     let renderer;
                     if (this.currentTask.renderer) {
@@ -90,6 +95,7 @@ class RouteMatch {
             }
             this.currentTaskIndex = 0;
             this.currentTask = null;
+            this.log('Finished executing route');
             return this.response;
         });
     }
@@ -154,22 +160,32 @@ class RouteMatch {
     }
     log(...args) {
         if (this.route.debug) {
+            const timestamp = date_fns_1.format(new Date(), 'YYYY-MM-DD HH:mm:ss:SSS');
             console.log(this.dp, ...args);
+            const logMessageLines = [this.dp + ' ' + timestamp];
+            for (const [index, arg] of args) {
+                logMessageLines.push(index + ': ' + stringify(arg, null, 4));
+            }
+            const logMessage = logMessageLines.join('\n');
+            this.logs.push(logMessage);
         }
     }
-    error(error) {
+    error(error, message = 'No additional message provided') {
+        const timestamp = new Date();
         if (this.currentTask === null) {
             console.error('This should not have happened! Task error with no task! Here\'s the error anyway:', error);
             return;
         }
         if (this.route.debug) {
-            console.error(this.dp, error);
+            console.error(this.dp, error, message);
         }
         const taskError = {
+            timestamp,
             routeName: this.route.name,
             taskName: this.currentTask.name,
             taskIndex: this.currentTaskIndex,
-            error
+            error,
+            message
         };
         this.errors.push(taskError);
     }

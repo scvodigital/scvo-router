@@ -27,11 +27,15 @@ export class TaskFirebaseAuth extends TaskBase {
     const idToken = dot.pick(config.tokenPath, routeMatch);
 
     if (!idToken && !cookie && config.noTokenRoute) {
+      routeMatch.log(
+          'No ID Token or Cookie and a "noTokenRoute" has been provided. Returning REROUTE command:',
+          config.noTokenRoute);
       return {
         command: TaskResultCommand.REROUTE,
         routeName: config.noTokenRoute
       };
     } else if (!idToken) {
+      routeMatch.log('No ID Token. Returning CONTINUE command');
       return {command: TaskResultCommand.CONTINUE};
     }
 
@@ -40,7 +44,7 @@ export class TaskFirebaseAuth extends TaskBase {
 
     if (cookie) {
       try {
-        routeMatch.log('Got Cookie:', cookie);
+        routeMatch.log('Got Cookie:', cookie, 'Verifying...');
         decodedToken = await app.auth().verifySessionCookie(cookie);
         routeMatch.log('Decoded Cookie:', decodedToken);
       } catch (err) {
@@ -48,7 +52,7 @@ export class TaskFirebaseAuth extends TaskBase {
       }
     } else {
       try {
-        routeMatch.log('Got Token but no Cookie:', idToken);
+        routeMatch.log('Got Token but no Cookie:', idToken, 'Verifying...');
         decodedToken = await app.auth().verifyIdToken(idToken);
         routeMatch.log('Decoded Token:', decodedToken);
         if (decodedToken) {
@@ -63,15 +67,21 @@ export class TaskFirebaseAuth extends TaskBase {
           routeMatch.response.cookies[config.cookieName] = cookieObj;
         }
       } catch (err) {
+        routeMatch.error(err);
       }
     }
 
     if (!decodedToken && config.notAuthenticatedRoute) {
+      routeMatch.log(
+          'No decoded token so assuming not authenticated. "notAuthenticatedRoute" provided. Returning REROUTE command:',
+          config.notAuthenticatedRoute);
       return {
         command: TaskResultCommand.REROUTE,
         routeName: config.notAuthenticatedRoute
       };
     } else if (!decodedToken) {
+      routeMatch.log(
+          'No decoded token so assuming not authenticated. No "notAuthenticatedRoute" provided. Returning CONTINUE command');
       return {command: TaskResultCommand.CONTINUE};
     }
 
@@ -82,6 +92,8 @@ export class TaskFirebaseAuth extends TaskBase {
     }
 
     routeMatch.data[routeTaskConfig.name] = user;
+
+    routeMatch.log('Got user:', user, '. Returning CONTINUE command');
 
     return {command: TaskResultCommand.CONTINUE};
   }

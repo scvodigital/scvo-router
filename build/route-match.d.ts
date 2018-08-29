@@ -12,6 +12,7 @@ export declare class RouteMatch {
     data: any;
     response: RouterResponse;
     errors: TaskError[];
+    logs: string[];
     currentTask: RouteTaskConfiguration<any> | null;
     currentTaskIndex: number;
     reroutes: RouteConfiguration[];
@@ -23,14 +24,16 @@ export declare class RouteMatch {
     getString(pathOrVal: string): string;
     setData(data: any): void;
     log(...args: any[]): void;
-    error(error: Error): void;
+    error(error: Error, message?: string): void;
 }
 export interface TaskModuleMap {
     [name: string]: TaskBase;
 }
 export interface TaskError {
+    timestamp: Date;
     routeName: string;
     taskName: string;
     taskIndex: number;
     error: Error;
+    message: string;
 }
