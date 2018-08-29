@@ -172,7 +172,7 @@ export class RouteMatch {
       const timestamp = format(new Date(), 'YYYY-MM-DD HH:mm:ss:SSS');
       console.log(this.dp, ...args);
       const logMessageLines = [this.dp + ' ' + timestamp];
-      for (const a in arguments) {
+      for (let a = 0; a < arguments.length; ++a) {
         const arg = arguments[a];
         logMessageLines.push(a + ': ' + stringify(arg, null, 4));
       }

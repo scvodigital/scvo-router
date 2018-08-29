@@ -163,8 +163,9 @@ class RouteMatch {
             const timestamp = date_fns_1.format(new Date(), 'YYYY-MM-DD HH:mm:ss:SSS');
             console.log(this.dp, ...args);
             const logMessageLines = [this.dp + ' ' + timestamp];
-            for (const [index, arg] of args) {
-                logMessageLines.push(index + ': ' + stringify(arg, null, 4));
+            for (let a = 0; a < arguments.length; ++a) {
+                const arg = arguments[a];
+                logMessageLines.push(a + ': ' + stringify(arg, null, 4));
             }
             const logMessage = logMessageLines.join('\n');
             this.logs.push(logMessage);
