@@ -140,9 +140,10 @@ class RouteMatch {
     getString(pathOrVal) {
         if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
             const path = pathOrVal.substr(1);
+            this.log('Getting string from:', path);
             const val = dot.pick(path, this);
             if (!val) {
-                console.log(this.dp, 'No value found at:', path);
+                this.log('No value found at:', path);
             }
             return val;
         }
