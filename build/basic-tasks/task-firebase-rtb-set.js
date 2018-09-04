@@ -28,10 +28,16 @@ class TaskFirebaseRtbSet extends task_base_1.TaskBase {
             if (!this.apps.hasOwnProperty(appName)) {
                 throw new Error('No Firebase app named "' + appName + '" registered');
             }
+            const pathTemplate = routeMatch.getString(config.pathTemplate);
+            const dataTemplate = routeMatch.getString(config.dataTemplate);
             const app = this.apps[appName];
-            const path = yield renderer.render(config.pathTemplate, routeMatch);
-            const dataJson = yield renderer.render(config.dataTemplate, routeMatch);
+            routeMatch.log('About to render path template', pathTemplate);
+            const path = yield renderer.render(pathTemplate, routeMatch);
+            routeMatch.log('About to render dataTemplate');
+            const dataJson = yield renderer.render(dataTemplate, routeMatch);
+            routeMatch.log('Rendered data template', dataJson);
             const data = JSON.parse(dataJson);
+            routeMatch.log('Data JSON parsed. Writing to firebase');
             const response = { path, data, setOrUpdate: config.setOrUpdate };
             if (config.setOrUpdate === 'set') {
                 yield app.database().ref(path).set(data);
