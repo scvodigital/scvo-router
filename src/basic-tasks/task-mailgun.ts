@@ -34,38 +34,36 @@ export class TaskMailgun extends TaskBase {
         Array.isArray(dataParsed) ? dataParsed : [dataParsed];
 
     const report: ReportItem[] = [];
+    const promises: Array<Promise<ReportItem>> = [];
 
     for (let i = 0; i < dataArray.length; ++i) {
       const data = dataArray[i];
       if (!data) continue;
-      try {
-        const response: SendResponse = await this.sendEmail(data);
-        routeMatch.log('Send email call successful', data.to, response);
+      promises.push(this.sendEmail(data));
+    }
+
+    const responses = await Promise.all(promises);
+
+    routeMatch.setData(responses);
+
+    return {command: TaskResultCommand.CONTINUE};
+  }
+
+  sendEmail(data: SendData): Promise<ReportItem> {
+    return new Promise<ReportItem>((resolve, reject) => {
+      const emailer = this.connections[data.connectionName];
+      emailer.messages().send(data, (err: any, body: SendResponse) => {
         if (data.html) {
           data.html = data.html.substr(0, 255);
         }
         if (data.text) {
           data.text = data.text.substr(0, 255);
         }
-        report.push({data, response});
-      } catch (err) {
-        console.error('Failed to sent:', data, err);
-        report.push({data, response: err});
-        routeMatch.error(err);
-      }
-    }
-
-    routeMatch.setData(report);
-
-    return {command: TaskResultCommand.CONTINUE};
-  }
-
-  sendEmail(data: SendData): Promise<SendResponse> {
-    return new Promise<SendResponse>((resolve, reject) => {
-      const emailer = this.connections[data.connectionName];
-      emailer.messages().send(data, (err: any, body: SendResponse) => {
-        if (err) return reject(err);
-        return resolve(body);
+        if (err) {
+          reject({data, err});
+        } else {
+          resolve({data, response: body});
+        }
       });
     });
   }

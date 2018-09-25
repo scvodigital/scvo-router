@@ -32,28 +32,15 @@ class TaskMailgun extends task_base_1.TaskBase {
             const dataParsed = JSON.parse(dataJson);
             const dataArray = Array.isArray(dataParsed) ? dataParsed : [dataParsed];
             const report = [];
+            const promises = [];
             for (let i = 0; i < dataArray.length; ++i) {
                 const data = dataArray[i];
                 if (!data)
                     continue;
-                try {
-                    const response = yield this.sendEmail(data);
-                    routeMatch.log('Send email call successful', data.to, response);
-                    if (data.html) {
-                        data.html = data.html.substr(0, 255);
-                    }
-                    if (data.text) {
-                        data.text = data.text.substr(0, 255);
-                    }
-                    report.push({ data, response });
-                }
-                catch (err) {
-                    console.error('Failed to sent:', data, err);
-                    report.push({ data, response: err });
-                    routeMatch.error(err);
-                }
+                promises.push(this.sendEmail(data));
             }
-            routeMatch.setData(report);
+            const responses = yield Promise.all(promises);
+            routeMatch.setData(responses);
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
@@ -61,9 +48,18 @@ class TaskMailgun extends task_base_1.TaskBase {
         return new Promise((resolve, reject) => {
             const emailer = this.connections[data.connectionName];
             emailer.messages().send(data, (err, body) => {
-                if (err)
-                    return reject(err);
-                return resolve(body);
+                if (data.html) {
+                    data.html = data.html.substr(0, 255);
+                }
+                if (data.text) {
+                    data.text = data.text.substr(0, 255);
+                }
+                if (err) {
+                    reject({ data, err });
+                }
+                else {
+                    resolve({ data, response: body });
+                }
             });
         });
     }
