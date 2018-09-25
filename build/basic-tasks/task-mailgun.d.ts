@@ -43,6 +43,7 @@ export interface SendData {
     subject: string;
     text?: string;
     html?: string;
+    message?: any;
     attachment?: string | Buffer | NodeJS.ReadWriteStream | Attachment;
     connectionName: string;
 }

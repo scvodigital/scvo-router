@@ -8,9 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Mailgun = require("mailgun-js");
-const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
+const Mailgun = require("mailgun-js");
+const mailComposer = require('nodemailer/lib/mail-composer');
+const task_base_1 = require("../task-base");
 class TaskMailgun extends task_base_1.TaskBase {
     constructor(connectionConfigs) {
         super();
@@ -47,19 +48,25 @@ class TaskMailgun extends task_base_1.TaskBase {
     sendEmail(data) {
         return new Promise((resolve, reject) => {
             const emailer = this.connections[data.connectionName];
-            emailer.messages().send(data, (err, body) => {
-                if (data.html) {
-                    data.html = data.html.substr(0, 255);
-                }
-                if (data.text) {
-                    data.text = data.text.substr(0, 255);
-                }
+            const mail = new mailComposer(data);
+            mail.compile().build((err, message) => {
+                if (data.html)
+                    delete data.html;
+                if (data.text)
+                    delete data.text;
                 if (err) {
-                    reject({ data, err });
+                    return resolve({ data, response: err });
                 }
-                else {
-                    resolve({ data, response: body });
-                }
+                data.message = message.toString('ascii');
+                emailer.messages().sendMime(data, (err, body) => {
+                    data.message = data.message.substr(0, 255);
+                    if (err) {
+                        resolve({ data, response: err });
+                    }
+                    else {
+                        resolve({ data, response: body });
+                    }
+                });
             });
         });
     }

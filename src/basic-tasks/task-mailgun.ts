@@ -1,11 +1,12 @@
+/* tslint:disable:no-any */
 import Mailgun = require('mailgun-js');
+const mailComposer: any = require('nodemailer/lib/mail-composer');
 
 import {RouteTaskConfiguration} from '../configuration-interfaces';
 import {RendererBase} from '../renderer-base';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
-/* tslint:disable:no-any */
 export class TaskMailgun extends TaskBase {
   connections: MailgunConnectionMap = {};
 
@@ -52,18 +53,23 @@ export class TaskMailgun extends TaskBase {
   sendEmail(data: SendData): Promise<ReportItem> {
     return new Promise<ReportItem>((resolve, reject) => {
       const emailer = this.connections[data.connectionName];
-      emailer.messages().send(data, (err: any, body: SendResponse) => {
-        if (data.html) {
-          data.html = data.html.substr(0, 255);
-        }
-        if (data.text) {
-          data.text = data.text.substr(0, 255);
-        }
+      const mail = new mailComposer(data);
+      mail.compile().build((err: any, message: any) => {
+        if (data.html) delete data.html;
+        if (data.text) delete data.text;
         if (err) {
-          reject({data, err});
-        } else {
-          resolve({data, response: body});
+          return resolve({data, response: err});
         }
+
+        data.message = message.toString('ascii');
+        emailer.messages().sendMime(data, (err: any, body: SendResponse) => {
+          data.message = data.message.substr(0, 255);
+          if (err) {
+            resolve({data, response: err});
+          } else {
+            resolve({data, response: body});
+          }
+        });
       });
     });
   }
@@ -108,6 +114,7 @@ export interface SendData {
   subject: string;
   text?: string;
   html?: string;
+  message?: any;
   attachment?: string|Buffer|NodeJS.ReadWriteStream|Attachment;
   connectionName: string;
 }
