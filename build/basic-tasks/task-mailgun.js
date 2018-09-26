@@ -30,8 +30,10 @@ class TaskMailgun extends task_base_1.TaskBase {
             const config = routeTaskConfig.config;
             const template = routeMatch.getString(config.template);
             const dataJson = yield renderer.render(template, routeMatch);
+            routeMatch.log('Rendered email data object:', dataJson);
             const dataParsed = JSON.parse(dataJson);
             const dataArray = Array.isArray(dataParsed) ? dataParsed : [dataParsed];
+            routeMatch.log('Parsed email data object:', dataArray);
             const report = [];
             const promises = [];
             for (let i = 0; i < dataArray.length; ++i) {
@@ -47,8 +49,26 @@ class TaskMailgun extends task_base_1.TaskBase {
     }
     sendEmail(data) {
         return new Promise((resolve, reject) => {
+            if (!this.connections.hasOwnProperty(data.connectionName)) {
+                return resolve({
+                    data,
+                    response: new Error('No such connection: ' + data.connectionName)
+                });
+            }
             const emailer = this.connections[data.connectionName];
-            const mail = new mailComposer(data);
+            let mail;
+            try {
+                mail = new mailComposer(data);
+            }
+            catch (err) {
+                return resolve({ data, response: err });
+            }
+            if (!mail) {
+                return resolve({
+                    data,
+                    response: new Error('Failed to create mailComposer object')
+                });
+            }
             mail.compile().build((err, message) => {
                 if (data.html)
                     delete data.html;
@@ -58,6 +78,18 @@ class TaskMailgun extends task_base_1.TaskBase {
                     return resolve({ data, response: err });
                 }
                 data.message = message.toString('ascii');
+                if (!emailer.messages) {
+                    return resolve({
+                        data,
+                        response: new Error('Emailer client was not there for some reason')
+                    });
+                }
+                if (!emailer.messages().sendMime) {
+                    return resolve({
+                        data,
+                        response: new Error('Emailer client did not have a sendMime method for some reason')
+                    });
+                }
                 emailer.messages().sendMime(data, (err, body) => {
                     data.message = data.message.substr(0, 255);
                     if (err) {

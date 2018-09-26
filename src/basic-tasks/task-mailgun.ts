@@ -30,9 +30,14 @@ export class TaskMailgun extends TaskBase {
 
     const template = routeMatch.getString(config.template);
     const dataJson = await renderer.render(template, routeMatch);
+
+    routeMatch.log('Rendered email data object:', dataJson);
+
     const dataParsed = (JSON.parse(dataJson) as SendData | SendData[]);
     const dataArray: SendData[] =
         Array.isArray(dataParsed) ? dataParsed : [dataParsed];
+
+    routeMatch.log('Parsed email data object:', dataArray);
 
     const report: ReportItem[] = [];
     const promises: Array<Promise<ReportItem>> = [];
@@ -52,8 +57,29 @@ export class TaskMailgun extends TaskBase {
 
   sendEmail(data: SendData): Promise<ReportItem> {
     return new Promise<ReportItem>((resolve, reject) => {
+      if (!this.connections.hasOwnProperty(data.connectionName)) {
+        return resolve({
+          data,
+          response: new Error('No such connection: ' + data.connectionName)
+        });
+      }
+
       const emailer = this.connections[data.connectionName];
-      const mail = new mailComposer(data);
+      let mail: any|undefined;
+
+      try {
+        mail = new mailComposer(data);
+      } catch (err) {
+        return resolve({data, response: err});
+      }
+
+      if (!mail) {
+        return resolve({
+          data,
+          response: new Error('Failed to create mailComposer object')
+        });
+      }
+
       mail.compile().build((err: any, message: any) => {
         if (data.html) delete data.html;
         if (data.text) delete data.text;
@@ -62,6 +88,22 @@ export class TaskMailgun extends TaskBase {
         }
 
         data.message = message.toString('ascii');
+
+        if (!emailer.messages) {
+          return resolve({
+            data,
+            response: new Error('Emailer client was not there for some reason')
+          });
+        }
+
+        if (!emailer.messages().sendMime) {
+          return resolve({
+            data,
+            response: new Error(
+                'Emailer client did not have a sendMime method for some reason')
+          });
+        }
+
         emailer.messages().sendMime(data, (err: any, body: SendResponse) => {
           data.message = data.message.substr(0, 255);
           if (err) {
