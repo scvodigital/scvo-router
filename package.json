@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.38",
+  "version": "1.2.43",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "./build/index",
   "typings": "./build/index",
@@ -68,6 +68,7 @@
     "mailgun-js": "^0.20.0",
     "mysql": "^2.15.0",
     "node-json-transform": "^1.0.16",
+    "nodemailer": "^4.6.8",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "route-parser": "^0.0.5",

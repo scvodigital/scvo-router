@@ -51,7 +51,7 @@ class RouteMatch {
         const currentTaskLabel = this.currentTask ?
             '(' + this.currentTaskIndex + ') ' + this.currentTask.name :
             '';
-        return '[' + this.route.name +
+        return '[' + this.request.url.host + ' | ' + this.route.name +
             (this.currentTask ? ' -> ' + currentTaskLabel : '') + ']';
     }
     execute() {

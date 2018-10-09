@@ -39,7 +39,7 @@ export class RegisteredRoute {
 
     if (!params) return null;
 
-    console.log('Found match:', this.config.name);
+    // console.log('Found match:', this.config.name);
     return {config: this.config, params};
   }
 }

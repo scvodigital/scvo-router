@@ -7,7 +7,7 @@ export declare class TaskMailgun extends TaskBase {
     connections: MailgunConnectionMap;
     constructor(connectionConfigs: MailgunConnectionConfigMap);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskMailgunConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    sendEmail(data: SendData): Promise<SendResponse>;
+    sendEmail(data: SendData): Promise<ReportItem>;
 }
 export interface TaskMailgunConfiguration {
     template: string;
@@ -43,6 +43,7 @@ export interface SendData {
     subject: string;
     text?: string;
     html?: string;
+    message?: any;
     attachment?: string | Buffer | NodeJS.ReadWriteStream | Attachment;
     connectionName: string;
 }
