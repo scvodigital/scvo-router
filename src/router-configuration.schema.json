@@ -159,7 +159,6 @@
         "RouterResponse": {
             "properties": {
                 "body": {
-                    "type": "string"
                 },
                 "clearCookies": {
                     "$ref": "#/definitions/CookieMap"

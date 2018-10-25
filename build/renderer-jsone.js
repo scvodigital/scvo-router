@@ -8,24 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const renderer_base_1 = require("./renderer-base");
 /* tslint:disable:no-any */
-class RendererHandlebars extends renderer_base_1.RendererBase {
-    constructor(hbs) {
+const renderer_base_1 = require("./renderer-base");
+const jsone = require('json-e');
+class RendererJsone extends renderer_base_1.RendererBase {
+    constructor() {
         super();
-        this.hbs = hbs;
     }
     render(template, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof template !== 'string') {
-                throw new Error('A handlebars renderer may only be passed a string');
+            if (typeof template !== 'object') {
+                throw new Error('A JSON-e renderer may only be passed a JSON object');
             }
-            const compiler = this.hbs.compile(template);
-            const output = compiler(data);
+            const output = jsone(template, data);
             return output;
         });
     }
 }
-exports.RendererHandlebars = RendererHandlebars;
+exports.RendererJsone = RendererJsone;
 /* tslint:enable:no-any */ 
-//# sourceMappingURL=renderer-handlebars.js.map
+//# sourceMappingURL=renderer-jsone.js.map

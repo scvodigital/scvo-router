@@ -8,5 +8,5 @@ class RendererBase {
     }
 }
 exports.RendererBase = RendererBase;
-/* tslint:enable:no-any */
+/* tslint:enable:no-any */ 
 //# sourceMappingURL=renderer-base.js.map

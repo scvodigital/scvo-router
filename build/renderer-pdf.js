@@ -17,9 +17,6 @@ class RendererHandlebars extends renderer_base_1.RendererBase {
     }
     render(template, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (typeof template !== 'string') {
-                throw new Error('A handlebars renderer may only be passed a string');
-            }
             const compiler = this.hbs.compile(template);
             const output = compiler(data);
             return output;
@@ -27,5 +24,5 @@ class RendererHandlebars extends renderer_base_1.RendererBase {
     }
 }
 exports.RendererHandlebars = RendererHandlebars;
-/* tslint:enable:no-any */ 
-//# sourceMappingURL=renderer-handlebars.js.map
+/* tslint:enable:no-any */
+//# sourceMappingURL=renderer-pdf.js.map

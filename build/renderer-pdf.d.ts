@@ -4,5 +4,5 @@ import handlebars = require('handlebars');
 export declare class RendererHandlebars extends RendererBase {
     private hbs;
     constructor(hbs: typeof handlebars);
-    render(template: any, data: any): Promise<string>;
+    render(template: string, data: any): Promise<string>;
 }

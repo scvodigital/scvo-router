@@ -47,7 +47,7 @@ export interface RouterRequest {
 export interface RouterResponse {
     contentType: string;
     statusCode: number;
-    body: string;
+    body: any;
     cookies: CookieMap;
     clearCookies?: CookieMap;
     headers: {
