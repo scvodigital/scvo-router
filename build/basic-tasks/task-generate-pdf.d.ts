@@ -12,7 +12,7 @@ export declare class TaskGeneratePdf extends TaskBase {
     generatePdf(definition: any, routeMatch: RouteMatch): Promise<Buffer>;
 }
 export interface TaskGeneratePdfConfiguration {
-    images?: ImageMap;
+    imagesTemplate?: ImageMap;
     headerTemplate?: any;
     footerTemplate?: any;
     definitionTemplate: any;

@@ -22,6 +22,7 @@ export declare class RouteMatch {
     private reroute(routeName);
     private mergeParams(matchedParams);
     getString(pathOrVal: string): string;
+    getObject(pathOrVal: any): any;
     setData(data: any): void;
     log(...args: any[]): void;
     error(error: Error, message?: string): void;

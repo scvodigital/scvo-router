@@ -158,6 +158,21 @@ export class RouteMatch {
     }
   }
 
+  getObject(pathOrVal: any): any {
+    if (typeof pathOrVal === 'string' && pathOrVal.indexOf('>') === 0 &&
+        pathOrVal.indexOf('\n') === -1) {
+      const path = pathOrVal.substr(1);
+      this.log('Getting object from:', path);
+      const val = dot.pick(path, this);
+      if (!val) {
+        this.log('No value found at:', path);
+      }
+      return val;
+    } else {
+      return pathOrVal;
+    }
+  }
+
   setData(data: any) {
     if (this.currentTask === null) {
       console.error(

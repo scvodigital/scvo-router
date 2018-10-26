@@ -12,17 +12,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const renderer_base_1 = require("./renderer-base");
 const jsone = require('json-e');
 class RendererJsone extends renderer_base_1.RendererBase {
-    constructor() {
+    constructor(helpers = {}) {
         super();
+        this.helpers = helpers;
     }
     render(template, data) {
         return __awaiter(this, void 0, void 0, function* () {
             if (typeof template !== 'object') {
                 throw new Error('A JSON-e renderer may only be passed a JSON object');
             }
+            if (!data.jsone) {
+                data.jsone = this.helpers;
+            }
             const output = jsone(template, data);
             return output;
         });
+    }
+    renderSync(template, data) {
+        if (typeof template !== 'object') {
+            throw new Error('A JSON-e renderer may only be passed a JSON object');
+        }
+        if (!data.jsone) {
+            data.jsone = this.helpers;
+        }
+        const output = jsone(template, data);
+        return output;
     }
 }
 exports.RendererJsone = RendererJsone;

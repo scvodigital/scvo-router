@@ -6,6 +6,9 @@ class RendererBase {
     render(template, data) {
         throw new Error('Not yet implemented');
     }
+    renderSync(template, data) {
+        throw new Error('Not yet implemented');
+    }
 }
 exports.RendererBase = RendererBase;
 /* tslint:enable:no-any */ 

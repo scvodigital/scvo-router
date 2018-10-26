@@ -151,6 +151,21 @@ class RouteMatch {
             return pathOrVal;
         }
     }
+    getObject(pathOrVal) {
+        if (typeof pathOrVal === 'string' && pathOrVal.indexOf('>') === 0 &&
+            pathOrVal.indexOf('\n') === -1) {
+            const path = pathOrVal.substr(1);
+            this.log('Getting object from:', path);
+            const val = dot.pick(path, this);
+            if (!val) {
+                this.log('No value found at:', path);
+            }
+            return val;
+        }
+        else {
+            return pathOrVal;
+        }
+    }
     setData(data) {
         if (this.currentTask === null) {
             console.error('This should not have happened! Setting task data when there is no task');
@@ -193,5 +208,5 @@ class RouteMatch {
     }
 }
 exports.RouteMatch = RouteMatch;
-/* tslint:enable:no-any */
+/* tslint:enable:no-any */ 
 //# sourceMappingURL=route-match.js.map
