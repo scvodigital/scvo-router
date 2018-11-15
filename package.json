@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.47",
+  "version": "1.2.48",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "./build/index",
   "typings": "./build/index",
