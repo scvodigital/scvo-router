@@ -14,7 +14,8 @@ const registered_route_1 = require("./registered-route");
 const renderer_manager_1 = require("./renderer-manager");
 const route_match_1 = require("./route-match");
 const task_module_manager_1 = require("./task-module-manager");
-const routerConfigurationSchema = require('./router-configuration.schema.json');
+// const routerConfigurationSchema =
+// require('./router-configuration.schema.json');
 /* tslint:disable:no-any */
 class Router {
     constructor(context, taskModuleMap, rendererMap) {

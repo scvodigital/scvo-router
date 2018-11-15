@@ -73,8 +73,8 @@ export class TaskGAGet extends TaskBase {
   }
 
   async getData(
-      params: gapis.analytics_v3.Params$Resource$Data$Ga$Get,
-      options: any, routeMatch: RouteMatch): Promise<any[]> {
+      params: gapis.analytics_v3.Params$Resource$Data$Ga$Get, options: any,
+      routeMatch: RouteMatch): Promise<any[]> {
     const startIndex: number =
         params.hasOwnProperty('start-index') ? params['start-index'] || 0 : 0;
     routeMatch.log('Getting Analytics page offset by:', startIndex);

@@ -9,7 +9,7 @@ export declare class TaskGAGet extends TaskBase {
         [name: string]: GAAuthDetails;
     });
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskGAGetConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    getData(params: gapis.analytics_v3.Params$Resource$Data$Ga$Get, options: any): Promise<any[]>;
+    getData(params: gapis.analytics_v3.Params$Resource$Data$Ga$Get, options: any, routeMatch: RouteMatch): Promise<any[]>;
 }
 export interface TaskGAGetConfiguration {
     connection: string;

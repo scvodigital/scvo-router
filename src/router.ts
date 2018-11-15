@@ -7,7 +7,8 @@ import {RendererManager, RendererMap} from './renderer-manager';
 import {RouteMatch} from './route-match';
 import {TaskModuleManager, TaskModuleMap} from './task-module-manager';
 
-const routerConfigurationSchema = require('./router-configuration.schema.json');
+// const routerConfigurationSchema =
+// require('./router-configuration.schema.json');
 
 /* tslint:disable:no-any */
 export class Router {

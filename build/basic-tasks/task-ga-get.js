@@ -51,15 +51,16 @@ class TaskGAGet extends task_base_1.TaskBase {
             routeMatch.log('Parameters have been compiled into the following:', parameters);
             const options = { auth: jwtClient };
             routeMatch.log('Getting data using connection details:', options);
-            const rows = yield this.getData(parameters, options);
+            const rows = yield this.getData(parameters, options, routeMatch);
             routeMatch.log('Got data.', rows.length, 'rows');
             routeMatch.setData(rows);
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
-    getData(params, options) {
+    getData(params, options, routeMatch) {
         return __awaiter(this, void 0, void 0, function* () {
             const startIndex = params.hasOwnProperty('start-index') ? params['start-index'] || 0 : 0;
+            routeMatch.log('Getting Analytics page offset by:', startIndex);
             const res = yield analytics.data.ga.get(params, options);
             if (!res || !res.data || !res.data.rows)
                 return [];
@@ -67,7 +68,7 @@ class TaskGAGet extends task_base_1.TaskBase {
             const totalResults = res.data.totalResults || 0;
             if (startIndex + rows.length < totalResults) {
                 params['start-index'] = startIndex + rows.length;
-                const nextPage = yield this.getData(params, options);
+                const nextPage = yield this.getData(params, options, routeMatch);
                 rows.push(...nextPage);
             }
             return rows;
