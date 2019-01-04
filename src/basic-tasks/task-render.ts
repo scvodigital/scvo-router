@@ -15,7 +15,7 @@ export class TaskRender extends TaskBase {
       throw new Error('No renderer specified');
     }
     const config = routeTaskConfig.config;
-    const template = this.getTemplate(config.template, routeMatch);
+    const template = routeMatch.getObject(config.template);
     routeMatch.log('Loaded  template:', template);
 
     let rendered: any;

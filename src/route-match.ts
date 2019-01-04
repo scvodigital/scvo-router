@@ -145,7 +145,9 @@ export class RouteMatch {
   }
 
   getString(pathOrVal: string): string {
-    if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
+    if (typeof pathOrVal !== 'string') {
+      throw new Error('Path or Value is not a string');
+    } else if (pathOrVal.indexOf('>') === 0 && pathOrVal.indexOf('\n') === -1) {
       const path = pathOrVal.substr(1);
       this.log('Getting string from:', path);
       const val = dot.pick(path, this);
