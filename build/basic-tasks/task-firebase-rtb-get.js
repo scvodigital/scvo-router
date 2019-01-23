@@ -32,7 +32,7 @@ class TaskFirebaseRtbGet extends task_base_1.TaskBase {
                 const data = snapshot.val();
                 routeMatch.data[routeTaskConfig.name] = data;
             }
-            else if (config.defaultData) {
+            else if (typeof config.defaultData !== 'undefined') {
                 routeMatch.data[routeTaskConfig.name] = config.defaultData;
             }
             else {
@@ -43,5 +43,5 @@ class TaskFirebaseRtbGet extends task_base_1.TaskBase {
     }
 }
 exports.TaskFirebaseRtbGet = TaskFirebaseRtbGet;
-/* tslint:enable:no-any */
+/* tslint:enable:no-any */ 
 //# sourceMappingURL=task-firebase-rtb-get.js.map

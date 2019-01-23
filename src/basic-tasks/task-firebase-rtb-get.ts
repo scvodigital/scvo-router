@@ -34,7 +34,7 @@ export class TaskFirebaseRtbGet extends TaskBase {
     if (snapshot.exists()) {
       const data = snapshot.val();
       routeMatch.data[routeTaskConfig.name] = data;
-    } else if (config.defaultData) {
+    } else if (typeof config.defaultData !== 'undefined') {
       routeMatch.data[routeTaskConfig.name] = config.defaultData;
     } else {
       throw new Error('Failed to load data from "' + path + '"');
