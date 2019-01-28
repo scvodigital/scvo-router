@@ -7,6 +7,10 @@ import {RendererBase} from '../renderer-base';
 
 /* tslint:disable:no-any */
 export class TaskRequest extends TaskBase {
+  constructor(private secrets: any = {}) {
+    super();
+  }
+
   async execute(
       routeMatch: RouteMatch,
       routeTaskConfig:
@@ -38,10 +42,14 @@ export class TaskRequest extends TaskBase {
       throw new Error('No renderer specified');
     }
 
+    (routeMatch as any).secrets = this.secrets;
     const optionsString =
         await renderer.render(config.optionsTemplate, routeMatch);
-    const options = JSON.parse(optionsString);
+    delete (routeMatch as any).secrets;
 
+    const options = typeof optionsString === 'string' ?
+        JSON.parse(optionsString) :
+        optionsString;
     return (options as request.Options);
   }
 }

@@ -5,6 +5,8 @@ import { RouteMatch } from '../route-match';
 import { TaskBase, TaskResult } from '../task-base';
 import { RendererBase } from '../renderer-base';
 export declare class TaskRequest extends TaskBase {
+    private secrets;
+    constructor(secrets?: any);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskRequestConfiguration | TaskRequestTemplatedConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
     getTemplateOptions(routeMatch: RouteMatch, config: TaskRequestTemplatedConfiguration, renderer?: RendererBase): Promise<request.Options>;
 }

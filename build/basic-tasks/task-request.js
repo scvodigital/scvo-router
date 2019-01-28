@@ -12,6 +12,10 @@ const request = require("request-promise-native");
 const task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
 class TaskRequest extends task_base_1.TaskBase {
+    constructor(secrets = {}) {
+        super();
+        this.secrets = secrets;
+    }
     execute(routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
             let config;
@@ -34,8 +38,12 @@ class TaskRequest extends task_base_1.TaskBase {
             if (!renderer) {
                 throw new Error('No renderer specified');
             }
+            routeMatch.secrets = this.secrets;
             const optionsString = yield renderer.render(config.optionsTemplate, routeMatch);
-            const options = JSON.parse(optionsString);
+            delete routeMatch.secrets;
+            const options = typeof optionsString === 'string' ?
+                JSON.parse(optionsString) :
+                optionsString;
             return options;
         });
     }
