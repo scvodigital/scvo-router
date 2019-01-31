@@ -47,6 +47,8 @@ export class TaskRequest extends TaskBase {
         await renderer.render(config.optionsTemplate, routeMatch);
     delete (routeMatch as any).secrets;
 
+    routeMatch.log('optionsString is: ', optionsString);
+
     const options = typeof optionsString === 'string' ?
         JSON.parse(optionsString) :
         optionsString;
