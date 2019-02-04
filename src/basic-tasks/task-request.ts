@@ -42,9 +42,9 @@ export class TaskRequest extends TaskBase {
       throw new Error('No renderer specified');
     }
 
+    const optionsTemplate = routeMatch.getString(config.optionsTemplate);
     (routeMatch as any).secrets = this.secrets;
-    const optionsString =
-        await renderer.render(config.optionsTemplate, routeMatch);
+    const optionsString = await renderer.render(optionsTemplate, routeMatch);
     delete (routeMatch as any).secrets;
 
     routeMatch.log('optionsString is: ', optionsString);

@@ -38,9 +38,11 @@ class TaskRequest extends task_base_1.TaskBase {
             if (!renderer) {
                 throw new Error('No renderer specified');
             }
+            const optionsTemplate = routeMatch.getString(config.optionsTemplate);
             routeMatch.secrets = this.secrets;
-            const optionsString = yield renderer.render(config.optionsTemplate, routeMatch);
+            const optionsString = yield renderer.render(optionsTemplate, routeMatch);
             delete routeMatch.secrets;
+            routeMatch.log('optionsString is: ', optionsString);
             const options = typeof optionsString === 'string' ?
                 JSON.parse(optionsString) :
                 optionsString;
