@@ -19,30 +19,46 @@ export class TaskRequest extends TaskBase {
       renderer?: RendererBase): Promise<TaskResult> {
     let config: TaskRequestConfiguration|TaskRequestTemplatedConfiguration|
         undefined;
-    let options: request.Options|undefined;
+    const optionsMap: {[name: string]: request.Options} = {};
 
-    if (routeTaskConfig.config.hasOwnProperty('optionsTemplate')) {
+    if (routeTaskConfig.config.hasOwnProperty('optionsTemplates')) {
       config = (routeTaskConfig.config as TaskRequestTemplatedConfiguration);
-      options = await this.getTemplateOptions(routeMatch, config, renderer);
+      for (const name of Object.keys(config.optionsTemplates)) {
+        const optionsTemplate = config.optionsTemplates[name];
+        optionsMap[name] = await this.getTemplateOptions(
+            routeMatch, optionsTemplate, renderer);
+      }
     } else {
       config = (routeTaskConfig.config as TaskRequestConfiguration);
-      options = config.options;
+      const resolvedOptions =
+          (routeMatch.getObject(config.options) as
+           {[name: string]: request.Options});
+      for (const name of Object.keys(resolvedOptions)) {
+        const options = resolvedOptions[name];
+        optionsMap[name] = routeMatch.getObject(options);
+      }
     }
 
-    const output = await request(options);
-    routeMatch.data[routeTaskConfig.name] = output;
+    const outputs: any = {};
+    for (const name of Object.keys(optionsMap)) {
+      const options = optionsMap[name];
+      routeMatch.log('Requesting', options);
+      const output = await request(options);
+      outputs[name] = output;
+    }
 
+    routeMatch.setData(outputs);
     return {command: TaskResultCommand.CONTINUE};
   }
 
   async getTemplateOptions(
-      routeMatch: RouteMatch, config: TaskRequestTemplatedConfiguration,
+      routeMatch: RouteMatch, config: any,
       renderer?: RendererBase): Promise<request.Options> {
     if (!renderer) {
       throw new Error('No renderer specified');
     }
 
-    const optionsTemplate = routeMatch.getString(config.optionsTemplate);
+    const optionsTemplate = routeMatch.getObject(config);
     (routeMatch as any).secrets = this.secrets;
     const optionsString = await renderer.render(optionsTemplate, routeMatch);
     delete (routeMatch as any).secrets;
@@ -57,9 +73,9 @@ export class TaskRequest extends TaskBase {
 }
 
 export interface TaskRequestTemplatedConfiguration {
-  optionsTemplate: string;
+  optionsTemplates: {[key: string]: any};
 }
 
 export interface TaskRequestConfiguration {
-  options: request.Options;
+  options: {[key: string]: request.Options|string}|string;
 }

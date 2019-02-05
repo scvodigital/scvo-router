@@ -19,17 +19,30 @@ class TaskRequest extends task_base_1.TaskBase {
     execute(routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function* () {
             let config;
-            let options;
-            if (routeTaskConfig.config.hasOwnProperty('optionsTemplate')) {
+            const optionsMap = {};
+            if (routeTaskConfig.config.hasOwnProperty('optionsTemplates')) {
                 config = routeTaskConfig.config;
-                options = yield this.getTemplateOptions(routeMatch, config, renderer);
+                for (const name of Object.keys(config.optionsTemplates)) {
+                    const optionsTemplate = config.optionsTemplates[name];
+                    optionsMap[name] = yield this.getTemplateOptions(routeMatch, optionsTemplate, renderer);
+                }
             }
             else {
                 config = routeTaskConfig.config;
-                options = config.options;
+                const resolvedOptions = routeMatch.getObject(config.options);
+                for (const name of Object.keys(resolvedOptions)) {
+                    const options = resolvedOptions[name];
+                    optionsMap[name] = routeMatch.getObject(options);
+                }
             }
-            const output = yield request(options);
-            routeMatch.data[routeTaskConfig.name] = output;
+            const outputs = {};
+            for (const name of Object.keys(optionsMap)) {
+                const options = optionsMap[name];
+                routeMatch.log('Requesting', options);
+                const output = yield request(options);
+                outputs[name] = output;
+            }
+            routeMatch.setData(outputs);
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
@@ -38,7 +51,7 @@ class TaskRequest extends task_base_1.TaskBase {
             if (!renderer) {
                 throw new Error('No renderer specified');
             }
-            const optionsTemplate = routeMatch.getString(config.optionsTemplate);
+            const optionsTemplate = routeMatch.getObject(config);
             routeMatch.secrets = this.secrets;
             const optionsString = yield renderer.render(optionsTemplate, routeMatch);
             delete routeMatch.secrets;

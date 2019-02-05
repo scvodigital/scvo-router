@@ -8,11 +8,15 @@ export declare class TaskRequest extends TaskBase {
     private secrets;
     constructor(secrets?: any);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskRequestConfiguration | TaskRequestTemplatedConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    getTemplateOptions(routeMatch: RouteMatch, config: TaskRequestTemplatedConfiguration, renderer?: RendererBase): Promise<request.Options>;
+    getTemplateOptions(routeMatch: RouteMatch, config: any, renderer?: RendererBase): Promise<request.Options>;
 }
 export interface TaskRequestTemplatedConfiguration {
-    optionsTemplate: string;
+    optionsTemplates: {
+        [key: string]: any;
+    };
 }
 export interface TaskRequestConfiguration {
-    options: request.Options;
+    options: {
+        [key: string]: request.Options | string;
+    } | string;
 }
