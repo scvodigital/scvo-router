@@ -23,8 +23,11 @@ export class TaskRequest extends TaskBase {
 
     if (routeTaskConfig.config.hasOwnProperty('optionsTemplates')) {
       config = (routeTaskConfig.config as TaskRequestTemplatedConfiguration);
-      for (const name of Object.keys(config.optionsTemplates)) {
-        const optionsTemplate = config.optionsTemplates[name];
+      const resolvedTemplates =
+          (routeMatch.getObject(config.optionsTemplates) as
+           {[name: string]: any});
+      for (const name of Object.keys(resolvedTemplates)) {
+        const optionsTemplate = resolvedTemplates[name];
         optionsMap[name] = await this.getTemplateOptions(
             routeMatch, optionsTemplate, renderer);
       }
@@ -73,7 +76,7 @@ export class TaskRequest extends TaskBase {
 }
 
 export interface TaskRequestTemplatedConfiguration {
-  optionsTemplates: {[key: string]: any};
+  optionsTemplates: {[key: string]: any}|string;
 }
 
 export interface TaskRequestConfiguration {

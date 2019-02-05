@@ -22,8 +22,9 @@ class TaskRequest extends task_base_1.TaskBase {
             const optionsMap = {};
             if (routeTaskConfig.config.hasOwnProperty('optionsTemplates')) {
                 config = routeTaskConfig.config;
-                for (const name of Object.keys(config.optionsTemplates)) {
-                    const optionsTemplate = config.optionsTemplates[name];
+                const resolvedTemplates = routeMatch.getObject(config.optionsTemplates);
+                for (const name of Object.keys(resolvedTemplates)) {
+                    const optionsTemplate = resolvedTemplates[name];
                     optionsMap[name] = yield this.getTemplateOptions(routeMatch, optionsTemplate, renderer);
                 }
             }

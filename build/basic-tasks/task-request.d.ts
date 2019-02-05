@@ -13,7 +13,7 @@ export declare class TaskRequest extends TaskBase {
 export interface TaskRequestTemplatedConfiguration {
     optionsTemplates: {
         [key: string]: any;
-    };
+    } | string;
 }
 export interface TaskRequestConfiguration {
     options: {
