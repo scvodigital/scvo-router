@@ -27,7 +27,7 @@ export class TaskFirebaseGetUser extends TaskBase {
     const userIdentifier = routeMatch.getString(config.userIdentifier);
     let user: firebase.auth.UserRecord|undefined;
 
-    if (config.userIdentifier.indexOf('@') > -1) {
+    if (userIdentifier.indexOf('@') > -1) {
       try {
         user = await app.auth().getUserByEmail(userIdentifier);
       } catch (err) {
