@@ -35,7 +35,8 @@ class RouteMatch {
             statusCode: 200,
             headers: {},
             cookies: {},
-            clearCookies: {}
+            clearCookies: {},
+            doNotZip: false
         };
         this.errors = [];
         this.logs = [];
@@ -45,6 +46,9 @@ class RouteMatch {
         this.route = matchedRoute.config;
         this.route.tasks = this.route.tasks || [];
         this.response.statusCode = matchedRoute.config.defaultStatusCode || 200;
+        this.response.doNotZip = this.route.hasOwnProperty('doNotZip') ?
+            Boolean(matchedRoute.config.doNotZip) :
+            false;
         this.mergeParams(matchedRoute.params);
     }
     get dp() {

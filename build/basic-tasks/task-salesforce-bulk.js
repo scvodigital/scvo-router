@@ -51,13 +51,14 @@ class TaskSalesforceBulk extends task_base_1.TaskBase {
             try {
                 const job = sfClient.bulk.createJob(config.type, config.operation, config.bulkOptions);
                 sfClient.bulk.pollInterval = 1000;
-                sfClient.bulk.pollTimeout = 30000;
+                sfClient.bulk.pollTimeout = 20000;
                 const batch = job.createBatch();
                 batch.on('error', (batchInfo) => {
+                    routeMatch.error(new Error('Batch Error'), 'Batch Error');
                     reject(new BatchError('Batch Error', [batchInfo]));
                 });
                 batch.on('queue', (batchInfo) => {
-                    // batch.poll(1000, 20000);
+                    batch.poll(1000, 20000);
                     routeMatch.log('Batch Queue:', batchInfo);
                 });
                 batch.on('response', (rets) => {

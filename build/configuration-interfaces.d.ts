@@ -23,6 +23,7 @@ export interface RouteConfiguration {
     errorRoute?: string;
     defaultStatusCode?: number;
     debug?: boolean;
+    doNotZip?: boolean;
 }
 export interface RouteTaskConfiguration<T> {
     name: string;
@@ -53,6 +54,7 @@ export interface RouterResponse {
     headers: {
         [key: string]: string;
     };
+    doNotZip: boolean;
 }
 export interface CookieMap {
     [name: string]: Cookie;

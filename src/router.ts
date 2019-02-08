@@ -164,7 +164,8 @@ export class Router {
           contentType: 'application/json',
           cookies: {},
           headers: {},
-          statusCode: 500
+          statusCode: 500,
+          doNotZip: false
         };
       }
       const matchedRoute = this.matchRoute(request);
@@ -180,7 +181,8 @@ export class Router {
           contentType: 'text/html',
           cookies: {},
           headers: {},
-          statusCode: 500
+          statusCode: 500,
+          doNotZip: false
         };
       } else {
         return this.context.disasterResponse;
