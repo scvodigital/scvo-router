@@ -12,6 +12,7 @@ __export(require("./basic-tasks/task-render-layout"));
 __export(require("./basic-tasks/task-render"));
 __export(require("./basic-tasks/task-request"));
 __export(require("./basic-tasks/task-firebase-auth"));
+__export(require("./basic-tasks/task-firebase-get-user"));
 __export(require("./basic-tasks/task-firebase-rtb-get"));
 __export(require("./basic-tasks/task-firebase-rtb-set"));
 __export(require("./basic-tasks/task-reroute"));

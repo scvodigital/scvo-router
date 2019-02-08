@@ -8,6 +8,7 @@ export * from './basic-tasks/task-render-layout';
 export * from './basic-tasks/task-render';
 export * from './basic-tasks/task-request';
 export * from './basic-tasks/task-firebase-auth';
+export * from './basic-tasks/task-firebase-get-user';
 export * from './basic-tasks/task-firebase-rtb-get';
 export * from './basic-tasks/task-firebase-rtb-set';
 export * from './basic-tasks/task-reroute';
