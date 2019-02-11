@@ -25,7 +25,7 @@ class TaskFirebaseGetUser extends task_base_1.TaskBase {
             const app = this.apps[appName];
             const userIdentifier = routeMatch.getString(config.userIdentifier);
             let user;
-            if (config.userIdentifier.indexOf('@') > -1) {
+            if (userIdentifier.indexOf('@') > -1) {
                 try {
                     user = yield app.auth().getUserByEmail(userIdentifier);
                 }
