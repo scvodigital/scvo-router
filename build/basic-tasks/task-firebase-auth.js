@@ -25,14 +25,15 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
             }
             let cookie = routeMatch.request.cookies[config.cookieName];
             const idToken = dot.pick(config.tokenPath, routeMatch);
-            if (!idToken && !cookie && config.noTokenRoute) {
+            routeMatch.log('Config', config);
+            if ((!idToken || !cookie) && config.noTokenRoute) {
                 routeMatch.log('No ID Token or Cookie and a "noTokenRoute" has been provided. Returning REROUTE command:', config.noTokenRoute);
                 return {
                     command: task_base_1.TaskResultCommand.REROUTE,
                     routeName: config.noTokenRoute
                 };
             }
-            else if (!idToken) {
+            else if (!idToken && !cookie) {
                 routeMatch.log('No ID Token. Returning CONTINUE command');
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
@@ -87,5 +88,5 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
     }
 }
 exports.TaskFirebaseAuth = TaskFirebaseAuth;
-/* tslint:enable:no-any */
+/* tslint:enable:no-any */ 
 //# sourceMappingURL=task-firebase-auth.js.map

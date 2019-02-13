@@ -26,7 +26,9 @@ export class TaskFirebaseAuth extends TaskBase {
     let cookie = routeMatch.request.cookies[config.cookieName];
     const idToken = dot.pick(config.tokenPath, routeMatch);
 
-    if (!idToken && !cookie && config.noTokenRoute) {
+    routeMatch.log('Config', config);
+
+    if ((!idToken || !cookie) && config.noTokenRoute) {
       routeMatch.log(
           'No ID Token or Cookie and a "noTokenRoute" has been provided. Returning REROUTE command:',
           config.noTokenRoute);
@@ -34,7 +36,7 @@ export class TaskFirebaseAuth extends TaskBase {
         command: TaskResultCommand.REROUTE,
         routeName: config.noTokenRoute
       };
-    } else if (!idToken) {
+    } else if (!idToken && !cookie) {
       routeMatch.log('No ID Token. Returning CONTINUE command');
       return {command: TaskResultCommand.CONTINUE};
     }
