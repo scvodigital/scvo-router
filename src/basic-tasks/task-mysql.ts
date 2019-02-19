@@ -24,7 +24,12 @@ export class TaskMySQL extends TaskBase {
     const connectionConfig = this.connectionConfigs[config.connectionName];
     const connection = mysql.createConnection(connectionConfig);
 
-    connection.connect();
+    try {
+      connection.connect();
+    } catch (err) {
+      routeMatch.error(err, 'Failed to connect to MySql');
+      throw err;
+    }
 
     const queryTemplateNames = Object.keys(config.queryTemplates);
     for (let q = 0; q < queryTemplateNames.length; ++q) {
@@ -38,7 +43,11 @@ export class TaskMySQL extends TaskBase {
       }
     }
 
-    connection.end();
+    try {
+      connection.end();
+    } catch (err) {
+      routeMatch.error(err, 'Failed to end connection to MySql');
+    }
 
     routeMatch.data[routeTaskConfig.name] = data;
 
@@ -50,16 +59,20 @@ export class TaskMySQL extends TaskBase {
       queryTemplate: string, renderer: RendererBase): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       queryTemplate = routeMatch.getString(queryTemplate);
-      renderer.render(queryTemplate, routeMatch).then((query) => {
-        routeMatch.log('About to execute query:', query);
-        connection.query(query, (error, results, fields) => {
-          if (error) {
-            return reject(error);
-          } else {
-            return resolve(results);
-          }
-        });
-      });
+      renderer.render(queryTemplate, routeMatch)
+          .then((query) => {
+            routeMatch.log('About to execute query:', query);
+            connection.query(query, (error, results, fields) => {
+              if (error) {
+                return reject(error);
+              } else {
+                return resolve(results);
+              }
+            });
+          })
+          .catch((err) => {
+            return reject(err);
+          });
     });
   }
 }

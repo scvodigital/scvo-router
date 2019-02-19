@@ -25,7 +25,13 @@ class TaskMySQL extends task_base_1.TaskBase {
             const data = {};
             const connectionConfig = this.connectionConfigs[config.connectionName];
             const connection = mysql.createConnection(connectionConfig);
-            connection.connect();
+            try {
+                connection.connect();
+            }
+            catch (err) {
+                routeMatch.error(err, 'Failed to connect to MySql');
+                throw err;
+            }
             const queryTemplateNames = Object.keys(config.queryTemplates);
             for (let q = 0; q < queryTemplateNames.length; ++q) {
                 const queryTemplateName = queryTemplateNames[q];
@@ -37,7 +43,12 @@ class TaskMySQL extends task_base_1.TaskBase {
                     throw err;
                 }
             }
-            connection.end();
+            try {
+                connection.end();
+            }
+            catch (err) {
+                routeMatch.error(err, 'Failed to end connection to MySql');
+            }
             routeMatch.data[routeTaskConfig.name] = data;
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
@@ -45,7 +56,8 @@ class TaskMySQL extends task_base_1.TaskBase {
     executeQuery(routeMatch, connection, queryTemplate, renderer) {
         return new Promise((resolve, reject) => {
             queryTemplate = routeMatch.getString(queryTemplate);
-            renderer.render(queryTemplate, routeMatch).then((query) => {
+            renderer.render(queryTemplate, routeMatch)
+                .then((query) => {
                 routeMatch.log('About to execute query:', query);
                 connection.query(query, (error, results, fields) => {
                     if (error) {
@@ -55,10 +67,13 @@ class TaskMySQL extends task_base_1.TaskBase {
                         return resolve(results);
                     }
                 });
+            })
+                .catch((err) => {
+                return reject(err);
             });
         });
     }
 }
 exports.TaskMySQL = TaskMySQL;
-/* tslint:enable:no-any */
+/* tslint:enable:no-any */ 
 //# sourceMappingURL=task-mysql.js.map
