@@ -23,90 +23,71 @@ export class TaskFirebaseAuth extends TaskBase {
       throw new Error('No Firebase app named "' + appName + '" registered');
     }
 
-    let cookie = routeMatch.request.cookies[config.cookieName];
-    const idToken = dot.pick(config.tokenPath, routeMatch);
+    const cookie = routeMatch.request.cookies[config.cookieName];
 
     routeMatch.log('Config', config);
 
-    if ((!idToken || !cookie) && config.noTokenRoute) {
-      routeMatch.log(
-          'No ID Token or Cookie and a "noTokenRoute" has been provided. Returning REROUTE command:',
-          config.noTokenRoute);
-      return {
-        command: TaskResultCommand.REROUTE,
-        routeName: config.noTokenRoute
-      };
-    } else if (!idToken && !cookie) {
-      routeMatch.log('No ID Token. Returning CONTINUE command');
-      return {command: TaskResultCommand.CONTINUE};
+    if (!cookie) {
+      return this.getNoAuthReturn(
+          routeMatch, config, 'No Cookie found or provided');
     }
 
     const app = this.apps[appName];
-    let decodedToken: undefined|firebase.auth.DecodedIdToken;
 
-    if (cookie) {
-      try {
-        routeMatch.log('Got Cookie:', cookie, 'Verifying...');
-        decodedToken = await app.auth().verifySessionCookie(cookie);
-        routeMatch.log('Decoded Cookie:', decodedToken);
-      } catch (err) {
-        console.error('Failed to verify session cookie:', err);
+    let uid = '';
+    try {
+      routeMatch.log('Got Cookie:', cookie, 'Verifying...');
+      const decodedToken = await app.auth().verifySessionCookie(cookie);
+      if (!decodedToken) {
+        throw new Error('No Decoded Token after verifying Session Cookie');
       }
-    } else {
-      try {
-        routeMatch.log('Got Token but no Cookie:', idToken, 'Verifying...');
-        decodedToken = await app.auth().verifyIdToken(idToken);
-        routeMatch.log('Decoded Token:', decodedToken);
-        if (decodedToken) {
-          routeMatch.log('Exchangin token for 2 week cookie');
-          cookie = await app.auth().createSessionCookie(
-              idToken, {expiresIn: 1209600000});
-          routeMatch.log(
-              'Got the Cookie!:', cookie,
-              '\nStoring it here:', config.cookieName);
-          const cookieObj:
-              Cookie = {value: cookie, options: config.cookieOptions};
-          routeMatch.response.cookies[config.cookieName] = cookieObj;
-        }
-      } catch (err) {
-        routeMatch.error(err);
-      }
+      routeMatch.log('Decoded Cookie:', decodedToken);
+      uid = decodedToken.uid;
+    } catch (err) {
+      console.error('Failed to verify session cookie:', err);
+      return this.getNoAuthReturn(
+          routeMatch, config, 'Failed to verify session cookie');
     }
 
-    if (!decodedToken && config.notAuthenticatedRoute) {
+    try {
+      routeMatch.log('Getting user for User Id', uid);
+      const user = await app.auth().getUser(uid);
+      if (!user) {
+        throw new Error('Failed to get user with ID "' + uid + '"');
+      }
+      routeMatch.log('Got user', user);
+      routeMatch.setData(user);
+      return {command: TaskResultCommand.CONTINUE};
+    } catch (err) {
+      console.error('Failed to get user:', err);
+      return this.getNoAuthReturn(
+          routeMatch, config, 'Failed to get user for User Id', uid);
+    }
+  }
+
+  getNoAuthReturn(
+      routeMatch: RouteMatch, config: TaskFirebaseAuthConfiguration,
+      ...args: any[]): TaskResult {
+    if (config.notAuthenticatedRoute) {
       routeMatch.log(
-          'No decoded token so assuming not authenticated. "notAuthenticatedRoute" provided. Returning REROUTE command:',
+          ...args, 'Has notAuthenticatedRoute so returning REROUTE command',
           config.notAuthenticatedRoute);
       return {
         command: TaskResultCommand.REROUTE,
         routeName: config.notAuthenticatedRoute
       };
-    } else if (!decodedToken) {
+    } else {
       routeMatch.log(
-          'No decoded token so assuming not authenticated. No "notAuthenticatedRoute" provided. Returning CONTINUE command');
+          ...args, 'No notAuthenticatedRoute to returning CONTINUE command');
       return {command: TaskResultCommand.CONTINUE};
     }
-
-    const user = await app.auth().getUser(decodedToken.uid);
-
-    if (!user) {
-      throw new Error('Failed to get user with ID "' + decodedToken.uid + '"');
-    }
-
-    routeMatch.data[routeTaskConfig.name] = user;
-
-    routeMatch.log('Got user:', user, '. Returning CONTINUE command');
-
-    return {command: TaskResultCommand.CONTINUE};
   }
 }
 
 export interface TaskFirebaseAuthConfiguration {
-  tokenPath: string;
   cookieName: string;
   cookieOptions?: CookieOptions;
   appName: string;
-  noTokenRoute?: string;
   notAuthenticatedRoute?: string;
 }
 /* tslint:enable:no-any */

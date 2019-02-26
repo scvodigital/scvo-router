@@ -3,17 +3,16 @@ import { RouteTaskConfiguration, CookieOptions } from '../configuration-interfac
 import { RendererBase } from '../renderer-base';
 import { RouteMatch } from '../route-match';
 import { TaskBase, TaskResult } from '../task-base';
-export declare class TaskFirebaseAuth extends TaskBase {
+export declare class TaskFirebaseGetSession extends TaskBase {
     private apps;
     constructor(apps: {
         [name: string]: firebase.app.App;
     });
-    execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskFirebaseAuthConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    getNoAuthReturn(routeMatch: RouteMatch, config: TaskFirebaseAuthConfiguration, ...args: any[]): TaskResult;
+    execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskFirebaseGetSessionConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
 }
-export interface TaskFirebaseAuthConfiguration {
+export interface TaskFirebaseGetSessionConfiguration {
+    tokenPath: string;
     cookieName: string;
     cookieOptions?: CookieOptions;
     appName: string;
-    notAuthenticatedRoute?: string;
 }
