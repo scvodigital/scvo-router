@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.63",
+  "version": "1.2.64",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "./build/index",
   "typings": "./build/index",
@@ -63,7 +63,7 @@
     "deep-extend": "^0.6.0",
     "dot-object": "^1.7.0",
     "elasticsearch": "^15.0.0",
-    "firebase-admin": "^6.1.0",
+    "firebase-admin": "6.1.0",
     "googleapis": "^35.0.0",
     "handlebars": "^4.0.11",
     "jsforce": "^1.9.1",

@@ -26,14 +26,21 @@ class TaskGeneratePdf extends task_base_1.TaskBase {
             }
             const config = routeTaskConfig.config;
             if (config.imagesTemplate) {
-                const imagesMap = yield renderer.render(config.imagesTemplate, routeMatch);
+                let imagesMap = yield renderer.render(config.imagesTemplate, routeMatch);
+                if (typeof imagesMap === 'string') {
+                    imagesMap = JSON.parse(imagesMap);
+                }
                 const images = yield this.fetchImages(imagesMap, routeMatch);
                 routeMatch.images = images;
             }
             routeMatch.log('Rendering Definition template');
             let definition = {};
             try {
-                definition = yield renderer.render(config.definitionTemplate, routeMatch);
+                const definitionTemplate = routeMatch.getObject(config.definitionTemplate);
+                definition = yield renderer.render(definitionTemplate, routeMatch);
+                if (typeof definition === 'string') {
+                    definition = JSON.parse(definition);
+                }
             }
             catch (err) {
                 routeMatch.log(config.definitionTemplate);
@@ -43,13 +50,17 @@ class TaskGeneratePdf extends task_base_1.TaskBase {
             routeMatch.log('Rendered Definition template', definition);
             if (!definition.hasOwnProperty('header') && config.headerTemplate) {
                 routeMatch.log('No header in definition and Header template provided so adding it');
+                const headerTemplate = routeMatch.getObject(config.headerTemplate);
                 definition.header = (currentPage, pageCount) => {
-                    routeMatch.log('Rendering header -> currentPage:', currentPage, '| pageCount:', pageCount, '| header template:', config.headerTemplate);
+                    routeMatch.log('Rendering header -> currentPage:', currentPage, '| pageCount:', pageCount, '| header template:', headerTemplate);
                     let output = [];
                     try {
                         routeMatch.currentPage = currentPage;
                         routeMatch.pageCount = pageCount;
-                        output = renderer.renderSync(config.headerTemplate, routeMatch);
+                        output = renderer.renderSync(headerTemplate, routeMatch);
+                        if (typeof output === 'string') {
+                            output = JSON.parse(output);
+                        }
                     }
                     catch (err) {
                         routeMatch.error(err, 'Problem rendering header from JSON-e');
@@ -66,13 +77,17 @@ class TaskGeneratePdf extends task_base_1.TaskBase {
             }
             if (!definition.hasOwnProperty('footer') && config.footerTemplate) {
                 routeMatch.log('No footer in definition and Footer template provided so adding it');
+                const footerTemplate = routeMatch.getObject(config.footerTemplate);
                 definition.footer = (currentPage, pageCount) => {
                     routeMatch.log('Rendering footer -> currentPage:', currentPage, '| pageCount:', pageCount, '| footer template:', config.footerTemplate);
                     let output = [];
                     try {
                         routeMatch.currentPage = currentPage;
                         routeMatch.pageCount = pageCount;
-                        output = renderer.renderSync(config.footerTemplate, routeMatch);
+                        output = renderer.renderSync(footerTemplate, routeMatch);
+                        if (typeof output === 'string') {
+                            output = JSON.parse(output);
+                        }
                     }
                     catch (err) {
                         routeMatch.error(err, 'Problem rendering footer from JSON-e');
@@ -86,6 +101,10 @@ class TaskGeneratePdf extends task_base_1.TaskBase {
                     routeMatch.log('Footer template rendered:\n', stringify(output, null, 2));
                     return output;
                 };
+            }
+            if (!definition.hasOwnProperty('images') &&
+                routeMatch.hasOwnProperty('images')) {
+                definition.images = routeMatch.images;
             }
             const output = yield this.generatePdf(definition, routeMatch);
             if (routeMatch.hasOwnProperty('images')) {

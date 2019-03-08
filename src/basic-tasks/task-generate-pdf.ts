@@ -28,8 +28,11 @@ export class TaskGeneratePdf extends TaskBase {
     const config = routeTaskConfig.config;
 
     if (config.imagesTemplate) {
-      const imagesMap =
+      let imagesMap: ImageMap|string =
           await renderer.render(config.imagesTemplate, routeMatch);
+      if (typeof imagesMap === 'string') {
+        imagesMap = JSON.parse(imagesMap) as ImageMap;
+      }
       const images = await this.fetchImages(imagesMap, routeMatch);
       (routeMatch as any).images = images;
     }
@@ -37,7 +40,12 @@ export class TaskGeneratePdf extends TaskBase {
     routeMatch.log('Rendering Definition template');
     let definition: any = {};
     try {
-      definition = await renderer.render(config.definitionTemplate, routeMatch);
+      const definitionTemplate: any =
+          routeMatch.getObject(config.definitionTemplate);
+      definition = await renderer.render(definitionTemplate, routeMatch);
+      if (typeof definition === 'string') {
+        definition = JSON.parse(definition);
+      }
     } catch (err) {
       routeMatch.log(config.definitionTemplate);
       routeMatch.error(err, 'Failed to render definition template');
@@ -48,16 +56,19 @@ export class TaskGeneratePdf extends TaskBase {
     if (!definition.hasOwnProperty('header') && config.headerTemplate) {
       routeMatch.log(
           'No header in definition and Header template provided so adding it');
+      const headerTemplate: any = routeMatch.getObject(config.headerTemplate);
       definition.header = (currentPage: number, pageCount: number) => {
         routeMatch.log(
             'Rendering header -> currentPage:', currentPage,
-            '| pageCount:', pageCount,
-            '| header template:', config.headerTemplate);
+            '| pageCount:', pageCount, '| header template:', headerTemplate);
         let output: any = [];
         try {
           (routeMatch as any).currentPage = currentPage;
           (routeMatch as any).pageCount = pageCount;
-          output = renderer.renderSync(config.headerTemplate, routeMatch);
+          output = renderer.renderSync(headerTemplate, routeMatch);
+          if (typeof output === 'string') {
+            output = JSON.parse(output);
+          }
         } catch (err) {
           routeMatch.error(err, 'Problem rendering header from JSON-e');
         }
@@ -76,6 +87,7 @@ export class TaskGeneratePdf extends TaskBase {
     if (!definition.hasOwnProperty('footer') && config.footerTemplate) {
       routeMatch.log(
           'No footer in definition and Footer template provided so adding it');
+      const footerTemplate: any = routeMatch.getObject(config.footerTemplate);
       definition.footer = (currentPage: number, pageCount: number) => {
         routeMatch.log(
             'Rendering footer -> currentPage:', currentPage,
@@ -85,7 +97,10 @@ export class TaskGeneratePdf extends TaskBase {
         try {
           (routeMatch as any).currentPage = currentPage;
           (routeMatch as any).pageCount = pageCount;
-          output = renderer.renderSync(config.footerTemplate, routeMatch);
+          output = renderer.renderSync(footerTemplate, routeMatch);
+          if (typeof output === 'string') {
+            output = JSON.parse(output);
+          }
         } catch (err) {
           routeMatch.error(err, 'Problem rendering footer from JSON-e');
         }
@@ -99,6 +114,11 @@ export class TaskGeneratePdf extends TaskBase {
             'Footer template rendered:\n', stringify(output, null, 2));
         return output;
       };
+    }
+
+    if (!definition.hasOwnProperty('images') &&
+        routeMatch.hasOwnProperty('images')) {
+      definition.images = (routeMatch as any).images;
     }
 
     const output = await this.generatePdf(definition, routeMatch);

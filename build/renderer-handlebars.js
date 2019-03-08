@@ -25,6 +25,14 @@ class RendererHandlebars extends renderer_base_1.RendererBase {
             return output;
         });
     }
+    renderSync(template, data) {
+        if (typeof template !== 'string') {
+            throw new Error('A handlebars renderer may only be passed a string');
+        }
+        const compiler = this.hbs.compile(template);
+        const output = compiler(data);
+        return output;
+    }
 }
 exports.RendererHandlebars = RendererHandlebars;
 /* tslint:enable:no-any */ 

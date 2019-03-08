@@ -1439,9 +1439,10 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-firebase-admin@^6.1.0:
+firebase-admin@6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-6.1.0.tgz#375cd43ee82bccda24da1fdd34914d76f08173f3"
+  integrity sha512-pleUtbaaEtqMSJYsz4kNTiYiFs0XR+NsFX+ih+80EtMrm78W3VPojm4VQ3CJXDxWYAaEv00WXgLeQypRSVV1HQ==
   dependencies:
     "@firebase/app" "^0.3.1"
     "@firebase/database" "^0.3.1"
@@ -2252,12 +2253,6 @@ jsforce@^1.9.1:
     readable-stream "^2.1.0"
     request "^2.72.0"
     xml2js "^0.4.16"
-
-json-e@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/json-e/-/json-e-2.7.0.tgz#2f0fdb6bb7a0d410b045687f379bfae8ddadcfab"
-  dependencies:
-    json-stable-stringify "^1.0.1"
 
 "json-e@https://github.com/scvodigital/json-e":
   version "3.0.0"

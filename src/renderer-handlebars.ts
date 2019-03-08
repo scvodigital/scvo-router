@@ -14,5 +14,14 @@ export class RendererHandlebars extends RendererBase {
     const output = compiler(data);
     return output;
   }
+
+  renderSync(template: any, data: any): any {
+    if (typeof template !== 'string') {
+      throw new Error('A handlebars renderer may only be passed a string');
+    }
+    const compiler = this.hbs.compile(template as string);
+    const output = compiler(data);
+    return output;
+  }
 }
 /* tslint:enable:no-any */
