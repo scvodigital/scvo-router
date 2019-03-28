@@ -10,4 +10,6 @@ export interface TaskRenderConfiguration {
     template: string;
     output: 'data' | 'body';
     parseJson?: boolean;
+    contentType?: string;
+    filename?: string;
 }

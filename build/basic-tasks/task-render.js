@@ -50,6 +50,14 @@ class TaskRender extends task_base_1.TaskBase {
             if (routeMatch.route.debug) {
                 routeMatch.log(rendered);
             }
+            if (config.contentType) {
+                routeMatch.response.contentType = config.contentType;
+            }
+            if (config.filename) {
+                const filename = yield renderer.render(config.filename, routeMatch);
+                routeMatch.response.headers['Content-Disposition'] =
+                    'attachment; filename=' + filename;
+            }
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }

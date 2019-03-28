@@ -237,6 +237,12 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.0.tgz#719551d2352d301ac8b81db732acb6bdc28dbdef"
 
+"@types/mailgun-js@^0.16.3":
+  version "0.16.3"
+  resolved "https://registry.yarnpkg.com/@types/mailgun-js/-/mailgun-js-0.16.3.tgz#655fade2c72c430a7a248d84839f8adc2c400e62"
+  dependencies:
+    "@types/node" "*"
+
 "@types/mocha@^5.2.0":
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-5.2.0.tgz#b3c8e69f038835db1a7fdc0b3d879fc50506e29e"
@@ -1442,7 +1448,6 @@ find-up@^2.0.0, find-up@^2.1.0:
 firebase-admin@6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/firebase-admin/-/firebase-admin-6.1.0.tgz#375cd43ee82bccda24da1fdd34914d76f08173f3"
-  integrity sha512-pleUtbaaEtqMSJYsz4kNTiYiFs0XR+NsFX+ih+80EtMrm78W3VPojm4VQ3CJXDxWYAaEv00WXgLeQypRSVV1HQ==
   dependencies:
     "@firebase/app" "^0.3.1"
     "@firebase/database" "^0.3.1"

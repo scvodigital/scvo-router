@@ -48,6 +48,17 @@ export class TaskRender extends TaskBase {
       routeMatch.log(rendered);
     }
 
+    if (config.contentType) {
+      routeMatch.response.contentType = config.contentType;
+    }
+
+    if (config.filename) {
+      const filename =
+          await (renderer as RendererBase).render(config.filename, routeMatch);
+      routeMatch.response.headers['Content-Disposition'] =
+          'attachment; filename=' + filename;
+    }
+
     return {command: TaskResultCommand.CONTINUE};
   }
   /* tslint:enable:no-any */
@@ -68,4 +79,6 @@ export interface TaskRenderConfiguration {
   template: string;
   output: 'data'|'body';
   parseJson?: boolean;
+  contentType?: string;
+  filename?: string;
 }
