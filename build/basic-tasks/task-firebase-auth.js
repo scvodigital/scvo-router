@@ -39,7 +39,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 uid = decodedToken.uid;
             }
             catch (err) {
-                console.error('Failed to verify session cookie:', err);
+                routeMatch.log('Failed to verify session cookie:', err);
                 return this.getNoAuthReturn(routeMatch, config, 'Failed to verify session cookie');
             }
             try {
@@ -53,7 +53,7 @@ class TaskFirebaseAuth extends task_base_1.TaskBase {
                 return { command: task_base_1.TaskResultCommand.CONTINUE };
             }
             catch (err) {
-                console.error('Failed to get user:', err);
+                routeMatch.log('Failed to get user:', err);
                 return this.getNoAuthReturn(routeMatch, config, 'Failed to get user for User Id', uid);
             }
         });
