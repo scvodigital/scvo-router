@@ -191,6 +191,8 @@ export class Router {
   }
 
   matchRoute(request: RouterRequest): MatchedRoute {
+    request.url.path =
+        (request.url.path || '').replace(/\/(\?|$)/i, '$1') || '/';
     let match: MatchedRoute|null = null;
     for (let i = 0; i < this.registeredRoutes.length; ++i) {
       const route = this.registeredRoutes[i];
