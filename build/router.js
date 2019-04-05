@@ -179,6 +179,8 @@ class Router {
     matchRoute(request) {
         request.url.path =
             (request.url.path || '').replace(/\/(\?|$)/i, '$1') || '/';
+        request.url.pathname =
+            (request.url.pathname || '').replace(/\/(\?|$)/i, '$1') || '/';
         let match = null;
         for (let i = 0; i < this.registeredRoutes.length; ++i) {
             const route = this.registeredRoutes[i];
