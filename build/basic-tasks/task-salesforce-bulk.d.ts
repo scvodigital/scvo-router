@@ -15,6 +15,7 @@ export interface TaskSalesforceBulkConfiguration {
     connection: string;
     recordsTemplate: string;
     bulkOptions: jsforce.BulkOptions;
+    pageSize: number;
     type: string;
     operation: string;
 }

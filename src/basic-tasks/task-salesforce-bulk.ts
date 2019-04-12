@@ -39,8 +39,21 @@ export class TaskSalesforceBulk extends TaskBase {
         'Got records', records.slice(0, 10), '...[', records.length,
         'total records]');
 
-    const results =
-        await this.executeBatch(records, config, sfClient, routeMatch);
+    const pageSize = config.pageSize || 500;
+    const results = [];
+    const pageCount = Math.ceil(records.length / pageSize);
+    let currentPage = 0;
+    while (records.length > 0) {
+      const page = records.splice(0, pageSize);
+      routeMatch.log(`About to batch page ${++currentPage} of ${
+          pageCount}, which contains ${page.length} records`);
+      const pageResults =
+          await this.executeBatch(page, config, sfClient, routeMatch);
+      results.push(...pageResults);
+      routeMatch.log(`Finished batching page ${currentPage} of ${pageCount}. ${
+          results.length} total results so far`);
+    }
+
     routeMatch.setData(results);
 
     routeMatch.log('Done, returning CONTINUE command');
@@ -101,6 +114,7 @@ export interface TaskSalesforceBulkConfiguration {
   connection: string;
   recordsTemplate: string;
   bulkOptions: jsforce.BulkOptions;
+  pageSize: number;
   type: string;
   operation: string;
 }
