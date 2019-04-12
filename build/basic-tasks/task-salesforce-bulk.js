@@ -45,10 +45,15 @@ class TaskSalesforceBulk extends task_base_1.TaskBase {
             const pageCount = Math.ceil(records.length / pageSize);
             let currentPage = 0;
             while (records.length > 0) {
-                const page = records.splice(0, pageSize);
-                routeMatch.log(`About to batch page ${++currentPage} of ${pageCount}, which contains ${page.length} records`);
-                const pageResults = yield this.executeBatch(page, config, sfClient, routeMatch);
-                results.push(...pageResults);
+                try {
+                    const page = records.splice(0, pageSize);
+                    routeMatch.log(`About to batch page ${++currentPage} of ${pageCount}, which contains ${page.length} records`);
+                    const pageResults = yield this.executeBatch(page, config, sfClient, routeMatch);
+                    results.push(pageResults);
+                }
+                catch (err) {
+                    routeMatch.error(err, `Exception encountered on page ${currentPage} of ${pageCount}`);
+                }
                 routeMatch.log(`Finished batching page ${currentPage} of ${pageCount}. ${results.length} total results so far`);
             }
             routeMatch.setData(results);
@@ -65,7 +70,7 @@ class TaskSalesforceBulk extends task_base_1.TaskBase {
                 const batch = job.createBatch();
                 batch.on('error', (batchInfo) => {
                     routeMatch.error(new Error('Batch Error'), 'Batch Error');
-                    reject(new BatchError('Batch Error', [batchInfo]));
+                    // reject(new BatchError('Batch Error', [batchInfo]));
                 });
                 batch.on('queue', (batchInfo) => {
                     batch.poll(1000, 20000);

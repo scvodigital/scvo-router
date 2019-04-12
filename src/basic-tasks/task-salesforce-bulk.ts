@@ -44,12 +44,18 @@ export class TaskSalesforceBulk extends TaskBase {
     const pageCount = Math.ceil(records.length / pageSize);
     let currentPage = 0;
     while (records.length > 0) {
-      const page = records.splice(0, pageSize);
-      routeMatch.log(`About to batch page ${++currentPage} of ${
-          pageCount}, which contains ${page.length} records`);
-      const pageResults =
-          await this.executeBatch(page, config, sfClient, routeMatch);
-      results.push(...pageResults);
+      try {
+        const page = records.splice(0, pageSize);
+        routeMatch.log(`About to batch page ${++currentPage} of ${
+            pageCount}, which contains ${page.length} records`);
+        const pageResults =
+            await this.executeBatch(page, config, sfClient, routeMatch);
+        results.push(pageResults);
+      } catch (err) {
+        routeMatch.error(
+            err,
+            `Exception encountered on page ${currentPage} of ${pageCount}`);
+      }
       routeMatch.log(`Finished batching page ${currentPage} of ${pageCount}. ${
           results.length} total results so far`);
     }
@@ -73,7 +79,7 @@ export class TaskSalesforceBulk extends TaskBase {
         const batch = job.createBatch();
         batch.on('error', (batchInfo: any) => {
           routeMatch.error(new Error('Batch Error'), 'Batch Error');
-          reject(new BatchError('Batch Error', [batchInfo]));
+          // reject(new BatchError('Batch Error', [batchInfo]));
         });
         batch.on('queue', (batchInfo: any) => {
           batch.poll(1000, 20000);
