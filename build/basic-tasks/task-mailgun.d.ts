@@ -7,10 +7,11 @@ export declare class TaskMailgun extends TaskBase {
     connections: MailgunConnectionMap;
     constructor(connectionConfigs: MailgunConnectionConfigMap);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskMailgunConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
-    sendEmail(data: SendData): Promise<ReportItem>;
+    sendEmail(data: SendData, truncateResponse: boolean): Promise<ReportItem>;
 }
 export interface TaskMailgunConfiguration {
     template: string;
+    dontTruncateResponse: boolean;
 }
 export interface MailgunConnectionConfigMap {
     [name: string]: ConstructorParams;

@@ -6,6 +6,7 @@ import {RouteTaskConfiguration} from '../configuration-interfaces';
 import {RendererBase} from '../renderer-base';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
+import {RouterConfigurationBuilder} from '../test-data/test-router-configurations';
 
 export class TaskMailgun extends TaskBase {
   connections: MailgunConnectionMap = {};
@@ -45,7 +46,7 @@ export class TaskMailgun extends TaskBase {
     for (let i = 0; i < dataArray.length; ++i) {
       const data = dataArray[i];
       if (!data) continue;
-      promises.push(this.sendEmail(data));
+      promises.push(this.sendEmail(data, !config.dontTruncateResponse));
     }
 
     const responses = await Promise.all(promises);
@@ -55,7 +56,7 @@ export class TaskMailgun extends TaskBase {
     return {command: TaskResultCommand.CONTINUE};
   }
 
-  sendEmail(data: SendData): Promise<ReportItem> {
+  sendEmail(data: SendData, truncateResponse: boolean): Promise<ReportItem> {
     return new Promise<ReportItem>((resolve, reject) => {
       if (!this.connections.hasOwnProperty(data.connectionName)) {
         return resolve({
@@ -81,8 +82,10 @@ export class TaskMailgun extends TaskBase {
       }
 
       mail.compile().build((err: any, message: any) => {
-        if (data.html) delete data.html;
-        if (data.text) delete data.text;
+        if (truncateResponse) {
+          if (data.html) delete data.html;
+          if (data.text) delete data.text;
+        }
         if (err) {
           return resolve({data, response: err});
         }
@@ -105,7 +108,9 @@ export class TaskMailgun extends TaskBase {
         }
 
         emailer.messages().sendMime(data, (err: any, body: SendResponse) => {
-          data.message = data.message.substr(0, 255);
+          if (truncateResponse) {
+            data.message = data.message.substr(0, 255);
+          }
           if (err) {
             resolve({data, response: err});
           } else {
@@ -119,6 +124,7 @@ export class TaskMailgun extends TaskBase {
 
 export interface TaskMailgunConfiguration {
   template: string;
+  dontTruncateResponse: boolean;
 }
 
 export interface MailgunConnectionConfigMap {

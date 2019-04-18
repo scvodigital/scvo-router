@@ -40,14 +40,14 @@ class TaskMailgun extends task_base_1.TaskBase {
                 const data = dataArray[i];
                 if (!data)
                     continue;
-                promises.push(this.sendEmail(data));
+                promises.push(this.sendEmail(data, !config.dontTruncateResponse));
             }
             const responses = yield Promise.all(promises);
             routeMatch.setData(responses);
             return { command: task_base_1.TaskResultCommand.CONTINUE };
         });
     }
-    sendEmail(data) {
+    sendEmail(data, truncateResponse) {
         return new Promise((resolve, reject) => {
             if (!this.connections.hasOwnProperty(data.connectionName)) {
                 return resolve({
@@ -70,10 +70,12 @@ class TaskMailgun extends task_base_1.TaskBase {
                 });
             }
             mail.compile().build((err, message) => {
-                if (data.html)
-                    delete data.html;
-                if (data.text)
-                    delete data.text;
+                if (truncateResponse) {
+                    if (data.html)
+                        delete data.html;
+                    if (data.text)
+                        delete data.text;
+                }
                 if (err) {
                     return resolve({ data, response: err });
                 }
@@ -91,7 +93,9 @@ class TaskMailgun extends task_base_1.TaskBase {
                     });
                 }
                 emailer.messages().sendMime(data, (err, body) => {
-                    data.message = data.message.substr(0, 255);
+                    if (truncateResponse) {
+                        data.message = data.message.substr(0, 255);
+                    }
                     if (err) {
                         resolve({ data, response: err });
                     }
