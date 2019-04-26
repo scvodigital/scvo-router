@@ -34,12 +34,10 @@ export class TaskSalesforceApex extends TaskBase {
     const method = config.method.toLowerCase();
 
     routeMatch.log(
-        'Requesting Apex Class:', config.apexClassPath, '| body:', body,
-        '| options:', config.options);
+        'Requesting Apex Class:', config.apexClassPath, '| method', config.method, '| body:', body);
 
     let output: any;
-    // All methods seem have the same signature, although the docs say
-    // different.
+    // All methods seem have the same signature
     output = await (sfClient.apex as any)[method](config.apexClassPath, body);
     if (config.output === 'data') {
       routeMatch.data[routeTaskConfig.name] = output;
@@ -65,5 +63,4 @@ export interface TaskSalesforceApexConfiguration {
   apexClassPath: string;
   body: any;
   output: string;
-  options: any;
 }
