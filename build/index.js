@@ -21,6 +21,7 @@ __export(require("./basic-tasks/task-transform"));
 __export(require("./basic-tasks/task-mailgun"));
 __export(require("./basic-tasks/task-ga-get"));
 __export(require("./basic-tasks/task-salesforce-bulk"));
+__export(require("./basic-tasks/task-salesforce-apex"));
 __export(require("./route-match"));
 __export(require("./registered-route"));
 __export(require("./renderer-base"));
