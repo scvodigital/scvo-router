@@ -1,8 +1,9 @@
 import * as jsforce from 'jsforce';
+
 import {RouteTaskConfiguration} from '../configuration-interfaces';
+import {RendererBase} from '../renderer-base';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
-import {RendererBase} from '../renderer-base';
 
 
 /* tslint:disable:no-any */
