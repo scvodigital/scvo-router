@@ -34,7 +34,8 @@ export class TaskSalesforceApex extends TaskBase {
     const method = config.method.toLowerCase();
 
     routeMatch.log(
-        'Requesting Apex Class:', config.apexClassPath, '| method', config.method, '| body:', body);
+        'Requesting Apex Class:', config.apexClassPath, '| method',
+        config.method, '| body:', body);
 
     let output: any;
     // All methods seem have the same signature
