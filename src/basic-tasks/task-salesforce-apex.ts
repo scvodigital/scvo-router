@@ -1,6 +1,4 @@
-import request = require('request-promise-native');
 import * as jsforce from 'jsforce';
-import * as util from 'util';
 import {RouteTaskConfiguration} from '../configuration-interfaces';
 import {RouteMatch} from '../route-match';
 import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
