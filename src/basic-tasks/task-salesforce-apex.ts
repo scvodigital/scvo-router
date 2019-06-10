@@ -29,20 +29,23 @@ export class TaskSalesforceApex extends TaskBase {
     if (config.body) {
       body = routeMatch.getObject(config.body);
       body = typeof body === 'string' ? JSON.parse(body) : body;
+      body = await (renderer as RendererBase).render(body, routeMatch);
     }
 
-    let classPath: any;
-    classPath = routeMatch.getObject(config.apexClassPath);
+    let apexClassPath: any;
+    apexClassPath = routeMatch.getObject(config.apexClassPath);
+    apexClassPath =
+        await (renderer as RendererBase).render(apexClassPath, routeMatch);
 
     const method = config.method.toLowerCase();
 
     routeMatch.log(
-        'Requesting Apex Class:', classPath, '| method', config.method,
+        'Requesting Apex Class:', apexClassPath, '| method', config.method,
         '| body:', body);
 
     let output: any;
     // All methods seem have the same signature
-    output = await (sfClient.apex as any)[method](classPath, body);
+    output = await (sfClient.apex as any)[method](apexClassPath, body);
     if (config.output === 'data') {
       routeMatch.data[routeTaskConfig.name] = output;
     } else if (config.output === 'body') {
