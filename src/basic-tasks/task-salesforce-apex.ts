@@ -28,8 +28,10 @@ export class TaskSalesforceApex extends TaskBase {
     let body: any;
     if (config.body) {
       body = routeMatch.getObject(config.body);
-      body = typeof body === 'string' ? JSON.parse(body) : body;
-      body = await (renderer as RendererBase).render(body, routeMatch);
+      if (typeof body === 'string') {
+        body = await (renderer as RendererBase).render(body, routeMatch);
+        body = JSON.parse(body);
+      }
     }
 
     let apexClassPath: any;
