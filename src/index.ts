@@ -16,6 +16,7 @@ export * from './basic-tasks/task-reroute';
 export * from './basic-tasks/task-transform';
 export * from './basic-tasks/task-mailgun';
 export * from './basic-tasks/task-ga-get';
+export * from './basic-tasks/task-ga-set';
 export * from './basic-tasks/task-salesforce-bulk';
 export * from './basic-tasks/task-salesforce-apex';
 export * from './route-match';
