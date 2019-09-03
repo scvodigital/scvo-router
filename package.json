@@ -1,6 +1,6 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.80",
+  "version": "1.2.81",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -67,7 +67,7 @@
     "elasticsearch": "^15.0.0",
     "firebase-admin": "6.1.0",
     "googleapis": "^35.0.0",
-    "handlebars": "4.1.0",
+    "handlebars": "^4.1.2",
     "jsforce": "^1.9.1",
     "json-e": "https://github.com/scvodigital/json-e",
     "json-logic-js": "^1.2.2",
