@@ -33,7 +33,7 @@ export class RegisteredRoute {
 
     for (let i = 0; i < this.parsers.length; ++i) {
       const parser = this.parsers[i];
-      params = parser.match(request.url.path || '');
+      params = parser.match(request.url.pathname || '');
       if (!!params) break;
     }
 

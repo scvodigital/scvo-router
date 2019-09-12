@@ -34,7 +34,7 @@ var RegisteredRoute = /** @class */ (function () {
         var params = null;
         for (var i = 0; i < this.parsers.length; ++i) {
             var parser = this.parsers[i];
-            params = parser.match(request.url.path || '');
+            params = parser.match(request.url.pathname || '');
             if (!!params)
                 break;
         }
