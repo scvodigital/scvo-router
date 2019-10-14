@@ -50,11 +50,12 @@ var stringify = require("json-stringify-safe");
 var task_base_1 = require("./task-base");
 /* tslint:disable:no-any */
 var RouteMatch = /** @class */ (function () {
-    function RouteMatch(matchedRoute, request, context, taskModuleManager, rendererManager) {
+    function RouteMatch(matchedRoute, request, context, taskModuleManager, rendererManager, cacheManager) {
         this.request = request;
         this.context = context;
         this.taskModuleManager = taskModuleManager;
         this.rendererManager = rendererManager;
+        this.cacheManager = cacheManager;
         this.data = {};
         this.response = {
             contentType: 'application/json',
@@ -91,7 +92,7 @@ var RouteMatch = /** @class */ (function () {
     });
     RouteMatch.prototype.execute = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var taskConfig, taskModule, renderer, taskResult, redirectTo, err_1, errorRoute;
+            var taskConfig, taskResult, cacheKey, loadedFromCache, taskModule, renderer, redirectTo, err_1, errorRoute;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -99,10 +100,10 @@ var RouteMatch = /** @class */ (function () {
                         this.currentTaskIndex = 0;
                         _a.label = 1;
                     case 1:
-                        if (!(this.currentTaskIndex < this.route.tasks.length)) return [3 /*break*/, 6];
+                        if (!(this.currentTaskIndex < this.route.tasks.length)) return [3 /*break*/, 12];
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, 4, , 5]);
+                        _a.trys.push([2, 10, , 11]);
                         taskConfig = this.route.tasks[this.currentTaskIndex];
                         if (typeof taskConfig === 'string') {
                             this.currentTask =
@@ -112,6 +113,27 @@ var RouteMatch = /** @class */ (function () {
                             this.currentTask = this.route.tasks[this.currentTaskIndex];
                         }
                         this.log('Current task index:', this.currentTaskIndex);
+                        taskResult = null;
+                        cacheKey = void 0;
+                        loadedFromCache = false;
+                        if (!this.currentTask.cache) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.cacheManager.makeKey(this.currentTask.cache, this)];
+                    case 3:
+                        cacheKey =
+                            _a.sent();
+                        return [4 /*yield*/, this.cacheManager.getItem(cacheKey, this)];
+                    case 4:
+                        taskResult = _a.sent();
+                        if (taskResult) {
+                            this.data[this.currentTask.name] = taskResult.data;
+                            loadedFromCache = true;
+                        }
+                        _a.label = 5;
+                    case 5:
+                        if (!!taskResult) return [3 /*break*/, 7];
+                        if (this.currentTask.cache) {
+                            this.log('CACHING: Got cache config but nothing in cache so executing task normally');
+                        }
                         taskModule = this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
                         renderer = void 0;
                         if (this.currentTask.renderer) {
@@ -119,17 +141,32 @@ var RouteMatch = /** @class */ (function () {
                                 this.rendererManager.getRenderer(this.currentTask.renderer);
                         }
                         return [4 /*yield*/, taskModule.execute(this, this.currentTask, renderer)];
-                    case 3:
-                        taskResult = _a.sent();
+                    case 6:
+                        taskResult =
+                            _a.sent();
+                        _a.label = 7;
+                    case 7:
+                        if (!(cacheKey && this.currentTask.cache && !loadedFromCache)) return [3 /*break*/, 9];
+                        // HACK: Because Task Modules didn't originally return data and I want
+                        // to reduce side-effects of Cache Manager
+                        //      so I'm setting the cache task data here
+                        if (this.data.hasOwnProperty(this.currentTask.name)) {
+                            taskResult.data = this.data[this.currentTask.name];
+                        }
+                        return [4 /*yield*/, this.cacheManager.setItem(cacheKey, taskResult, this.currentTask.cache.ttl, this)];
+                    case 8:
+                        _a.sent();
+                        _a.label = 9;
+                    case 9:
                         if (taskResult.command === task_base_1.TaskResultCommand.HALT) {
-                            return [3 /*break*/, 6];
+                            return [3 /*break*/, 12];
                         }
                         else if (taskResult.command === task_base_1.TaskResultCommand.REROUTE) {
                             redirectTo = taskResult.routeName || 'default';
                             this.reroute(redirectTo);
                         }
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 11];
+                    case 10:
                         err_1 = _a.sent();
                         this.error(err_1);
                         errorRoute = err_1.errorRoute ||
@@ -138,11 +175,11 @@ var RouteMatch = /** @class */ (function () {
                         if (errorRoute) {
                             this.reroute(errorRoute);
                         }
-                        return [3 /*break*/, 5];
-                    case 5:
+                        return [3 /*break*/, 11];
+                    case 11:
                         ++this.currentTaskIndex;
                         return [3 /*break*/, 1];
-                    case 6:
+                    case 12:
                         this.currentTaskIndex = 0;
                         this.currentTask = null;
                         this.log('Finished executing route');

@@ -8,8 +8,9 @@ import {RouteConfiguration, RouterConfiguration, RouterRequest, RouterResponse, 
 import {MatchedRoute} from './registered-route';
 import {RendererManager, RendererMap} from './renderer-manager';
 import {RendererBase} from './renderer-base';
-import {TaskBase, TaskResultCommand} from './task-base';
+import {TaskBase, TaskResultCommand, TaskResult} from './task-base';
 import {TaskModuleManager} from './task-module-manager';
+import {CacheManager, CacheKey} from './cache-manager';
 
 /* tslint:disable:no-any */
 export class RouteMatch {
@@ -43,7 +44,8 @@ export class RouteMatch {
       matchedRoute: MatchedRoute, public request: RouterRequest,
       public context: RouterConfiguration,
       private taskModuleManager: TaskModuleManager,
-      private rendererManager: RendererManager) {
+      private rendererManager: RendererManager,
+      public cacheManager: CacheManager) {
     this.route = matchedRoute.config;
     this.route.tasks = this.route.tasks || [];
     this.response.statusCode = matchedRoute.config.defaultStatusCode || 200;
@@ -70,16 +72,48 @@ export class RouteMatch {
 
         this.log('Current task index:', this.currentTaskIndex);
 
-        const taskModule =
-            this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
+        let taskResult: TaskResult|null = null;
+        let cacheKey: CacheKey|undefined;
+        let loadedFromCache = false;
 
-        let renderer: RendererBase|undefined;
-        if (this.currentTask.renderer) {
-          renderer =
-              this.rendererManager.getRenderer(this.currentTask.renderer);
+        if (this.currentTask.cache) {
+          cacheKey =
+              await this.cacheManager.makeKey(this.currentTask.cache, this);
+          taskResult = await this.cacheManager.getItem(cacheKey, this);
+          if (taskResult) {
+            this.data[this.currentTask.name] = taskResult.data;
+            loadedFromCache = true;
+          }
         }
-        const taskResult =
-            await taskModule.execute(this, this.currentTask, renderer);
+
+        if (!taskResult) {
+          if (this.currentTask.cache) {
+            this.log(
+                'CACHING: Got cache config but nothing in cache so executing task normally');
+          }
+          const taskModule =
+              this.taskModuleManager.getTaskModule(this.currentTask.taskModule);
+          let renderer: RendererBase|undefined;
+          if (this.currentTask.renderer) {
+            renderer =
+                this.rendererManager.getRenderer(this.currentTask.renderer);
+          }
+          taskResult =
+              await taskModule.execute(this, this.currentTask, renderer);
+        }
+
+        if (cacheKey && this.currentTask.cache && !loadedFromCache) {
+          // HACK: Because Task Modules didn't originally return data and I want
+          // to reduce side-effects of Cache Manager
+          //      so I'm setting the cache task data here
+          if (this.data.hasOwnProperty(this.currentTask.name)) {
+            taskResult.data = this.data[this.currentTask.name];
+          }
+
+          await this.cacheManager.setItem(
+              cacheKey, taskResult, this.currentTask.cache.ttl, this);
+        }
+
         if (taskResult.command === TaskResultCommand.HALT) {
           break;
         } else if (taskResult.command === TaskResultCommand.REROUTE) {

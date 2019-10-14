@@ -23,6 +23,7 @@ __export(require("./basic-tasks/task-ga-get"));
 __export(require("./basic-tasks/task-ga-set"));
 __export(require("./basic-tasks/task-salesforce-bulk"));
 __export(require("./basic-tasks/task-salesforce-apex"));
+__export(require("./basic-tasks/task-cache-flush"));
 __export(require("./route-match"));
 __export(require("./registered-route"));
 __export(require("./renderer-base"));

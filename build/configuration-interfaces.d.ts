@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import * as Url from 'url';
+import { CacheConfig } from './cache-manager';
 export interface RouterConfiguration {
     name: string;
     domains: string[];
@@ -31,6 +32,7 @@ export interface RouteTaskConfiguration<T> {
     config: T;
     errorRoute?: string;
     renderer?: string;
+    cache?: CacheConfig;
 }
 export interface NamedPattern {
     [suffix: string]: string;

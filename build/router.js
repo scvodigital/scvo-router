@@ -41,6 +41,7 @@ var registered_route_1 = require("./registered-route");
 var renderer_manager_1 = require("./renderer-manager");
 var route_match_1 = require("./route-match");
 var task_module_manager_1 = require("./task-module-manager");
+var cache_manager_1 = require("./cache-manager");
 // const routerConfigurationSchema =
 // require('./router-configuration.schema.json');
 /* tslint:disable:no-any */
@@ -60,6 +61,7 @@ var Router = /** @class */ (function () {
             queryEquals: '=',
             tasks: []
         };
+        this.cacheManager = new cache_manager_1.CacheManager();
         this.checkResponses = [];
         this.taskModuleManager = new task_module_manager_1.TaskModuleManager(taskModuleMap);
         this.rendererManager = new renderer_manager_1.RendererManager(rendererMap);
@@ -192,7 +194,7 @@ var Router = /** @class */ (function () {
                                 }];
                         }
                         matchedRoute = this.matchRoute(request);
-                        routeMatch = new route_match_1.RouteMatch(matchedRoute, request, this.context, this.taskModuleManager, this.rendererManager);
+                        routeMatch = new route_match_1.RouteMatch(matchedRoute, request, this.context, this.taskModuleManager, this.rendererManager, this.cacheManager);
                         return [4 /*yield*/, routeMatch.execute()];
                     case 1:
                         response = _a.sent();

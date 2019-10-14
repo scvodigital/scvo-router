@@ -3,11 +3,13 @@ import { MatchedRoute } from './registered-route';
 import { RendererManager } from './renderer-manager';
 import { TaskBase } from './task-base';
 import { TaskModuleManager } from './task-module-manager';
+import { CacheManager } from './cache-manager';
 export declare class RouteMatch {
     request: RouterRequest;
     context: RouterConfiguration;
     private taskModuleManager;
     private rendererManager;
+    cacheManager: CacheManager;
     route: RouteConfiguration;
     data: any;
     response: RouterResponse;
@@ -17,7 +19,7 @@ export declare class RouteMatch {
     currentTaskIndex: number;
     reroutes: RouteConfiguration[];
     private readonly dp;
-    constructor(matchedRoute: MatchedRoute, request: RouterRequest, context: RouterConfiguration, taskModuleManager: TaskModuleManager, rendererManager: RendererManager);
+    constructor(matchedRoute: MatchedRoute, request: RouterRequest, context: RouterConfiguration, taskModuleManager: TaskModuleManager, rendererManager: RendererManager, cacheManager: CacheManager);
     execute(): Promise<RouterResponse>;
     private reroute(routeName);
     private mergeParams(matchedParams);
