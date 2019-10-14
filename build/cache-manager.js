@@ -124,7 +124,7 @@ var CacheManager = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         context.log("CACHE MANAGER: Flushing partition '" + partition + "'");
-                        return [4 /*yield*/, this.KEYS(partition + ':')];
+                        return [4 /*yield*/, this.KEYS(partition + ':*')];
                     case 1:
                         keys = _a.sent();
                         return [4 /*yield*/, this.DEL(keys)];
