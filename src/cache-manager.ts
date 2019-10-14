@@ -22,8 +22,13 @@ export class CacheManager {
   async makeKey(config: CacheConfig, context: RouteMatch): Promise<CacheKey> {
     let data = '';
     for (const path of config.keyProperties) {
-      const part = dot.pick(path, context);
-      data += JSON.stringify(part);
+      if (path.startsWith('$')) {
+        const part = path.substr(1);
+        data += part;
+      } else {
+        const part = dot.pick(path, context);
+        data += JSON.stringify(part);
+      }
     }
     const hash = CreateHash('sha1').update(data).digest('hex');
     return {partition: config.partition, key: hash};

@@ -56,13 +56,19 @@ var CacheManager = /** @class */ (function () {
     }
     CacheManager.prototype.makeKey = function (config, context) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, _i, _a, path, part, hash;
+            var data, _i, _a, path, part, part, hash;
             return __generator(this, function (_b) {
                 data = '';
                 for (_i = 0, _a = config.keyProperties; _i < _a.length; _i++) {
                     path = _a[_i];
-                    part = dot.pick(path, context);
-                    data += JSON.stringify(part);
+                    if (path.startsWith('$')) {
+                        part = path.substr(1);
+                        data += part;
+                    }
+                    else {
+                        part = dot.pick(path, context);
+                        data += JSON.stringify(part);
+                    }
                 }
                 hash = crypto_1.createHash('sha1').update(data).digest('hex');
                 return [2 /*return*/, { partition: config.partition, key: hash }];
