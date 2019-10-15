@@ -54,24 +54,48 @@ var CacheManager = /** @class */ (function () {
         this.SETEX = util_1.promisify(this.client.SETEX).bind(this.client);
         this.KEYS = util_1.promisify(this.client.KEYS).bind(this.client);
     }
+    CacheManager.prototype.renderPartition = function (partition, context) {
+        return __awaiter(this, void 0, void 0, function () {
+            var rendererName, renderer, rendered;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!context.currentTask || !context.currentTask.renderer)
+                            return [2 /*return*/, partition];
+                        rendererName = context.currentTask.renderer;
+                        renderer = context.rendererManager.getRenderer(context.currentTask.renderer);
+                        return [4 /*yield*/, renderer.render(partition, context)];
+                    case 1:
+                        rendered = _a.sent();
+                        return [2 /*return*/, rendered.toString()];
+                }
+            });
+        });
+    };
     CacheManager.prototype.makeKey = function (config, context) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, _i, _a, path, part, part, hash;
+            var data, _i, _a, path, part, part, hash, partition;
             return __generator(this, function (_b) {
-                data = '';
-                for (_i = 0, _a = config.keyProperties; _i < _a.length; _i++) {
-                    path = _a[_i];
-                    if (path.startsWith('$')) {
-                        part = path.substr(1);
-                        data += part;
-                    }
-                    else {
-                        part = dot.pick(path, context);
-                        data += JSON.stringify(part);
-                    }
+                switch (_b.label) {
+                    case 0:
+                        data = '';
+                        for (_i = 0, _a = config.keyProperties; _i < _a.length; _i++) {
+                            path = _a[_i];
+                            if (path.startsWith('$')) {
+                                part = path.substr(1);
+                                data += part;
+                            }
+                            else {
+                                part = dot.pick(path, context);
+                                data += JSON.stringify(part);
+                            }
+                        }
+                        hash = crypto_1.createHash('sha1').update(data).digest('hex');
+                        return [4 /*yield*/, this.renderPartition(config.partition, context)];
+                    case 1:
+                        partition = _b.sent();
+                        return [2 /*return*/, { partition: partition, key: hash }];
                 }
-                hash = crypto_1.createHash('sha1').update(data).digest('hex');
-                return [2 /*return*/, { partition: config.partition, key: hash }];
             });
         });
     };
@@ -125,16 +149,18 @@ var CacheManager = /** @class */ (function () {
     };
     CacheManager.prototype.flush = function (partition, context) {
         return __awaiter(this, void 0, void 0, function () {
-            var keys;
+            var rendered, keys;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        context.log("CACHE MANAGER: Flushing partition '" + partition + "'");
-                        return [4 /*yield*/, this.KEYS(partition + ':*')];
+                    case 0: return [4 /*yield*/, this.renderPartition(partition, context)];
                     case 1:
+                        rendered = _a.sent();
+                        context.log("CACHE MANAGER: Flushing partition '" + rendered + "'");
+                        return [4 /*yield*/, this.KEYS(rendered + ':*')];
+                    case 2:
                         keys = _a.sent();
                         return [4 /*yield*/, this.DEL(keys)];
-                    case 2:
+                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }

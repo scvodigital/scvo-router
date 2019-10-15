@@ -7,6 +7,7 @@ export declare class CacheManager {
     SETEX: any;
     KEYS: any;
     constructor();
+    renderPartition(partition: string, context: RouteMatch): Promise<string>;
     makeKey(config: CacheConfig, context: RouteMatch): Promise<CacheKey>;
     getItem(cacheKey: CacheKey, context: RouteMatch): Promise<TaskResult | null>;
     setItem(cacheKey: CacheKey, item: TaskResult, ttl: number, context: RouteMatch): Promise<void>;

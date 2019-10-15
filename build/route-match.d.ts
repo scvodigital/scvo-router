@@ -8,7 +8,7 @@ export declare class RouteMatch {
     request: RouterRequest;
     context: RouterConfiguration;
     private taskModuleManager;
-    private rendererManager;
+    rendererManager: RendererManager;
     cacheManager: CacheManager;
     route: RouteConfiguration;
     data: any;

@@ -19,6 +19,16 @@ export class CacheManager {
 
   constructor() {}
 
+  async renderPartition(partition: string, context: RouteMatch):
+      Promise<string> {
+    if (!context.currentTask || !context.currentTask.renderer) return partition;
+    const rendererName = context.currentTask.renderer;
+    const renderer =
+        context.rendererManager.getRenderer(context.currentTask.renderer);
+    const rendered = await renderer.render(partition, context);
+    return rendered.toString();
+  }
+
   async makeKey(config: CacheConfig, context: RouteMatch): Promise<CacheKey> {
     let data = '';
     for (const path of config.keyProperties) {
@@ -31,7 +41,8 @@ export class CacheManager {
       }
     }
     const hash = CreateHash('sha1').update(data).digest('hex');
-    return {partition: config.partition, key: hash};
+    const partition = await this.renderPartition(config.partition, context);
+    return {partition, key: hash};
   }
 
   async getItem(cacheKey: CacheKey, context: RouteMatch):
@@ -76,9 +87,9 @@ export class CacheManager {
   }
 
   async flush(partition: string, context: RouteMatch): Promise<void> {
-    context.log(`CACHE MANAGER: Flushing partition '${partition}'`);
-
-    const keys = await this.KEYS(partition + ':*');
+    const rendered = await this.renderPartition(partition, context);
+    context.log(`CACHE MANAGER: Flushing partition '${rendered}'`);
+    const keys = await this.KEYS(rendered + ':*');
     await this.DEL(keys);
   }
 

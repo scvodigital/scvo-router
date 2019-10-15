@@ -44,7 +44,7 @@ export class RouteMatch {
       matchedRoute: MatchedRoute, public request: RouterRequest,
       public context: RouterConfiguration,
       private taskModuleManager: TaskModuleManager,
-      private rendererManager: RendererManager,
+      public rendererManager: RendererManager,
       public cacheManager: CacheManager) {
     this.route = matchedRoute.config;
     this.route.tasks = this.route.tasks || [];
