@@ -16,6 +16,7 @@ export interface TaskGeneratePdfConfiguration {
     headerTemplate?: any;
     footerTemplate?: any;
     definitionTemplate: any;
+    contentDispositionTemplate?: string;
 }
 export interface ImageMap {
     [name: string]: string;

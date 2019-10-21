@@ -60,7 +60,7 @@ var TaskGeneratePdf = /** @class */ (function (_super) {
     }
     TaskGeneratePdf.prototype.execute = function (routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function () {
-            var config, imagesMap, images, definition, definitionTemplate, err_1, headerTemplate_1, footerTemplate_1, output;
+            var config, imagesMap, images, definition, definitionTemplate, err_1, headerTemplate_1, footerTemplate_1, output, hbs, contentDisposition;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -168,6 +168,14 @@ var TaskGeneratePdf = /** @class */ (function (_super) {
                         routeMatch.log('Converted to string!', output.length, 'bytes');
                         routeMatch.response.body = output;
                         routeMatch.response.contentType = 'application/pdf';
+                        if (!config.contentDispositionTemplate) return [3 /*break*/, 10];
+                        hbs = routeMatch.rendererManager.getRenderer('handlebars');
+                        return [4 /*yield*/, hbs.renderSync(config.contentDispositionTemplate, routeMatch)];
+                    case 9:
+                        contentDisposition = _a.sent();
+                        routeMatch.response.headers['Content-Disposition'] = contentDisposition;
+                        _a.label = 10;
+                    case 10:
                         //    routeMatch.response.headers['Content-Disposition'] =
                         //        'attachment; filename=download.pdf';
                         routeMatch.log('Finished everything. Returning HALT command');

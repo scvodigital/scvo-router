@@ -131,6 +131,13 @@ export class TaskGeneratePdf extends TaskBase {
 
     routeMatch.response.body = output;
     routeMatch.response.contentType = 'application/pdf';
+
+    if (config.contentDispositionTemplate) {
+      const hbs = routeMatch.rendererManager.getRenderer('handlebars');
+      const contentDisposition =
+          await hbs.renderSync(config.contentDispositionTemplate, routeMatch);
+      routeMatch.response.headers['Content-Disposition'] = contentDisposition;
+    }
     //    routeMatch.response.headers['Content-Disposition'] =
     //        'attachment; filename=download.pdf';
 
@@ -186,6 +193,7 @@ export interface TaskGeneratePdfConfiguration {
   headerTemplate?: any;
   footerTemplate?: any;
   definitionTemplate: any;
+  contentDispositionTemplate?: string;
 }
 
 export interface ImageMap {
