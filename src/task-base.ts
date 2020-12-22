@@ -15,6 +15,7 @@ export class TaskBase {
 export interface TaskResult {
   command: TaskResultCommand;
   routeName?: string;
+  data?: any;
 }
 
 export enum TaskResultCommand {

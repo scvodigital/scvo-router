@@ -1,19 +1,24 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
+    "declaration": true,
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "rootDir": "src",
     "outDir": "build",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "baseUrl": "."
   },
   "include": [
     "src/*.ts",
     "src/**/*.ts",
     "test/*.ts",
     "test/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

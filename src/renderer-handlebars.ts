@@ -1,5 +1,6 @@
+import * as handlebars from 'handlebars';
+
 import {RendererBase} from './renderer-base';
-import handlebars = require('handlebars');
 
 /* tslint:disable:no-any */
 export class RendererHandlebars extends RendererBase {

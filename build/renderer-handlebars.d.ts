@@ -1,6 +1,5 @@
-/// <reference types="handlebars" />
+import * as handlebars from 'handlebars';
 import { RendererBase } from './renderer-base';
-import handlebars = require('handlebars');
 export declare class RendererHandlebars extends RendererBase {
     private hbs;
     constructor(hbs: typeof handlebars);

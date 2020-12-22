@@ -7,6 +7,8 @@ import {RendererManager, RendererMap} from './renderer-manager';
 import {RouteMatch} from './route-match';
 import {TaskModuleManager, TaskModuleMap} from './task-module-manager';
 
+import {CacheManager} from './cache-manager';
+
 // const routerConfigurationSchema =
 // require('./router-configuration.schema.json');
 
@@ -25,6 +27,7 @@ export class Router {
   };
   taskModuleManager: TaskModuleManager;
   rendererManager: RendererManager;
+  cacheManager = new CacheManager();
 
   checkResponses: RouterConfigurationCheckResponse[] = [];
   get hasErrors(): boolean {
@@ -171,7 +174,7 @@ export class Router {
       const matchedRoute = this.matchRoute(request);
       const routeMatch = new RouteMatch(
           matchedRoute, request, this.context, this.taskModuleManager,
-          this.rendererManager);
+          this.rendererManager, this.cacheManager);
       const response = await routeMatch.execute();
       return response;
     } catch (err) {

@@ -2,6 +2,7 @@ import { RouteConfiguration, RouterConfiguration, RouterRequest, RouterResponse 
 import { MatchedRoute, RegisteredRoute } from './registered-route';
 import { RendererManager, RendererMap } from './renderer-manager';
 import { TaskModuleManager, TaskModuleMap } from './task-module-manager';
+import { CacheManager } from './cache-manager';
 export declare class Router {
     private context;
     private rendererMap;
@@ -9,6 +10,7 @@ export declare class Router {
     defaultRoute: RouteConfiguration;
     taskModuleManager: TaskModuleManager;
     rendererManager: RendererManager;
+    cacheManager: CacheManager;
     checkResponses: RouterConfigurationCheckResponse[];
     readonly hasErrors: boolean;
     constructor(context: RouterConfiguration, taskModuleMap: TaskModuleMap, rendererMap: RendererMap);

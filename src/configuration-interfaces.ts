@@ -1,4 +1,5 @@
 import * as Url from 'url';
+import {CacheConfig} from './cache-manager';
 
 /* tslint:disable:no-any */
 // Module imports
@@ -36,6 +37,7 @@ export interface RouteTaskConfiguration<T> {
   config: T;
   errorRoute?: string;
   renderer?: string;
+  cache?: CacheConfig;
 }
 
 export interface NamedPattern {

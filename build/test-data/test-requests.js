@@ -7,7 +7,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Url = __importStar(require("url"));
+var Url = __importStar(require("url"));
 /* tslint:disable:no-any */
 var PathOptions;
 (function (PathOptions) {
@@ -23,12 +23,16 @@ var QsOptions;
     QsOptions[QsOptions["QS_ARRAY_WITH_BRACKETS"] = 2] = "QS_ARRAY_WITH_BRACKETS";
     QsOptions[QsOptions["QS_ARRAY_NO_BRACKETS"] = 4] = "QS_ARRAY_NO_BRACKETS";
 })(QsOptions = exports.QsOptions || (exports.QsOptions = {}));
-class RequestBuilder {
-    constructor(baseUrl = 'https://test-site.com') {
+var RequestBuilder = /** @class */ (function () {
+    function RequestBuilder(baseUrl) {
+        if (baseUrl === void 0) { baseUrl = 'https://test-site.com'; }
         this.baseUrl = baseUrl;
     }
-    build(pathOptions, qsOptions, verb = 'GET', cookies = {}, headers = {}, baseUrlOverride) {
-        let url = baseUrlOverride || this.baseUrl;
+    RequestBuilder.prototype.build = function (pathOptions, qsOptions, verb, cookies, headers, baseUrlOverride) {
+        if (verb === void 0) { verb = 'GET'; }
+        if (cookies === void 0) { cookies = {}; }
+        if (headers === void 0) { headers = {}; }
+        var url = baseUrlOverride || this.baseUrl;
         if (!(pathOptions & PathOptions.NONE)) {
             if (!!(pathOptions & PathOptions.VALID)) {
                 url += '/valid';
@@ -44,7 +48,7 @@ class RequestBuilder {
             }
         }
         if (!(qsOptions & QsOptions.NONE)) {
-            const qsParams = [];
+            var qsParams = [];
             if (!!(qsOptions & QsOptions.QS_FIELD)) {
                 qsParams.push('search=test');
             }
@@ -57,32 +61,36 @@ class RequestBuilder {
                 qsParams.push('cat[]=cat-3');
             }
             if (qsParams.length > 0) {
-                const qs = qsParams.join('&');
+                var qs = qsParams.join('&');
                 url = url + '?' + qs;
             }
         }
-        const testRequest = {
-            verb,
+        var testRequest = {
+            verb: verb,
             params: {},
             url: Url.parse(url),
             body: {},
-            cookies,
-            headers,
+            cookies: cookies,
+            headers: headers,
             fullUrl: url
         };
         return testRequest;
-    }
-    buildAll(verb = 'GET', cookies = {}, headers = {}, baseUrlOverride) {
-        const routerRequests = [];
-        for (let u = 0; u < (1 << 3) - 1; ++u) {
-            for (let q = 0; q < (1 << 3) - 1; ++q) {
-                const routerRequest = this.build(u, q, verb, cookies, headers, baseUrlOverride);
+    };
+    RequestBuilder.prototype.buildAll = function (verb, cookies, headers, baseUrlOverride) {
+        if (verb === void 0) { verb = 'GET'; }
+        if (cookies === void 0) { cookies = {}; }
+        if (headers === void 0) { headers = {}; }
+        var routerRequests = [];
+        for (var u = 0; u < (1 << 3) - 1; ++u) {
+            for (var q = 0; q < (1 << 3) - 1; ++q) {
+                var routerRequest = this.build(u, q, verb, cookies, headers, baseUrlOverride);
                 routerRequests.push(routerRequest);
             }
         }
         return routerRequests;
-    }
-}
+    };
+    return RequestBuilder;
+}());
 exports.RequestBuilder = RequestBuilder;
 /* tslint:enable:no-any */
 //# sourceMappingURL=test-requests.js.map
