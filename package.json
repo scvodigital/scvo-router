@@ -27,9 +27,9 @@
     "Routing",
     "Query templating"
   ],
-  "author": "Matthew Wilkes (https://scvo.org.uk)",
+  "author": "Matthew Wilkes (https://scvo.scot)",
   "contributors": [
-    "Calum MacUisdean (https://scvo.org.uk)"
+    "Calum MacUisdean (https://scvo.scot)"
   ],
   "license": "GPL-3.0",
   "bugs": {
