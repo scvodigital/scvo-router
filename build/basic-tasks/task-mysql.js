@@ -96,12 +96,6 @@ var TaskMySQL = /** @class */ (function (_super) {
                         ++q;
                         return [3 /*break*/, 1];
                     case 6:
-                        try {
-                            connection.end();
-                        }
-                        catch (err) {
-                            routeMatch.error(err, 'Failed to end connection to MySql');
-                        }
                         routeMatch.data[routeTaskConfig.name] = data;
                         return [2 /*return*/, { command: task_base_1.TaskResultCommand.CONTINUE }];
                 }
@@ -109,22 +103,30 @@ var TaskMySQL = /** @class */ (function (_super) {
         });
     };
     TaskMySQL.prototype.executeQuery = function (routeMatch, connection, queryTemplate, renderer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, results;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, renderer.render(queryTemplate, routeMatch)];
+                    case 1:
+                        query = _a.sent();
+                        return [4 /*yield*/, this.query(connection, query)];
+                    case 2:
+                        results = _a.sent();
+                        return [2 /*return*/, results];
+                }
+            });
+        });
+    };
+    TaskMySQL.prototype.query = function (connection, sql) {
         return new Promise(function (resolve, reject) {
-            queryTemplate = routeMatch.getString(queryTemplate);
-            renderer.render(queryTemplate, routeMatch)
-                .then(function (query) {
-                routeMatch.log('About to execute query:', query);
-                connection.query(query, function (error, results, fields) {
-                    if (error) {
-                        return reject(error);
-                    }
-                    else {
-                        return resolve(results);
-                    }
-                });
-            })
-                .catch(function (err) {
-                return reject(err);
+            connection.query(sql, function (error, results, fields) {
+                if (error) {
+                    return reject(error);
+                }
+                else {
+                    return resolve(results);
+                }
             });
         });
     };

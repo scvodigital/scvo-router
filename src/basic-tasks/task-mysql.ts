@@ -29,11 +29,12 @@ export class TaskMySQL extends TaskBase {
 
     const data: any = {};
     const connection = this.pools[config.connectionName];
-
     const queryTemplateNames = Object.keys(config.queryTemplates);
+
     for (let q = 0; q < queryTemplateNames.length; ++q) {
       const queryTemplateName = queryTemplateNames[q];
       const queryTemplate = config.queryTemplates[queryTemplateName];
+
       try {
         data[queryTemplateName] = await this.executeQuery(
             routeMatch, connection, queryTemplate, renderer);
@@ -42,36 +43,47 @@ export class TaskMySQL extends TaskBase {
       }
     }
 
-    try {
-      connection.end();
-    } catch (err) {
-      routeMatch.error(err, 'Failed to end connection to MySql');
-    }
-
     routeMatch.data[routeTaskConfig.name] = data;
 
     return {command: TaskResultCommand.CONTINUE};
   }
 
-  executeQuery(
+  async executeQuery(
       routeMatch: RouteMatch, connection: mysql.Pool, queryTemplate: string,
       renderer: RendererBase): Promise<any> {
+    const query = await renderer.render(queryTemplate, routeMatch);
+    const results = await this.query(connection, query);
+
+    return results;
+
+    // return new Promise<any>((resolve, reject) => {
+    //   queryTemplate = routeMatch.getString(queryTemplate);
+    //   renderer.render(queryTemplate, routeMatch)
+    //       .then((query) => {
+    //         routeMatch.log('About to execute query:', query);
+    //         connection.query(query, (error, results, fields) => {
+    //           if (error) {
+    //             return reject(error);
+    //           } else {
+    //             return resolve(results);
+    //           }
+    //         });
+    //       })
+    //       .catch((err) => {
+    //         return reject(err);
+    //       });
+    // });
+  }
+
+  query(connection: mysql.Pool, sql: string) {
     return new Promise<any>((resolve, reject) => {
-      queryTemplate = routeMatch.getString(queryTemplate);
-      renderer.render(queryTemplate, routeMatch)
-          .then((query) => {
-            routeMatch.log('About to execute query:', query);
-            connection.query(query, (error, results, fields) => {
-              if (error) {
-                return reject(error);
-              } else {
-                return resolve(results);
-              }
-            });
-          })
-          .catch((err) => {
-            return reject(err);
-          });
+      connection.query(sql, (error, results, fields) => {
+        if (error) {
+          return reject(error);
+        } else {
+          return resolve(results);
+        }
+      });
     });
   }
 }

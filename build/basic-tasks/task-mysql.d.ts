@@ -9,6 +9,7 @@ export declare class TaskMySQL extends TaskBase {
     constructor(connectionConfigs: ConnectionMap);
     execute(routeMatch: RouteMatch, routeTaskConfig: RouteTaskConfiguration<TaskMySQLConfiguration>, renderer?: RendererBase): Promise<TaskResult>;
     executeQuery(routeMatch: RouteMatch, connection: mysql.Pool, queryTemplate: string, renderer: RendererBase): Promise<any>;
+    query(connection: mysql.Pool, sql: string): Promise<any>;
 }
 export interface ConnectionMap {
     [name: string]: mysql.ConnectionConfig;
