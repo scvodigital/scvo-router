@@ -51,28 +51,28 @@ export class TaskMySQL extends TaskBase {
   async executeQuery(
       routeMatch: RouteMatch, connection: mysql.Pool, queryTemplate: string,
       renderer: RendererBase): Promise<any> {
-    const query = await renderer.render(queryTemplate, routeMatch);
-    const results = await this.query(connection, query);
+    // const query = await renderer.render(queryTemplate, routeMatch);
+    // const results = await this.query(connection, query);
 
-    return results;
+    // return results;
 
-    // return new Promise<any>((resolve, reject) => {
-    //   queryTemplate = routeMatch.getString(queryTemplate);
-    //   renderer.render(queryTemplate, routeMatch)
-    //       .then((query) => {
-    //         routeMatch.log('About to execute query:', query);
-    //         connection.query(query, (error, results, fields) => {
-    //           if (error) {
-    //             return reject(error);
-    //           } else {
-    //             return resolve(results);
-    //           }
-    //         });
-    //       })
-    //       .catch((err) => {
-    //         return reject(err);
-    //       });
-    // });
+    return new Promise<any>((resolve, reject) => {
+      queryTemplate = routeMatch.getString(queryTemplate);
+      renderer.render(queryTemplate, routeMatch)
+          .then((query) => {
+            routeMatch.log('About to execute query:', query);
+            connection.query(query, (error, results, fields) => {
+              if (error) {
+                return reject(error);
+              } else {
+                return resolve(results);
+              }
+            });
+          })
+          .catch((err) => {
+            return reject(err);
+          });
+    });
   }
 
   query(connection: mysql.Pool, sql: string) {
