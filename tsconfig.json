@@ -13,6 +13,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "lib": ["ES2015"],
     "baseUrl": "."
   },
   "include": [

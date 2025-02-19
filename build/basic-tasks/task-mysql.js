@@ -53,11 +53,17 @@ var TaskMySQL = /** @class */ (function (_super) {
     function TaskMySQL(connectionConfigs) {
         var _this = _super.call(this) || this;
         _this.connectionConfigs = connectionConfigs;
+        _this.pools = {};
+        for (var _i = 0, _a = Object.keys(connectionConfigs); _i < _a.length; _i++) {
+            var connectionName = _a[_i];
+            _this.pools[connectionName] =
+                mysql.createPool(connectionConfigs[connectionName]);
+        }
         return _this;
     }
     TaskMySQL.prototype.execute = function (routeMatch, routeTaskConfig, renderer) {
         return __awaiter(this, void 0, void 0, function () {
-            var config, data, connectionConfig, connection, queryTemplateNames, q, queryTemplateName, queryTemplate, _a, _b, err_1;
+            var config, data, connection, queryTemplateNames, q, queryTemplateName, queryTemplate, _a, _b, err_1;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -66,15 +72,7 @@ var TaskMySQL = /** @class */ (function (_super) {
                         }
                         config = routeTaskConfig.config;
                         data = {};
-                        connectionConfig = this.connectionConfigs[config.connectionName];
-                        connection = mysql.createConnection(connectionConfig);
-                        try {
-                            connection.connect();
-                        }
-                        catch (err) {
-                            routeMatch.error(err, 'Failed to connect to MySql');
-                            throw err;
-                        }
+                        connection = this.pools[config.connectionName];
                         queryTemplateNames = Object.keys(config.queryTemplates);
                         q = 0;
                         _c.label = 1;

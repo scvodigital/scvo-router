@@ -7,8 +7,15 @@ import {TaskBase, TaskResult, TaskResultCommand} from '../task-base';
 
 /* tslint:disable:no-any */
 export class TaskMySQL extends TaskBase {
+  pools: Record<string, mysql.Pool> = {};
+
   constructor(private connectionConfigs: ConnectionMap) {
     super();
+
+    for (const connectionName of Object.keys(connectionConfigs)) {
+      this.pools[connectionName] =
+          mysql.createPool(connectionConfigs[connectionName]);
+    }
   }
 
   async execute(
@@ -21,15 +28,7 @@ export class TaskMySQL extends TaskBase {
     const config = routeTaskConfig.config;
 
     const data: any = {};
-    const connectionConfig = this.connectionConfigs[config.connectionName];
-    const connection = mysql.createConnection(connectionConfig);
-
-    try {
-      connection.connect();
-    } catch (err) {
-      routeMatch.error(err, 'Failed to connect to MySql');
-      throw err;
-    }
+    const connection = this.pools[config.connectionName];
 
     const queryTemplateNames = Object.keys(config.queryTemplates);
     for (let q = 0; q < queryTemplateNames.length; ++q) {
@@ -55,8 +54,8 @@ export class TaskMySQL extends TaskBase {
   }
 
   executeQuery(
-      routeMatch: RouteMatch, connection: mysql.Connection,
-      queryTemplate: string, renderer: RendererBase): Promise<any> {
+      routeMatch: RouteMatch, connection: mysql.Pool, queryTemplate: string,
+      renderer: RendererBase): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       queryTemplate = routeMatch.getString(queryTemplate);
       renderer.render(queryTemplate, routeMatch)

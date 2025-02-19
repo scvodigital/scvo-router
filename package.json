@@ -4,6 +4,9 @@
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "engines": {
+    "node": "18"
+  },
   "scripts": {
     "prepublish": "tsc",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
@@ -46,6 +49,7 @@
     "@types/mailgun-js": "^0.16.3",
     "@types/mocha": "^5.2.0",
     "@types/node": "^10.3.0",
+    "@types/node-json-transform": "^1.0.2",
     "@types/pdfmake": "^0.1.1",
     "chai": "^4.1.2",
     "gts": "^0.6.0",
