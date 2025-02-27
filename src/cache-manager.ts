@@ -87,14 +87,20 @@ export class CacheManager {
   }
 
   async flush(partition: string, context: RouteMatch): Promise<void> {
-    const rendered = await this.renderPartition(partition, context);
-    context.log(`CACHE MANAGER: Flushing partition '${rendered}'`);
-    const keys = await this.KEYS(rendered + ':*');
-    await this.DEL(keys);
+    try {
+      const rendered = await this.renderPartition(partition, context);
+      context.log(`CACHE MANAGER: Flushing partition '${rendered}'`);
+      const keys = await this.KEYS(rendered + ':*');
+      await this.DEL(keys);
+    } catch (error) {
+
+    }
   }
 
   DEL(keys: string[]): Promise<number> {
     return new Promise<number>((resolve, reject) => {
+      if (!Array.isArray(keys) || keys.length === 0) return resolve(0);
+
       this.client.DEL(keys, (err, total) => {
         if (err) {
           reject(err);
