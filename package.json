@@ -1,11 +1,11 @@
 {
   "name": "@scvo/router",
-  "version": "1.2.94",
+  "version": "1.2.95",
   "description": "A lightweight routing engine based around the idea that complex web apps can be entirely written using only configuration and templating",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "engines": {
-    "node": "18"
+    "node": "22"
   },
   "scripts": {
     "prepublish": "tsc",
