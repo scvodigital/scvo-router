@@ -93,7 +93,6 @@ export class CacheManager {
       const keys = await this.KEYS(rendered + ':*');
       await this.DEL(keys);
     } catch (error) {
-
     }
   }
 

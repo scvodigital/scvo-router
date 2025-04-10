@@ -1,4 +1,5 @@
-import mysql = require('mysql');
+// @ts-ignore
+import mysql = require('@vlasky/mysql');
 
 import {RouteTaskConfiguration} from '../configuration-interfaces';
 import {RendererBase} from '../renderer-base';
@@ -61,13 +62,14 @@ export class TaskMySQL extends TaskBase {
       renderer.render(queryTemplate, routeMatch)
           .then((query) => {
             routeMatch.log('About to execute query:', query);
-            connection.query(query, (error, results, fields) => {
-              if (error) {
-                return reject(error);
-              } else {
-                return resolve(results);
-              }
-            });
+            connection.query(
+                query, (error: Error|null, results: any, fields: any) => {
+                  if (error) {
+                    return reject(error);
+                  } else {
+                    return resolve(results);
+                  }
+                });
           })
           .catch((err) => {
             return reject(err);
@@ -77,7 +79,7 @@ export class TaskMySQL extends TaskBase {
 
   query(connection: mysql.Pool, sql: string) {
     return new Promise<any>((resolve, reject) => {
-      connection.query(sql, (error, results, fields) => {
+      connection.query(sql, (error: Error|null, results: any, fields: any) => {
         if (error) {
           return reject(error);
         } else {

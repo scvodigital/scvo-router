@@ -149,10 +149,12 @@ var CacheManager = /** @class */ (function () {
     };
     CacheManager.prototype.flush = function (partition, context) {
         return __awaiter(this, void 0, void 0, function () {
-            var rendered, keys;
+            var rendered, keys, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.renderPartition(partition, context)];
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, this.renderPartition(partition, context)];
                     case 1:
                         rendered = _a.sent();
                         context.log("CACHE MANAGER: Flushing partition '" + rendered + "'");
@@ -162,7 +164,11 @@ var CacheManager = /** @class */ (function () {
                         return [4 /*yield*/, this.DEL(keys)];
                     case 3:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 4:
+                        error_1 = _a.sent();
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -170,6 +176,8 @@ var CacheManager = /** @class */ (function () {
     CacheManager.prototype.DEL = function (keys) {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            if (!Array.isArray(keys) || keys.length === 0)
+                return resolve(0);
             _this.client.DEL(keys, function (err, total) {
                 if (err) {
                     reject(err);

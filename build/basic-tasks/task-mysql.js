@@ -45,7 +45,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql = require("mysql");
+// @ts-ignore
+var mysql = require("@vlasky/mysql");
 var task_base_1 = require("../task-base");
 /* tslint:disable:no-any */
 var TaskMySQL = /** @class */ (function (_super) {

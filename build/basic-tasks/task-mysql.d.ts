@@ -1,4 +1,4 @@
-import mysql = require('mysql');
+import mysql = require('@vlasky/mysql');
 import { RouteTaskConfiguration } from '../configuration-interfaces';
 import { RendererBase } from '../renderer-base';
 import { RouteMatch } from '../route-match';
